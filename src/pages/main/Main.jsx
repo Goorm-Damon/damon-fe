@@ -2,38 +2,38 @@ import React, { useEffect, useState } from 'react'
 import styles from './Main.module.scss'
 import Banner from '../../components/banner/Banner'
 import axios from 'axios';
+import * as calendarService from '../../apis/services/calendarService';
 // import ScheduleCard from '../../components/card/schedule/ScheduleCard';
 // import { bestReviews } from './../../mocks/handlers/best_reviews';
 
 const Main = () => {
 
   // const [user, setUser] = useState(null);
-  const [schedules, setSchedules] = useState([]);
-  const [bestReviews, setBestReviews] = useState([]);
+  const [calendars, setCalendars] = useState([]);
+  // const [bestReviews, setBestReviews] = useState([]);
 
 
-  const fetchSchedules = async () => {
+  const fetchCalendars = async () => {
     try {
-      const response = await axios.get('schedules');
-      setSchedules(response.data);
+      const response = await calendarService.getCalendar();
+      setCalendars(response.data);
     } catch(error) {
       console.log(error);
     }
   }
 
-  const fetchBestReviews = async () => {
-    try {
-      const response = await axios.get('bestReviews');
-      setBestReviews(response.data);
-    } catch(error) {
-      console.log(error);
-    }
-  }
+  // const fetchBestReviews = async () => {
+  //   try {
+  //     const response = await axios.get('bestReviews');
+  //     setBestReviews(response.data);
+  //   } catch(error) {
+  //     console.log(error);
+  //   }
+  // }
 
 
   useEffect(()=> {
-    fetchSchedules();
-    fetchBestReviews();
+    fetchCalendars();
   },[]);
   return (
     <div>
