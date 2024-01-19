@@ -86,7 +86,7 @@ const Header = () => {
                 </li>
               </ul>
             </nav>
-            <div onClick={navigateTo('/logout')} className={styles.header__logout}>로그아웃</div>
+            <div onClick={navigateTo('/')} className={styles.header__logout}>로그아웃</div>
           </div>
         }
         {showFeatures &&
