@@ -7,6 +7,8 @@ import RegisterCalendar from './pages/calendars/register-calendar/RegisterCalend
 
 
 function App() {
+  console.log(process.env.REACT_APP_API_MODE);
+  
   return (
     <Routes>
       {/* <Route path='/' element={<Login />} /> */}

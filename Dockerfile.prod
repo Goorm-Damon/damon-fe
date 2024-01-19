@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json .
 RUN npm install
 COPY . .
-COPY .env.production .env
+COPY .env.production .env.production
 RUN npm run build
 
 # Nginx를 기반으로 하는 최종 이미지
