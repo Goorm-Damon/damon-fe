@@ -5,6 +5,7 @@ import Layout from './components/layout/Layout';
 import Main from './pages/main/Main';
 import RegisterCalendar from './pages/calendars/register-calendar/RegisterCalendar';
 
+
 function App() {
   return (
     <Routes>
@@ -14,7 +15,7 @@ function App() {
         <Route path='main' element={<Main />} />
         {/* <Route path='review/:id' element={<Review />} /> */}
         <Route path='register/calender' element={<RegisterCalendar />} />
-
+          
         {/* <Route path='view/myschedule' element={<MySchedule />} /> */}
       </Route>
     </Routes>
