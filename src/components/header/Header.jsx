@@ -80,7 +80,7 @@ const Header = () => {
                 <li className={styles.header__menu2}>마이룸
                   <ul className={isHovered ? styles.subVisible : styles.sub}>
                     <li onClick={navigateTo('/my/reviews')}>내 리뷰</li>
-                    <li onClick={navigateTo('/my/calender')}>내 일정</li>
+                    <li onClick={navigateTo('/my/calendar')}>내 일정</li>
                     <li onClick={navigateTo('/my/community')}>내 커뮤니티</li>
                   </ul>
                 </li>

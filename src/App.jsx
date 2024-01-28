@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Main from './pages/main/Main';
 import RegisterCalendar from './pages/calendars/register-calendar/RegisterCalendar';
+import MyCalendar from './pages/calendars/my-calendar/MyCalendar';
 
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
         {/* <Route path='review/:id' element={<Review />} /> */}
         <Route path='register/calender' element={<RegisterCalendar />} />
           
-        {/* <Route path='view/myschedule' element={<MySchedule />} /> */}
+        <Route path='my/calendar' element={<MyCalendar />} />
       </Route>
     </Routes>
   );
