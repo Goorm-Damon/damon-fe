@@ -49,7 +49,7 @@ const Main = () => {
             <h2>최근 일정</h2>
             <a>더 보기 {'>'}</a>
           </div>
-          {calendars && calendars.map((calendar, i) => (
+          {calendars.content && calendars.content.map((calendar, i) => (
             <div className={styles.calendar__card}>
               ?
               <CalendarCard calendars={calendar} />
