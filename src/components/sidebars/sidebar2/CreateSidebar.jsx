@@ -7,8 +7,8 @@ import ShowCalendar from '../../calendar/show-calendar/ShowCalendar';
 
 const CreateSidebar = ({ setSearchPlace, places, showModal, setModalOpen, setPlaceInfo, placeInfo }) => {
 
-  const setCalenderInfo = useSetRecoilState(calendarInfoState);
-  const calenderInfo = useRecoilValue(calendarInfoState);
+  // const setCalenderInfo = useSetRecoilState(calendarInfoState);
+  // const calenderInfo = useRecoilValue(calendarInfoState);
   const clickedDate = useRecoilValue(clickedDateState);
   const computeDate = useRecoilValue(computeDateState);
   const clickedDay = useState(0);
@@ -20,6 +20,7 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setModalOpen, setPla
   const [calendars, setCalendars] = useState([]);
 
   const filteredTravels = useRecoilValue(filteredTravelsSelector);
+  const setFilteredTravels = useSetRecoilState(filteredTravelsSelector);
 
   const onChange = (e) => {
     setInputText(e.target.value);
@@ -54,6 +55,10 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setModalOpen, setPla
     showModal();
   }
 
+  useEffect(() => {
+    setInputText(inputText);
+  }, [inputText])
+  
 
   // 버튼 스타일을 결정하는 함수
   const addButtonStyle = isAddButtonClicked ? { color: '#5376C6' } : {};
@@ -87,11 +92,12 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setModalOpen, setPla
                   placeholder="장소 검색"
                   onChange={onChange}
                   value={inputText}
+                  name='inputText'
                 />
                 {/* <button type="submit">검색</button> */}
               </form>
             </div>
-            <div id="result-list"
+            <div id="result-list" className={styles.result_list}
             >
               {places.map((item, i) => (
                 <div key={i}
@@ -115,15 +121,15 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setModalOpen, setPla
             </div>
           </div> :
           <div className={styles.Calendar__Container}>
-            {filteredTravels.map((calendar, index) => {
-              return <ShowCalendar key={calendar.latitude} calendar={calendar} />
-            })}
-            {filteredTravels.length == 0 &&
-              <div>
-                <p>알정이 없습니다.\n 추가해 보세요.</p>
-              </div>
-            }
-          </div>
+          {filteredTravels.map((calendar, index) => {
+            return <ShowCalendar key={index} calendar={calendar} />
+          })}
+          {filteredTravels.length === 0 &&
+            <div className={styles.no_calendar}>
+              <p>일정이 없습니다. 추가해 보세요.</p>
+            </div>
+          }
+        </div>
         }
 
       </section>
