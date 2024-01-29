@@ -1,0 +1,70 @@
+.login-page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  background: #FFFFFF;
+
+  .header {
+    h1 {
+      position: absolute;
+      width: 155px;
+      height: 51px;
+      left: 50%;
+      top: 250px; // 상단 여백 줄임
+      transform: translateX(-50%);
+      font-family: 'NanumGothic', sans-serif;
+      font-weight: 700;
+      font-size: 40px;
+      line-height: 150%;
+      letter-spacing: -0.02em;
+      color: #2778C3;
+      margin-bottom: 10px;
+    }
+
+    p {
+      position: absolute;
+      width: 228px;
+      height: 46px;
+      left: 50%;
+      top: 330px; // 상단 여백 줄임
+      transform: translateX(-50%);
+      font-family: 'NanumGothic', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 150%;
+      text-align: center;
+      letter-spacing: -0.02em;
+      color: #8B8585;
+    }
+  }
+
+  .Social-login {
+    position: absolute;
+    top: 400px; // 상단 여백 줄임
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .Login-button {
+      margin: 10px;
+      padding: 10px;
+      width: 200px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &.naver {
+        background-color: #03C75A;
+      }
+
+      &.kakao {
+        background-color: #FDDC3F;
+      }
+    }
+  }
+}
