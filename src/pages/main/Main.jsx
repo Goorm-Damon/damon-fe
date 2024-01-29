@@ -3,7 +3,7 @@ import styles from './Main.module.scss'
 import Banner from '../../components/banner/Banner'
 import axios from 'axios';
 import * as calendarService from '../../apis/services/calendarService';
-// import ScheduleCard from '../../components/card/schedule/ScheduleCard';
+import CalendarCard from '../../components/calendar/cards/CalendarCard';
 // import { bestReviews } from './../../mocks/handlers/best_reviews';
 
 const Main = () => {
@@ -15,12 +15,15 @@ const Main = () => {
 
   const fetchCalendars = async () => {
     try {
-      const response = await calendarService.getCalendar();
+      const response = await calendarService.getCalendar(0, 10);
       setCalendars(response.data);
-    } catch(error) {
+      console.log("response",response);
+
+    } catch (error) {
       console.log(error);
     }
   }
+
 
   // const fetchBestReviews = async () => {
   //   try {
@@ -32,9 +35,11 @@ const Main = () => {
   // }
 
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchCalendars();
-  },[]);
+  }, []);
+
+
   return (
     <div>
       <Banner />
@@ -44,9 +49,12 @@ const Main = () => {
             <h2>최근 일정</h2>
             <a>더 보기 {'>'}</a>
           </div>
-          {/* <div className={styles.card__area}>
-            <ScheduleCard schedules={schedules}  />
-          </div> */}
+          {calendars && calendars.map((calendar, i) => (
+            <div className={styles.calendar__card}>
+              ?
+              <CalendarCard calendars={calendar} />
+            </div>
+          ))}
         </section>
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>

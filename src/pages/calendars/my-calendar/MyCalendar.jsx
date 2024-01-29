@@ -12,6 +12,7 @@ const MyCalendar = () => {
     try {
       const response = await calendarService.getCalendar(0, 10);
       setCalendars(response.data);
+      console.log("response",response);
     } catch (error) {
       console.log(error);
     }
@@ -27,9 +28,9 @@ const MyCalendar = () => {
       <div className={styles.calendar}>
         <div>
           <p className={styles.main__title}>내 일정</p>
-          <p>Total {calendars.totalElements}</p>
+          {/* <p>Total {calendars.totalElements}</p> */}
         </div>
-        {calendars.content && calendars.content.map((item, i) => (
+        {/* {calendars.content && calendars.content.map((item, i) => (
           <div className={styles.calendar__card}>
             <div className={styles.title}>
               {item.title}
@@ -40,7 +41,7 @@ const MyCalendar = () => {
               {item.endDate}
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   )
