@@ -44,7 +44,8 @@ const Header = () => {
     try {
       const response = await calendarService.createCalendar(calenderInfo);
       if (response.success) {
-        alert("일정 등록되었습니다.")
+        alert("일정 등록되었습니다.");
+        console.log("response",response);
         //상세일정 페이지로 이동해야함.
       } else {
         console.error(response.error);
