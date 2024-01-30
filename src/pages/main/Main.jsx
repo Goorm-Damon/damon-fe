@@ -4,9 +4,13 @@ import Banner from '../../components/banner/Banner'
 import axios from 'axios';
 import * as calendarService from '../../apis/services/calendarService';
 import CalendarCard from '../../components/calendar/cards/CalendarCard';
+import { useLocation, useNavigate } from 'react-router-dom';
 // import { bestReviews } from './../../mocks/handlers/best_reviews';
 
 const Main = () => {
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // const [user, setUser] = useState(null);
   const [calendars, setCalendars] = useState([]);
@@ -23,6 +27,11 @@ const Main = () => {
       console.log(error);
     }
   }
+
+    // 페이지 이동을 위한 함수
+    const navigateTo = (path) => () => {
+      navigate(path);
+    };
 
 
   // const fetchBestReviews = async () => {
@@ -47,14 +56,15 @@ const Main = () => {
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
             <h2>최근 일정</h2>
-            <a>더 보기 {'>'}</a>
+            <a onClick={navigateTo('/my/calendar')}>더 보기 {'>'}</a>
           </div>
+          <div className={styles.calendars__container}>
           {calendars.content && calendars.content.map((calendar, i) => (
             <div className={styles.calendar__card}>
-              ?
-              <CalendarCard calendars={calendar} />
+              <CalendarCard calendar={calendar} />
             </div>
           ))}
+          </div>
         </section>
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>

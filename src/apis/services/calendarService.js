@@ -3,11 +3,7 @@ import apiutils from "../utils/apiutils"
 //일정 등록
 export const createCalendar = async (calendarData) => {
   try {
-    const response = await apiutils.create('/api/calendar', {
-      data: {
-        calendarData,
-      }
-    });
+    const response = await apiutils.create('/api/calendar', calendarData);
     return response;
   } catch (error) {
     console.log('Error creating Calendar', error);
