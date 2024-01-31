@@ -13,9 +13,9 @@ export const createCalendar = async (calendarData) => {
 
 
 //일정 수정
-export const editCalendar = async (id) => {
+export const editCalendar = async (id,calendarData) => {
   try {
-    const response = await apiutils.update(`/api/calendar/${id}`);
+    const response = await apiutils.update(`/api/calendar/${id}`,calendarData);
     return response;
   } catch (error) {
     console.log('Error editing Calendar', error);
@@ -48,7 +48,7 @@ export const getCalendar = async (page,size) => {
 //일정 상세 조회
 export const getDetailCalendar = async (id) => {
   try {
-    const response = await apiutils.del(`/api/my/calendar/${id}`);
+    const response = await apiutils.read(`/api/my/calendar/${id}`);
     return response;
   } catch (error) {
     console.log('Error getting Calendar ', error);

@@ -3,106 +3,150 @@ import BeginSidebar from '../../../components/sidebars/sidebar1/BeginSidebar';
 import CreateSidebar from '../../../components/sidebars/sidebar2/CreateSidebar';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { headerState } from '../../../states/header/headerState';
-import { showCreateState } from '../../../states/calendar/calendarInfoState';
+import { calendarInfoState, clickedDateState, placeLatLonState, showCreateState } from '../../../states/calendar/calendarInfoState';
 import EnrollModal from '../../../components/modal/EnrollModal';
 
 
 const { kakao } = window;
 
-const regions = [
-  { value: '가평', label: "가평" },
-  { value: '강원', label: "강원" },
-  { value: '경기/인천', label: "경기/인천" },
-  { value: '서울', label: "서울" },
-  { value: '충청', label: "충청" },
-  { value: '경상', label: "경상" },
-  { value: '전라', label: "전라" },
-  { value: '제주', label: "제주" },
-];
 
 const RegisterCalendar = () => {
 
-  const [title, setTitle] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [region, setRegion] = useState("");
-  const [numberDay, setNumberDay] = useState(0);
   const [searchPlace, setSearchPlace] = useState("");
   const [places, setPlaces] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [placeInfo,setPlaceInfo] = useState({
+  const [placeInfo, setPlaceInfo] = useState({
     locationName: '',
     latitude: '',
-    longitude:'',
+    longitude: '',
     memo: '',
-    orderNum: 0,
+    day: 0,
+    order: 0,
   })
-  
 
+  const [searchMarkers, setSearchMarkers] = useState([]);
+  const [markers, setMarkers] = useState([]);
+
+
+  const calendarInfo = useRecoilValue(calendarInfoState);
+  const clickedDate = useRecoilValue(clickedDateState);
   const [headerSettings, setHeaderSettings] = useRecoilState(headerState);
   const { showDefalut, showFeatures } = headerSettings;
   const showCreate = useRecoilValue(showCreateState);
+  const placeLatLon = useRecoilValue(placeLatLonState);
 
-    // 모달창 노출
-    const showModal = () => {
-        setModalOpen(true);
-    };
+  // 모달창 노출
+  const showModal = () => {
+    setModalOpen(true);
+  };
 
   const switchSidebar = () => {
-    setHeaderSettings({ showDefalut: false, showFeatures: true});
+    setHeaderSettings({ showDefalut: false, showFeatures: true });
   };
+
+  // 마커 초기화 함수
+  const clearMarkers = () => {
+    searchMarkers.forEach(marker => marker.setMap(null)); // 모든 마커 제거
+    setSearchMarkers([]); // 마커 배열 초기화
+  };
+
+  useEffect(() => {
+    setPlaces([]); // places 초기화
+    clearMarkers(); // 마커 초기화
+  }, [clickedDate]);
 
 
   useEffect(() => {
-    var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 })
-    const mapCotainer = document.getElementById('map');
-    const options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3
-    };
-    const map = new kakao.maps.Map(mapCotainer, options);
+    const mapContainer = document.getElementById('map'); // 지도를 표시할 div
+    const mapOptions = {
+    center: placeLatLon.length > 0
+      ? new kakao.maps.LatLng(placeLatLon[0].latitude, placeLatLon[0].longitude) // 첫 번째 좌표로 중심 설정
+      : new kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심 좌표
+    level: 5,
+  };
+    const map = new kakao.maps.Map(mapContainer, mapOptions);
+
+    // if (Array.isArray(placeLatLon) && placeLatLon.length > 0) {
+    //   const latLngs = placeLatLon.map(item => new kakao.maps.LatLng(item.latitude, item.longitude));
+  
+    //   // LatLngBounds 객체 생성
+    //   const bounds = new kakao.maps.LatLngBounds();
+  
+    //   latLngs.forEach(latLng => {
+    //     bounds.extend(latLng);
+    //   });
+  
+    //   // 지도 중심 설정
+    //   map.setBounds(bounds);
+    // }
+
+    // 장소 검색 객체를 생성
     const ps = new kakao.maps.services.Places();
 
-    ps.keywordSearch(searchPlace, placesSearchCB);
-
-    function placesSearchCB(data, status, pagination) {
+    const placesSearchCB = (data, status) => {
       if (status === kakao.maps.services.Status.OK) {
+        clearMarkers(); // 기존 마커 초기화
         let bounds = new kakao.maps.LatLngBounds();
 
-        for (let i = 0; i < data.length; i++) {
-          displayMarker(data[i]);
-          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-        }
+        data.forEach(place => {
+          displayMarker(place, false); // 기본 마커
+          bounds.extend(new kakao.maps.LatLng(place.y, place.x));
+        });
 
         map.setBounds(bounds);
-        // 페이지 목록 보여주는 displayPagination() 추가
-        // displayPagination(pagination)
-        setPlaces(data)
+        setPlaces(data); // 검색된 장소 상태 업데이트
       }
-    }
+    };
 
-    function displayMarker(place) {
-      let marker = new kakao.maps.Marker({
-        map: map,
-        position: new kakao.maps.LatLng(place.y, place.x),
-      });
-      kakao.maps.event.addListener(marker, 'click', function () {
-        infowindow.setContent('<div style="padding:2px;font-size:12px;">' + place.place_name + '</div>')
-        infowindow.open(map, marker)
-      })
+    // 마커를 생성하고 지도에 표시하는 함수
+    const displayMarker = (place, isRegistered) => {
+      const imageSrc = isRegistered
+        ? 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png' // 등록된 일정 마커 이미지
+        : null; // 기본 마커 이미지
+      const imageSize = new kakao.maps.Size(24, 35);
+      const markerImage = imageSrc ? new kakao.maps.MarkerImage(imageSrc, imageSize) : null;
+      //등록된 장소일때 마커 표시
+      if (isRegistered) {
+        const marker = new kakao.maps.Marker({
+          map: map,
+          position: new kakao.maps.LatLng(place.latitude, place.longitude),
+          image: markerImage,
+        });
+        setMarkers(prev => [...prev, marker]);
+      //검색한 장소에 마커표시
+      } else {
+        const marker = new kakao.maps.Marker({
+          map: map,
+          position: new kakao.maps.LatLng(place.y, place.x),
+          image: markerImage,
+        });
+        setSearchMarkers(prev => [...prev, marker]);
+
+      }
+    };
+
+    // 이미 등록된 일정에 대한 마커를 표시
+    calendarInfo.travels.forEach(travel => {
+      displayMarker(travel, true); // 등록된 일정 마커
+    });
+
+    // 키워드로 장소를 검색
+    if (searchPlace) {
+      ps.keywordSearch(searchPlace, placesSearchCB);
     }
-  }, [searchPlace]);
+  }, [searchPlace, calendarInfo,searchMarkers]);
 
   return (
     <div>
-      {modalOpen && <EnrollModal  setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo}/>}
-      {!showCreate ? 
-      <BeginSidebar onSwitch={switchSidebar} /> : 
-      <CreateSidebar setSearchPlace={setSearchPlace} places={places} showModal={showModal} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo}/>}
+      {modalOpen && <EnrollModal searchMarkers={searchMarkers} setSearchMarkers={setSearchMarkers} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />}
+      {!showCreate ?
+        <BeginSidebar onSwitch={switchSidebar} /> :
+        <CreateSidebar setSearchPlace={setSearchPlace} places={places} showModal={showModal} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />}
 
       <div id="map" style={{
-        // width: '1000px',
-        height: '100vh'
+        width: '80%',
+        height: '100vh',
+        float: 'right'
       }}>
       </div>
     </div>
