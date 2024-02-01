@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Loginpage.scss';
-import NaverLoginButton from '../../components/login/NaverLoginButton';
-import KakaoLoginButton from '../../components/login/KakaoLoginButton';
+import './styles/App.css';
+import NaverLoginButton from './Components/LoginComponent/NaverLoginButton';
+import KakaoLoginButton from './Components/LoginComponent/KakaoLoginButton';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 // Header 컴포넌트
 function Header() {
   return (
-    <header className="header">
+    <header className="App-header">
       <h1>DAMON</h1>
       <p>지금 사용하는 아이디로<br /> 다른 서비스에 가입하실 수 있습니다.</p>
     </header>
@@ -42,8 +42,11 @@ function App() {
   }, []); // 빈 배열을 전달하여 컴포넌트가 처음 마운트될 때만 실행
 
   return (
-    <div className="login-page">
+    <div className="App">
       <Header />
+      <div className="Current-time">
+        <p>{currentTime}</p>
+      </div>
       <SocialLoginButtons />
     </div>
   );

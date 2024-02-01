@@ -1,36 +1,6 @@
 .container {
   border: 1px solid #b3b3b3;
   border-radius: 8px;
-  width: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin-bottom: 10px;
-}
-
-.contents {
-  background-color: #7298C2;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 15px;
-  border-radius: 0 0 8px 8px;
-}
-
-.titles {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  flex-direction: row;
-  justify-content: center;
-
-}
-
-.dele_btn {
-  position: absolute;
-  border: none;
-  background-color: white;
-  color: rgb(215, 40, 40);
-  right: 30px;
+  padding: 20px;
+  width: 300px;
 }

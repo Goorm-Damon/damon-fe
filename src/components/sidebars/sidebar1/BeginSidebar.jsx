@@ -7,15 +7,14 @@ import { calendarInfoState, showCreateState } from '../../../states/calendar/cal
 import { useNavigate } from 'react-router-dom';
 
 const areas = [
-  { value: 'GAPYEONG', label: "가평" },
-  { value: 'GANGWON', label: "강원" },
-  { value: 'GEYONGGI', label: "경기" },
-  { value: 'INCHEON', label: "인천" },
-  { value: 'SEOUL', label: "서울" },
-  { value: 'CHUNGCHEONG', label: "충청" },
-  { value: 'GYEONGSANG', label: "경상" },
-  { value: 'JEOLLLA', label: "전라" },
-  { value: 'JEJU', label: "제주" },
+  { value: '가평', label: "가평" },
+  { value: '강원', label: "강원" },
+  { value: '경기/인천', label: "경기/인천" },
+  { value: '서울', label: "서울" },
+  { value: '충청', label: "충청" },
+  { value: '경상', label: "경상" },
+  { value: '전라', label: "전라" },
+  { value: '제주', label: "제주" },
 ];
 
 const BeginSidebar = ({ onSwitch }) => {
@@ -43,8 +42,8 @@ const BeginSidebar = ({ onSwitch }) => {
     setCalenderInfo((prev) => ({
       ...prev,
       title: title,
-      startDate: startDate,
-      endDate: endDate,
+      startDate: startDate.toLocaleDateString(),
+      endDate: endDate.toLocaleDateString(),
       area: area.value,
     }));
 

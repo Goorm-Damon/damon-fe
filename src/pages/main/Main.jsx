@@ -3,17 +3,10 @@ import styles from './Main.module.scss'
 import Banner from '../../components/banner/Banner'
 import axios from 'axios';
 import * as calendarService from '../../apis/services/calendarService';
-import CalendarCard from '../../components/calendar/cards/CalendarCard';
-import { useLocation, useNavigate } from 'react-router-dom';
+// import ScheduleCard from '../../components/card/schedule/ScheduleCard';
 // import { bestReviews } from './../../mocks/handlers/best_reviews';
 
-const getToken = localStorage.getItem('token');
-
-
 const Main = () => {
-
-  const navigate = useNavigate();
-  const location = useLocation();
 
   // const [user, setUser] = useState(null);
   const [calendars, setCalendars] = useState([]);
@@ -22,18 +15,12 @@ const Main = () => {
 
   const fetchCalendars = async () => {
     try {
-      const response = await calendarService.getCalendar(0, 10);
+      const response = await calendarService.getCalendar();
       setCalendars(response.data);
-    } catch (error) {
+    } catch(error) {
       console.log(error);
     }
   }
-
-  // 페이지 이동을 위한 함수
-  const navigateTo = (path) => () => {
-    navigate(path);
-  };
-
 
   // const fetchBestReviews = async () => {
   //   try {
@@ -45,30 +32,22 @@ const Main = () => {
   // }
 
 
-  useEffect(() => {
+  useEffect(()=> {
     fetchCalendars();
-  }, []);
-
-
+  },[]);
   return (
     <div>
       <Banner />
       <div className={styles.main}>
-        {/* {getToken && */}
-          <section className={styles.preview__container}>
-            <div className={styles.preview__title}>
-              <h2>최근 일정</h2>
-              <a onClick={navigateTo('/my/calendar')}>더 보기 {'>'}</a>
-            </div>
-            <div className={styles.calendars__container}>
-              {calendars.content && calendars.content.slice(0, 4).map((calendar, i) => (
-                <div className={styles.calendar__card} key={i}>
-                  <CalendarCard calendar={calendar} />
-                </div>
-              ))}
-            </div>
-          </section>
-        {/* } */}
+        <section className={styles.preview__container}>
+          <div className={styles.preview__title}>
+            <h2>최근 일정</h2>
+            <a>더 보기 {'>'}</a>
+          </div>
+          {/* <div className={styles.card__area}>
+            <ScheduleCard schedules={schedules}  />
+          </div> */}
+        </section>
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
             <h2>베스트 리뷰</h2>
