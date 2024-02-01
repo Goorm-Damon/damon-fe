@@ -7,6 +7,8 @@ import "react-datepicker/dist/react-datepicker.module.css"
 import { calendarInfoState, clickedDateState, getCalendarIdState, showCreateState } from '../../states/calendar/calendarInfoState';
 import * as calendarService from '../../apis/services/calendarService';
 
+const getToken = localStorage.getItem('token');
+
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,16 +18,21 @@ const Header = () => {
   const [showCreate, setShowCreate] = useRecoilState(showCreateState);
   const resetCalender = useResetRecoilState(calendarInfoState);
   const resetClicked = useResetRecoilState(clickedDateState);
-  const calenderInfo = useRecoilValue(calendarInfoState);
-  const calenderId = useRecoilValue(getCalendarIdState);
+  const calendarInfo = useRecoilValue(calendarInfoState);
+  const calendarId = useRecoilValue(getCalendarIdState);
+  const [calendar, setCalendar] = useRecoilState(calendarInfoState);
+  const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태를 관리하는 변수
 
-
+  // 수정 모드를 토글하는 함수
+  const toggleEditing = () => {
+    setIsEditing(!isEditing);
+  };
 
   const handleCancel = () => {
     setShowCreate(false);
     resetCalender();
     resetClicked();
-    navigate('/main');
+    navigate('/');
     setIsHovered(false);
   }
 
@@ -46,14 +53,19 @@ const Header = () => {
     }
   }, [location, setHeaderSettings]);
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  }
+
   const handleSubmit = async () => {
     try {
-      const response = await calendarService.createCalendar(calenderInfo);
+      const response = await calendarService.createCalendar(calendarInfo);
       if (response.success) {
         alert("일정 등록되었습니다.");
         //상세일정 페이지로 이동해야함.
         resetClicked();
-        navigate(`/my/calendar/${response.data.calendarId}`, { state: { id: response.data.calendarId } });
+        navigate(`/my/calendar/${response.data.calendarId}`, { state: { calendarId: response.data.calendarId } });
       } else {
         console.error(response.error);
       }
@@ -69,13 +81,13 @@ const Header = () => {
 
   const handleModify = async () => {
     try {
-      const response = await calendarService.editCalendar(calenderId, calenderInfo);
+      const response = await calendarService.editCalendar(calendarId, calendarInfo);
       if (response.success) {
         alert("일정 수정되었습니다.");
         console.log("response", response);
         //상세일정 페이지로 이동해야함.
         resetClicked();
-        navigate(`/my/calendar/${response.data.calendarId}`, { state: { id: response.data.calendarId } });
+        navigate(`/my/calendar/${response.data.calendarId}`, { state: { calendarId: response.data.calendarId } });
       } else {
         console.error(response.error);
       }
@@ -87,6 +99,7 @@ const Header = () => {
 
   const handleCancelModify = () => {
     setHeaderSettings({ showDefalut: false, showFeatures: false, showDetail: true, showModify: false });
+    navigate(`/my/calendar/${calendarId}`, { state: { calendarId: { calendarId } } });
   }
 
   return (
@@ -94,6 +107,21 @@ const Header = () => {
       <div className={styles.header__container}>
         <div className={styles.header_logo} onClick={handleCancel}>
           DAMON
+        </div>
+        <div>
+          {calendar.title && (
+            <div>
+              {showModify ? (
+                <input
+                  type="text"
+                  value={calendar.title}
+                  onChange={(e) => setCalendar({ ...calendar, title: e.target.value })}
+                />
+              ) : (
+                <div onMouseEnter={toggleEditing}>{calendar.title}</div>
+              )}
+            </div>
+          )}
         </div>
         {showDefalut &&
           <div className={styles.header__content}>
@@ -119,7 +147,12 @@ const Header = () => {
                 </li>
               </ul>
             </nav>
-            <div onClick={navigateTo('/')} className={styles.header__logout}>로그아웃</div>
+            {getToken ?
+            <div onClick={handleLogout} className={styles.header__logout}>로그아웃</div>
+            :
+            <div onClick={navigateTo('/login')} className={styles.header__logout}>로그인</div>
+
+          }
           </div>
         }
         {showFeatures &&

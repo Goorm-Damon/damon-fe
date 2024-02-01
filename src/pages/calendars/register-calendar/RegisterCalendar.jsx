@@ -44,16 +44,11 @@ const RegisterCalendar = () => {
     setHeaderSettings({ showDefalut: false, showFeatures: true });
   };
 
-  // 마커 초기화 함수
-  const clearMarkers = () => {
-    searchMarkers.forEach(marker => marker.setMap(null)); // 모든 마커 제거
-    setSearchMarkers([]); // 마커 배열 초기화
-  };
-
   useEffect(() => {
     setPlaces([]); // places 초기화
-    clearMarkers(); // 마커 초기화
-  }, [clickedDate]);
+    setSearchPlace("");
+  }, [clickedDate,placeLatLon]);
+  
 
 
   useEffect(() => {
@@ -66,26 +61,11 @@ const RegisterCalendar = () => {
   };
     const map = new kakao.maps.Map(mapContainer, mapOptions);
 
-    // if (Array.isArray(placeLatLon) && placeLatLon.length > 0) {
-    //   const latLngs = placeLatLon.map(item => new kakao.maps.LatLng(item.latitude, item.longitude));
-  
-    //   // LatLngBounds 객체 생성
-    //   const bounds = new kakao.maps.LatLngBounds();
-  
-    //   latLngs.forEach(latLng => {
-    //     bounds.extend(latLng);
-    //   });
-  
-    //   // 지도 중심 설정
-    //   map.setBounds(bounds);
-    // }
-
     // 장소 검색 객체를 생성
     const ps = new kakao.maps.services.Places();
 
     const placesSearchCB = (data, status) => {
       if (status === kakao.maps.services.Status.OK) {
-        clearMarkers(); // 기존 마커 초기화
         let bounds = new kakao.maps.LatLngBounds();
 
         data.forEach(place => {
@@ -112,7 +92,7 @@ const RegisterCalendar = () => {
           position: new kakao.maps.LatLng(place.latitude, place.longitude),
           image: markerImage,
         });
-        setMarkers(prev => [...prev, marker]);
+        // setMarkers(prev => [...prev, marker]);
       //검색한 장소에 마커표시
       } else {
         const marker = new kakao.maps.Marker({
@@ -120,7 +100,7 @@ const RegisterCalendar = () => {
           position: new kakao.maps.LatLng(place.y, place.x),
           image: markerImage,
         });
-        setSearchMarkers(prev => [...prev, marker]);
+        // setSearchMarkers(prev => [...prev, marker]);
 
       }
     };
@@ -134,11 +114,12 @@ const RegisterCalendar = () => {
     if (searchPlace) {
       ps.keywordSearch(searchPlace, placesSearchCB);
     }
-  }, [searchPlace, calendarInfo,searchMarkers]);
+  }, [searchPlace, placeLatLon,clickedDate]);
+
 
   return (
     <div>
-      {modalOpen && <EnrollModal searchMarkers={searchMarkers} setSearchMarkers={setSearchMarkers} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />}
+      {modalOpen && <EnrollModal searchMarkers={searchMarkers} setSearchMarkers={setSearchMarkers} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} setPlaces={setPlaces} />}
       {!showCreate ?
         <BeginSidebar onSwitch={switchSidebar} /> :
         <CreateSidebar setSearchPlace={setSearchPlace} places={places} showModal={showModal} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />}

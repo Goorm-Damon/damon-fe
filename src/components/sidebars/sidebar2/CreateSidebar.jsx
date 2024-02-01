@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styles from './CreateSidebar.module.scss'
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { calendarInfoState, clickedDateState, computeDateState, filteredTravelsSelector } from '../../../states/calendar/calendarInfoState';
 import CreateDays from './../../calendar/create-days/CreateDays';
 import ShowCalendar from '../../calendar/show-calendar/ShowCalendar';
 
-const CreateSidebar = ({ setSearchPlace, places, showModal, setModalOpen, setPlaceInfo, placeInfo }) => {
+const CreateSidebar = ({ setSearchPlace, places, showModal, setPlaceInfo, placeInfo }) => {
 
-  // const setCalenderInfo = useSetRecoilState(calendarInfoState);
-  // const calenderInfo = useRecoilValue(calendarInfoState);
   const clickedDate = useRecoilValue(clickedDateState);
   const computeDate = useRecoilValue(computeDateState);
   const [inputText, setInputText] = useState("");
@@ -20,6 +18,7 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setModalOpen, setPla
 
   const filteredTravels = useRecoilValue(filteredTravelsSelector);
   const setFilteredTravels = useSetRecoilState(filteredTravelsSelector);
+  const [calendarInfo, setCalendarInfo] = useRecoilState(calendarInfoState);
 
   const onChange = (e) => {
     setInputText(e.target.value);
@@ -54,9 +53,16 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setModalOpen, setPla
     showModal();
   }
 
+  const handleDate = () => {
+    const currentEndDate = calendarInfo.endDate;
+    const nextEndDate = new Date(currentEndDate);
+    nextEndDate.setDate(nextEndDate.getDate() + 1);
+    setCalendarInfo({ ...calendarInfo, endDate: nextEndDate });
+  };
+
   useEffect(() => {
     setInputText(inputText);
-    console.log(filteredTravels);
+    
   }, [inputText])
   
 
@@ -71,6 +77,7 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setModalOpen, setPla
           {[...Array(parseInt(computeDate + 1))].map((n, index) => {
             return <CreateDays key={index + 1} index={index} />
           })}
+            <button className={styles.plusbtn} onClick={handleDate}>+ 날짜 추가</button>
         </div>
       </section>
       <section className={styles.funcSide}>
@@ -121,7 +128,7 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setModalOpen, setPla
           </div> :
           <div className={styles.Calendar__Container}>
           {filteredTravels&&filteredTravels.map((calendar, index) => {
-            return <ShowCalendar key={index} calendar={calendar} />
+            return <ShowCalendar key={index} calendar={calendar} index={index} showModal={showModal} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
           })}
           {filteredTravels&&filteredTravels.length === 0 &&
             <div className={styles.no_calendar}>

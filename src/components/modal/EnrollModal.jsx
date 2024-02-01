@@ -3,7 +3,7 @@ import styles from './EnrollModal.module.scss'
 import { useRecoilState } from 'recoil';
 import { calendarInfoState } from '../../states/calendar/calendarInfoState';
 
-const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo, setSearchMarkers, searchMarkers }) => {
+const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo, setSearchMarkers, searchMarkers,setPlaces }) => {
   const [calenderInfo, setCalenderInfo] = useRecoilState(calendarInfoState);
 
   const [memo, setMemo] = useState("");
@@ -16,18 +16,11 @@ const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo, setSearchMarkers, 
     setModalOpen(false);
   };
 
-  // 마커 초기화 함수
-  const clearMarkers = () => {
-    searchMarkers.forEach(marker => marker.setMap(null)); // 모든 마커 제거
-    setSearchMarkers([]); // 마커 배열 초기화
-  };
-
   useEffect(() => {
     setPlaceInfo(prevPlaceInfo => ({
       ...prevPlaceInfo,
       memo: memo
     }));
-    console.log(setPlaceInfo);
   }, [memo])
 
 
@@ -37,7 +30,7 @@ const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo, setSearchMarkers, 
     //   memo: memo
     // }));
     alert("일정에 추가되었습니다.");
-    clearMarkers();
+    setPlaces([]);
     setModalOpen(false);
 
     setCalenderInfo((prev) => ({

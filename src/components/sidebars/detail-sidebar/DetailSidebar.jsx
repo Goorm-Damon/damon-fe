@@ -8,20 +8,16 @@ import { headerState } from '../../../states/header/headerState';
 import * as calendarService from '../../../apis/services/calendarService';
 
 
-const DetailSidebar = ({ showModal, places, setSearchPlace }) => {
+const DetailSidebar = ({ showModal, places, setSearchPlace, setPlaceInfo, placeInfo }) => {
 
   const clickedDate = useRecoilValue(clickedDateState);
   const computeDate = useRecoilValue(computeDateState);
-  const clickedDay = useState(0);
   const [inputText, setInputText] = useState("");
-  const [placeInfo, setPlaceInfo] = useState({});
 
 
   // 일정 추가,일정보기 상태 변수
   const [isAddButtonClicked, setIsAddButtonClicked] = useState(false);
   const [isViewButtonClicked, setIsViewButtonClicked] = useState(true);
-  const [calendars, setCalendars] = useState([]);
-
   const filteredTravels = useRecoilValue(filteredTravelsSelector);
   const setFilteredTravels = useSetRecoilState(filteredTravelsSelector);
   const [headerSettings, setHeaderSettings] = useRecoilState(headerState);
@@ -60,10 +56,13 @@ const DetailSidebar = ({ showModal, places, setSearchPlace }) => {
       latitude: item.x,
       longitude: item.y,
       day: clickedDate,
-      
     })
     showModal();
   }
+
+  useEffect(()=> {
+    console.log(filteredTravels);
+  },[clickedDate])
 
   return (
     <div className={styles.container}>
@@ -130,7 +129,7 @@ const DetailSidebar = ({ showModal, places, setSearchPlace }) => {
           </div> :
           <div className={styles.Calendar__Container}>
             {filteredTravels && filteredTravels.map((calendar, index) => {
-              return <ShowCalendar key={index} calendar={calendar} />
+              return <ShowCalendar key={index} calendar={calendar} index={index} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
             })}
             {filteredTravels && filteredTravels.length === 0 &&
               <div className={styles.no_calendar}>

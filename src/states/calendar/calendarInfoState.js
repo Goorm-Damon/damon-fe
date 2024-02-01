@@ -55,6 +55,9 @@ export const filteredTravelsSelector = selector({
     const headerData = get(headerState);
 
     // calendarInfo.travels에서 day와 clickedDate가 일치하는 항목들을 필터링
+    if(headerData.showDetail) {
+      return calendarInfo.travels.filter(travel => (travel.day === clickedDate)&&(travel.deleted === false));
+    }
       return calendarInfo.travels.filter(travel => travel.day === clickedDate);
   }
 });

@@ -9,28 +9,30 @@ import EnrollModal from '../../../components/modal/EnrollModal';
 const { kakao } = window;
 
 const region_latlon = {
-  'GAPYEONG': {latitude:'37.8186' ,longitude:'127.4505'},
-  'GANGWON': {latitude:'37.8238' ,longitude:'128.1563'},
-  'GEYONGGI': {latitude:'37.4139' ,longitude:'127.5184'},
-  'INCHEON': {latitude:'37.4571' ,longitude:'126.7051'},
-  'SEOUL': {latitude:'37.5522' ,longitude:'126.9913'},
-  'CHUNGCHEONG': {latitude:'36.5408' ,longitude:'126.9603'},
-  'GYEONGSANG': {latitude:'35.1552' ,longitude:'129.0551'},
-  'JEOLLLA': {latitude:'35.4050' ,longitude:'127.1128'},
-  'JEJU': {latitude:'33.4805' ,longitude:'126.5374'},
+  'GAPYEONG': { latitude: '37.8186', longitude: '127.4505' },
+  'GANGWON': { latitude: '37.8238', longitude: '128.1563' },
+  'GEYONGGI': { latitude: '37.4139', longitude: '127.5184' },
+  'INCHEON': { latitude: '37.4571', longitude: '126.7051' },
+  'SEOUL': { latitude: '37.5522', longitude: '126.9913' },
+  'CHUNGCHEONG': { latitude: '36.5408', longitude: '126.9603' },
+  'GYEONGSANG': { latitude: '35.1552', longitude: '129.0551' },
+  'JEOLLLA': { latitude: '35.4050', longitude: '127.1128' },
+  'JEJU': { latitude: '33.4805', longitude: '126.5374' },
 };
 
 const DetailCalendar = () => {
 
-  const calendarId = useLocation().state.id;
+  const calendarId = useLocation().state.calendarId;
   const [calenderInfo, setCalenderInfo] = useRecoilState(calendarInfoState);
   const [searchPlace, setSearchPlace] = useState("");
   const [places, setPlaces] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [searchMarkers, setSearchMarkers] = useState([]);
   const [markers, setMarkers] = useState([]);
   const clickedDate = useRecoilValue(clickedDateState);
+  const placeLatLon = useRecoilValue(placeLatLonState);
   const [placeInfo, setPlaceInfo] = useState({
-    calendarId: null,
+    travelId: null,
     day: null,
     locationName: '',
     latitude: '',
@@ -53,13 +55,13 @@ const DetailCalendar = () => {
   const fetchCalendars = async () => {
     try {
       const response = await calendarService.getDetailCalendar(calendarId);
-  
+
       // travels 배열 각 요소에 deleted: false 추가
       const updatedTravels = response.data.travels.map(travel => ({
         ...travel,
         deleted: false,
       }));
-  
+
       setCalenderInfo(prevPlaceInfo => ({
         ...prevPlaceInfo,
         title: response.data.title,
@@ -68,29 +70,27 @@ const DetailCalendar = () => {
         area: response.data.area,
         travels: updatedTravels, // 수정된 travels 배열 설정
       }));
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
   }
 
-    // 마커 초기화 함수
-    const clearMarkers = () => {
-      markers.forEach(marker => marker.setMap(null)); // 모든 마커 제거
-      setMarkers([]); // 마커 배열 초기화
-    };
-  
-    useEffect(() => {
-      setPlaces([]); // places 초기화
-      clearMarkers(); // 마커 초기화
-    }, [clickedDate]);
+  useEffect(() => {
+    setPlaces([]); // places 초기화
+    setSearchPlace("");
+  }, [clickedDate, placeLatLon]);
 
 
   useEffect(() => {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const mapOptions = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
+      center: placeLatLon.length > 0
+        ? new kakao.maps.LatLng(placeLatLon[0].latitude, placeLatLon[0].longitude) // 첫 번째 좌표로 중심 설정
+        : new kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심 좌표
+      level: 5,
     };
+
     const map = new kakao.maps.Map(mapContainer, mapOptions);
 
     // 장소 검색 객체를 생성
@@ -98,7 +98,6 @@ const DetailCalendar = () => {
 
     const placesSearchCB = (data, status) => {
       if (status === kakao.maps.services.Status.OK) {
-        clearMarkers(); // 기존 마커 초기화
         let bounds = new kakao.maps.LatLngBounds();
 
         data.forEach(place => {
@@ -132,7 +131,7 @@ const DetailCalendar = () => {
           position: new kakao.maps.LatLng(place.y, place.x),
           image: markerImage,
         });
-        setMarkers(prev => [...prev, marker]);
+        setSearchMarkers(prev => [...prev, marker]);
 
       }
     };
@@ -146,16 +145,18 @@ const DetailCalendar = () => {
     if (searchPlace) {
       ps.keywordSearch(searchPlace, placesSearchCB);
     }
-  }, [searchPlace, calenderInfo]);
+  }, [searchPlace, calenderInfo, clickedDate]);
 
 
   return (
     <div>
-      {modalOpen && <EnrollModal setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />}
-      <DetailSidebar showModal={showModal} places={places} setSearchPlace={setSearchPlace}/>
+      {modalOpen && <EnrollModal setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} setSearchMarkers={setSearchMarkers} searchMarkers={searchMarkers} setPlaces={setPlaces} />}
+      <DetailSidebar showModal={showModal} places={places} setSearchPlace={setSearchPlace} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
 
       <div id="map" style={{
-        height: '100vh'
+        width: '80%',
+        height: '100vh',
+        float: 'right'
       }}>
       </div>
 
