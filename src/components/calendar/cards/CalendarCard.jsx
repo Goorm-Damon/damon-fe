@@ -1,5 +1,8 @@
 import React from 'react';
 import styles from './CalendarCard.module.scss';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { getCalendarIdState } from '../../../states/calendar/calendarInfoState';
 
 
 const img_url = {
@@ -15,8 +18,20 @@ const img_url = {
 };
 
 const CalendarCard = ({ calendar }) => {
+
+  const navigate = useNavigate();
+  const [calenderId, setCalenderId] = useRecoilState(getCalendarIdState);
+
+
+  const handleDatails = (calendarId) => () => {
+    setCalenderId(calendarId);
+    navigate(`/my/calendar/${calendarId}`, {state: {calendarId:calendarId}});
+  }
+
+
+
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={handleDatails(calendar.calendarId)}>
       <img src={img_url[calendar.area]} />
       <div className={styles.card__content}>
         <div className={styles.title}>

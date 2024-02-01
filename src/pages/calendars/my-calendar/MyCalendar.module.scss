@@ -16,6 +16,7 @@
   display: flex;
   margin: 5px;
   justify-content: space-around;
+  cursor: pointer;
 }
 
 .title {
@@ -24,4 +25,24 @@
 .main__title {
   font-size: 25px;
   font-weight: 700;
+}
+
+.editLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+
+.edit__btn {
+  color: rgb(137, 137, 137);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
