@@ -26,6 +26,7 @@ const Main = () => {
     try {
       const response = await calendarService.getCalendar(0, 10);
       setCalendars(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -65,11 +66,11 @@ const Main = () => {
             <a onClick={navigateTo('/my/calendar')}>더 보기 {'>'}</a>
           </div>
           <div className={styles.calendars__container}>
-            {calendars.content && calendars.content.slice(0, 4).map((calendar, i) => (
+            {/* {calendars.content && calendars.content.slice(0, 4).map((calendar, i) => (
               <div className={styles.calendar__card} key={i}>
                 <CalendarCard calendar={calendar} />
               </div>
-            ))}
+            ))} */}
           </div>
         </section>
         {/* } */}
@@ -78,13 +79,13 @@ const Main = () => {
             <h2>베스트 리뷰</h2>
             <a>더 보기 {'>'}</a>
           </div>
-          {/* <div className={styles.calendars__container}>
-            {bestReviews.content && bestReviews.content.slice(0, 4).map((bestReview, i) => (
+          <div className={styles.calendars__container}>
+            {/* {bestReviews.content && bestReviews.content.slice(0, 4).map((bestReview, i) => (
               <div className={styles.calendar__card} key={i}>
                 <ReviewCard bestReview={bestReview} />
               </div>
-            ))}
-          </div> */}
+            ))} */}
+          </div>
         </section>
         <div className={styles.boards}>
           <section className={styles.preview__container2}>
