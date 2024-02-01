@@ -55,3 +55,15 @@
   justify-content: space-between;
   gap: 30px;
 }
+
+.calendars__container {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: stretch;
+}
+
+.calendar__card {
+  width: 250px;
+  height: 250px;
+}

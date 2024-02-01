@@ -1,9 +1,9 @@
 import apiutils from "../utils/apiutils"
 
 //일정 등록
-export const createCalendar = async (calendarDatea) => {
+export const createCalendar = async (calendarData) => {
   try {
-    const response = await apiutils.create('/api/calendar', calendarDatea);
+    const response = await apiutils.create('/api/calendar', calendarData);
     return response;
   } catch (error) {
     console.log('Error creating Calendar', error);
@@ -13,9 +13,9 @@ export const createCalendar = async (calendarDatea) => {
 
 
 //일정 수정
-export const editCalendar = async (id) => {
+export const editCalendar = async (id,calendarData) => {
   try {
-    const response = await apiutils.update(`/api/calendar/${id}`);
+    const response = await apiutils.update(`/api/calendar/${id}`,calendarData);
     return response;
   } catch (error) {
     console.log('Error editing Calendar', error);
@@ -34,10 +34,10 @@ export const deleteCalendar = async (id) => {
   }
 }
 
-//일정 조회
-export const getCalendar = async () => {
+//내 일정 리스트 조회
+export const getCalendar = async (page,size) => {
   try {
-    const response = await apiutils.read('/api/my/calendar');
+    const response = await apiutils.read('/api/my/calendar',{page,size});
     return response;
   } catch (error) {
     console.log('Error getting Calendar', error);
@@ -48,7 +48,7 @@ export const getCalendar = async () => {
 //일정 상세 조회
 export const getDetailCalendar = async (id) => {
   try {
-    const response = await apiutils.del(`/api/my/calendar/${id}`);
+    const response = await apiutils.read(`/api/my/calendar/${id}`);
     return response;
   } catch (error) {
     console.log('Error getting Calendar ', error);

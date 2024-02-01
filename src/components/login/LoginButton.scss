@@ -1,0 +1,53 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; // 이 부분을 flex-start로 변경
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding-top: 20px; // 적당한 상단 패딩 추가
+}
+
+
+  .social-login-button {
+    margin: 10px 0; // 상하 마진만 적용
+    display: flex;
+    flex-direction: row; // 버튼 내의 아이템들을 수평으로 정렬
+    align-items: center; // 세로축에서 중앙 정렬
+    justify-content: center; // 가로축에서 중앙 정렬
+    padding: 10px;
+    width: 200px; // 버튼의 너비를 이곳에서 설정
+    height: 40px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none; // 텍스트 밑줄 없앰
+  }
+
+  .button-logo {
+    width: 24px; // 기본 로고 너비
+    height: 24px; // 기본 로고 높이
+    object-fit: contain;  
+    margin-right: 16px;
+  }
+  
+  .kakao-login-button {
+    background-color: #FDDC3F;
+  
+    .button-logo {
+      // 카카오 로고에 대한 크기 조정
+      width: 24px; // 예시: 너비를 줄임
+      height: 24px; // 예시: 높이를 줄임
+    }
+  }
+  
+  .naver-login-button {
+    background-color: #03C75A;
+  
+    .button-logo {
+      // 네이버 로고에 대한 크기 조정
+      width: 24px; // 예시: 너비를 늘림
+      height: 24px; // 예시: 높이를 늘림
+    }
+  }

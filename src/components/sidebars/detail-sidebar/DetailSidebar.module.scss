@@ -18,6 +18,12 @@
     color: #263747;
     width: 350px;
   }
+
+  span {
+    color: rgb(215, 87, 87);
+    font-size: 12px;
+    font-weight: 600;
+  }
 }
 
 
@@ -76,13 +82,4 @@
   flex-direction: column;
   align-items: center;
   color: #909090;
-}
-
-.plusbtn {
-  border: none;
-  background-color: white;
-  color: rgb(83, 118, 198);
-  cursor: pointer;
-  font-weight: 600;
-  margin-top: 20px;
 }

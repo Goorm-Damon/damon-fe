@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Loginpage.scss';
-import NaverLoginButton from '../../components/login/NaverLoginButton';
-import KakaoLoginButton from '../../components/login/KakaoLoginButton';
+import KakaoLoginButton from './../../components/Login/KakaoLoginButton';
+import NaverLoginButton from './../../components/Login/NaverLoginButton';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -20,13 +20,13 @@ function Header() {
 function SocialLoginButtons() {
   return (
     <div className="Social-login">
-      <KakaoLoginButton />
+      <KakaoLoginButton/>
       <NaverLoginButton />
     </div>
   );
 }
 
-function App() {
+function Login() {
   const [currentTime, setCurrentTime] = useState('');
 
   useEffect(() => {
@@ -49,4 +49,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;

@@ -1,35 +1,42 @@
 import React, { useEffect, useState } from 'react'
-import styles from './CreateSidebar.module.scss'
+import styles from './DetailSidebar.module.scss'
+import CreateDays from '../../calendar/create-days/CreateDays'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { calendarInfoState, clickedDateState, computeDateState, filteredTravelsSelector } from '../../../states/calendar/calendarInfoState';
-import CreateDays from './../../calendar/create-days/CreateDays';
+import { clickedDateState, computeDateState, filteredTravelsSelector } from '../../../states/calendar/calendarInfoState';
 import ShowCalendar from '../../calendar/show-calendar/ShowCalendar';
+import { headerState } from '../../../states/header/headerState';
+import * as calendarService from '../../../apis/services/calendarService';
 
-const CreateSidebar = ({ setSearchPlace, places, showModal, setPlaceInfo, placeInfo }) => {
+
+const DetailSidebar = ({ showModal, places, setSearchPlace, setPlaceInfo, placeInfo }) => {
 
   const clickedDate = useRecoilValue(clickedDateState);
   const computeDate = useRecoilValue(computeDateState);
   const [inputText, setInputText] = useState("");
 
-  // 일정 추가,일정보기 상태 변수
-  const [isAddButtonClicked, setIsAddButtonClicked] = useState(true);
-  const [isViewButtonClicked, setIsViewButtonClicked] = useState(false);
-  const [calendars, setCalendars] = useState([]);
 
+  // 일정 추가,일정보기 상태 변수
+  const [isAddButtonClicked, setIsAddButtonClicked] = useState(false);
+  const [isViewButtonClicked, setIsViewButtonClicked] = useState(true);
   const filteredTravels = useRecoilValue(filteredTravelsSelector);
   const setFilteredTravels = useSetRecoilState(filteredTravelsSelector);
-  const [calendarInfo, setCalendarInfo] = useRecoilState(calendarInfoState);
+  const [headerSettings, setHeaderSettings] = useRecoilState(headerState);
+  const { showDefalut, showFeatures, showDetail, showModify } = headerSettings;
+
+  // 버튼 스타일을 결정하는 함수
+  const addButtonStyle = isAddButtonClicked ? { color: '#5376C6' } : {};
+  const viewButtonStyle = isViewButtonClicked ? { color: '#5376C6' } : {};
 
   const onChange = (e) => {
     setInputText(e.target.value);
   };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setSearchPlace(inputText);
     setInputText("");
   };
+
   const handleAddButtonClick = () => {
     setIsAddButtonClicked(true);
     setIsViewButtonClicked(false); // "일정 보기" 버튼 상태 초기화
@@ -46,29 +53,16 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setPlaceInfo, placeI
     setPlaceInfo({
       ...placeInfo,
       locationName: item.place_name,
-      latitude: item.y,
-      longitude: item.x,
+      latitude: item.x,
+      longitude: item.y,
       day: clickedDate,
     })
     showModal();
   }
 
-  const handleDate = () => {
-    const currentEndDate = calendarInfo.endDate;
-    const nextEndDate = new Date(currentEndDate);
-    nextEndDate.setDate(nextEndDate.getDate() + 1);
-    setCalendarInfo({ ...calendarInfo, endDate: nextEndDate });
-  };
-
-  useEffect(() => {
-    setInputText(inputText);
-    
-  }, [inputText])
-  
-
-  // 버튼 스타일을 결정하는 함수
-  const addButtonStyle = isAddButtonClicked ? { color: '#5376C6' } : {};
-  const viewButtonStyle = isViewButtonClicked ? { color: '#5376C6' } : {};
+  useEffect(()=> {
+    console.log(filteredTravels);
+  },[clickedDate])
 
   return (
     <div className={styles.container}>
@@ -77,18 +71,24 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setPlaceInfo, placeI
           {[...Array(parseInt(computeDate + 1))].map((n, index) => {
             return <CreateDays key={index + 1} index={index} />
           })}
-            <button className={styles.plusbtn} onClick={handleDate}>+ 날짜 추가</button>
         </div>
       </section>
       <section className={styles.funcSide}>
         <div className={styles.addShow__btn}>
-          <button style={addButtonStyle} onClick={handleAddButtonClick}>
-            일정 추가
-          </button>
-          <p>/</p>
-          <button style={viewButtonStyle} onClick={handleViewButtonClick}>
-            일정 보기
-          </button>
+          {showModify &&
+            <div style={{ display: 'flex' }}>
+              <button style={addButtonStyle} onClick={handleAddButtonClick}>
+                일정 추가
+              </button>
+              <p>/</p>
+            </div>
+          }
+          <div div style={{ display: 'flex' }}>
+            <button style={viewButtonStyle} className={styles.viewBtn} onClick={handleViewButtonClick}>
+              일정 보기
+            </button>
+            <p style={{visibility: 'hidden'}}>/</p>
+          </div>
 
         </div>
         {isAddButtonClicked ?
@@ -101,6 +101,7 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setPlaceInfo, placeI
                   value={inputText}
                   name='inputText'
                 />
+                {/* <button type="submit">검색</button> */}
               </form>
             </div>
             <div id="result-list" className={styles.result_list}
@@ -127,20 +128,19 @@ const CreateSidebar = ({ setSearchPlace, places, showModal, setPlaceInfo, placeI
             </div>
           </div> :
           <div className={styles.Calendar__Container}>
-          {filteredTravels&&filteredTravels.map((calendar, index) => {
-            return <ShowCalendar key={index} calendar={calendar} index={index} showModal={showModal} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
-          })}
-          {filteredTravels&&filteredTravels.length === 0 &&
-            <div className={styles.no_calendar}>
-              <p>일정이 없습니다. 추가해 보세요.</p>
-            </div>
-          }
-        </div>
+            {filteredTravels && filteredTravels.map((calendar, index) => {
+              return <ShowCalendar key={index} calendar={calendar} index={index} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
+            })}
+            {filteredTravels && filteredTravels.length === 0 &&
+              <div className={styles.no_calendar}>
+                <p>일정이 없습니다. 추가해 보세요.</p>
+              </div>
+            }
+          </div>
         }
-
       </section>
     </div>
   )
 }
 
-export default CreateSidebar
+export default DetailSidebar
