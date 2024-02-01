@@ -1,10 +1,8 @@
 import { atom, selector } from "recoil"
 import { recoilPersist } from 'recoil-persist';
-import {headerState} from '../header/headerState'
 
 const { persistAtom } = recoilPersist();
 
-//일정 상태 저장
 export const calendarInfoState = atom({
   key: "calendarInfo",
   default: {
@@ -17,7 +15,7 @@ export const calendarInfoState = atom({
   effects_UNSTABLE: [persistAtom],
 })
 
-//날짜 일수 계산
+
 export const computeDateState = selector({
   key: "computeDate",
   get: ({ get }) => {
@@ -34,8 +32,8 @@ export const computeDateState = selector({
     }
 
     // startDate와 endDate가 유효한 Date 객체인지 확인
-    if (startDate instanceof Date && endDate instanceof Date &&
-      !isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+    if (startDate instanceof Date && endDate instanceof Date && 
+        !isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
       let elapsedMSec = endDate.getTime() - startDate.getTime();
       const elapsedDay = Math.ceil(elapsedMSec / (1000 * 60 * 60 * 24));
       return elapsedDay;
@@ -46,56 +44,26 @@ export const computeDateState = selector({
   effects_UNSTABLE: [persistAtom],
 });
 
-//클릭한 날짜에 맞는 등록된 장소들을 받아옴
+
 export const filteredTravelsSelector = selector({
   key: "filteredTravels",
   get: ({ get }) => {
     const calendarInfo = get(calendarInfoState);
     const clickedDate = get(clickedDateState);
-    const headerData = get(headerState);
 
-    // calendarInfo.travels에서 day와 clickedDate가 일치하는 항목들을 필터링
-    if(headerData.showDetail) {
-      return calendarInfo.travels.filter(travel => (travel.day === clickedDate)&&(travel.deleted === false));
-    }
-      return calendarInfo.travels.filter(travel => travel.day === clickedDate);
+    // calendarInfo.travels에서 orderNum이 clickedDate와 일치하는 항목들을 필터링
+    return calendarInfo.travels.filter(travel => travel.orderNum === clickedDate);
   }
 });
 
-//해당 날짜의 등록된 장소들의 위도,경도 정보를 반환
-export const placeLatLonState = selector({
-  key: "placeLatLon",
-  get: ({ get }) => {
-    const filteredTravels = get(filteredTravelsSelector);
-    const placeLatLon = [];
 
-    // Loop through the filtered travels and store the latitude and longitude
-    filteredTravels.forEach(travel => {
-      if (travel.latitude && travel.longitude) {
-        placeLatLon.push({ latitude: travel.latitude, longitude: travel.longitude });
-      }
-    });
-
-    return placeLatLon;
-  },
-});
-
-//선택된 날짜 번호 받아옴
 export const clickedDateState = atom({
   key: "clickedDate",
   default: 1,
   effects_UNSTABLE: [persistAtom],
 })
-//일정 등록 페이지인지 판별(사이드바 2개 중 선택할때 사용)
 export const showCreateState = atom({
   key: "showCreate",
   default: false,
-  effects_UNSTABLE: [persistAtom],
-})
-
-//선택된 일정의 id값 저장
-export const getCalendarIdState = atom({
-  key: "getCalendarIdState",
-  default: 1,
   effects_UNSTABLE: [persistAtom],
 })
