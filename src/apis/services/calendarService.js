@@ -34,6 +34,17 @@ export const deleteCalendar = async (id) => {
   }
 }
 
+//일정 선택 삭제
+export const deleteSelecCalendar = async (deleteIds) => {
+  try {
+    const response = await apiutils.selectDel('/api/calendar',deleteIds);
+    return response;
+  } catch (error) {
+    console.log('Error deleting Calendar', error);
+    return error;
+  }
+}
+
 //내 일정 리스트 조회
 export const getCalendar = async (page,size) => {
   try {

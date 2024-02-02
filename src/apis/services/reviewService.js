@@ -45,13 +45,3 @@ export const getReview = async (page,pageSize) => {
   }
 }
 
-//리뷰 상세 조회
-export const getDetailReview = async (id) => {
-  try {
-    const response = await apiutils.read(`/api/review/${id}`);
-    return response;
-  } catch (error) {
-    console.log('Error getting review ', error);
-    return error;
-  }
-}
