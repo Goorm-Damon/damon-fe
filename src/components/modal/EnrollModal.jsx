@@ -46,8 +46,10 @@ const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo, setSearchMarkers, 
           <div className={styles.content}>
             <p>{placeInfo.locationName}</p>
             <div>
-              <input
+              <textarea
                 placeholder='메모를 입력해주세요'
+                cols="70"
+                rows="20"
                 onChange={onChange}
                 value={memo}
               />
