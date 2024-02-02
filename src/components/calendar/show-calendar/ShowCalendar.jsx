@@ -15,16 +15,16 @@ const ShowCalendar = ({ calendar,index,showModal,setPlaceInfo, placeInfo }) => {
   const dragItem = useRef();   //드래그할 인덱스
   const dragOverItem = useRef();  //드랍할 위치의 인덱스
 
-  const handleModal = (item) => {
-    setPlaceInfo({
-      ...placeInfo,
-      locationName: item.locationName,
-      latitude: item.latitude,
-      longitude: item.longitude,
-      day: item.day,
-    })
-    showModal();
-  }
+  // const handleModal = (item) => {
+  //   setPlaceInfo({
+  //     ...placeInfo,
+  //     locationName: item.locationName,
+  //     latitude: item.latitude,
+  //     longitude: item.longitude,
+  //     day: item.day,
+  //   })
+  //   showModal();
+  // }
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -91,7 +91,7 @@ const ShowCalendar = ({ calendar,index,showModal,setPlaceInfo, placeInfo }) => {
   return (
     <div
       className={styles.container}
-      onClick={(e) => handleModal(calendar, e)}
+      // onClick={(e) => handleModal(calendar, e)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       draggable

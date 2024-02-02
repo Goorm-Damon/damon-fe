@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import styles from './DetailCalendar.module.scss'
 import { useLocation } from 'react-router-dom'
 import * as calendarService from '../../../apis/services/calendarService';
 import DetailSidebar from '../../../components/sidebars/detail-sidebar/DetailSidebar';
@@ -149,7 +150,7 @@ const DetailCalendar = () => {
 
 
   return (
-    <div>
+    <div className={styles.register__container}>
       {modalOpen && <EnrollModal setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} setSearchMarkers={setSearchMarkers} searchMarkers={searchMarkers} setPlaces={setPlaces} />}
       <DetailSidebar showModal={showModal} places={places} setSearchPlace={setSearchPlace} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
 

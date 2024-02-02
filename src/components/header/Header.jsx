@@ -102,6 +102,25 @@ const Header = () => {
     navigate(`/my/calendar/${calendarId}`, { state: { calendarId: { calendarId } } });
   }
 
+  const handledele = async () => {
+    try {
+      const response = await calendarService.deleteCalendar(calendarId);
+      if (response.success) {
+        alert("일정 삭제되었습니다.");
+        console.log("response", response);
+        //상세일정 페이지로 이동해야함.
+        resetClicked();
+        navigate('/');
+
+      } else {
+        console.error(response.error);
+      }
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <section className={styles.header}>
       <div className={styles.header__container}>
@@ -148,11 +167,11 @@ const Header = () => {
               </ul>
             </nav>
             {getToken ?
-            <div onClick={handleLogout} className={styles.header__logout}>로그아웃</div>
-            :
-            <div onClick={navigateTo('/login')} className={styles.header__logout}>로그인</div>
+              <div onClick={handleLogout} className={styles.header__logout}>로그아웃</div>
+              :
+              <div onClick={navigateTo('/login')} className={styles.header__logout}>로그인</div>
 
-          }
+            }
           </div>
         }
         {showFeatures &&
@@ -164,6 +183,7 @@ const Header = () => {
         {showDetail &&
           <div className={styles.header__btns}>
             {showModify && <button className={styles.cancel_btn} onClick={handleCancelModify}>취소</button>}
+            {!showModify && <button className={styles.confirm_btn} onClick={handledele}>삭제</button>}
             {!showModify && <button className={styles.confirm_btn} onClick={handleTrans}>수정</button>}
             {showModify && <button className={styles.confirm_btn} onClick={handleModify}>완료</button>}
           </div>

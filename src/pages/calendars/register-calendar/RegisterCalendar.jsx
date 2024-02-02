@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { headerState } from '../../../states/header/headerState';
 import { calendarInfoState, clickedDateState, placeLatLonState, showCreateState } from '../../../states/calendar/calendarInfoState';
 import EnrollModal from '../../../components/modal/EnrollModal';
+import styles from './RegisterCalendar.module.scss'
 
 
 const { kakao } = window;
@@ -118,7 +119,7 @@ const RegisterCalendar = () => {
 
 
   return (
-    <div>
+    <div className={styles.register__container}>
       {modalOpen && <EnrollModal searchMarkers={searchMarkers} setSearchMarkers={setSearchMarkers} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} setPlaces={setPlaces} />}
       {!showCreate ?
         <BeginSidebar onSwitch={switchSidebar} /> :
