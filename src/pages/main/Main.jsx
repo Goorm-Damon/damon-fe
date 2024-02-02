@@ -37,7 +37,6 @@ const Main = () => {
     navigate(path);
   };
 
-
   const fetchBestReviews = async () => {
     try {
       const response = await reviewService.getReview(0, 10);

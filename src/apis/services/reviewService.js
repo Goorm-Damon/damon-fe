@@ -45,3 +45,13 @@ export const getReview = async (page,pageSize) => {
   }
 }
 
+//리뷰 전체 조회(지역)
+export const getAreaReview = async (page,pageSize,area) => {
+  try {
+    const response = await apiutils.read('/api/review/list',{page,pageSize,area});
+    return response;
+  } catch (error) {
+    console.log('Error getting review', error);
+    return error;
+  }
+}
