@@ -7,7 +7,7 @@ import Review from './pages/review/Review';
 import RegisterCalendar from './pages/calendars/register-calendar/RegisterCalendar';
 import OAuth2RedirectHandlerKakao from './pages/login/kakao/OAuth2RedirectHandlerKakao';
 import OAuth2RedirectHandlerNaver from './pages/login/naver/OAuth2RedirectHandlerNaver';
-import ReviewCreate from './pages/review/reviewCreate/ReviewCreate';
+// import ReviewCreate from './pages/review/reviewCreate/ReviewCreate';
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         <Route path='main' element={<Main />} />
         <Route path='review' element={<Review />} />
         <Route path='register/calendar' element={<RegisterCalendar />} />
-        <Route path='register/review' element={<ReviewCreate />} />
+        {/* <Route path='register/review' element={<ReviewCreate />} /> */}
         {/* <Route path='register/community' element={<coummunityAdd />} /> */}
         {/* <Route path='view/myschedule' element={<MySchedule />} /> */}
       </Route>

@@ -21,7 +21,7 @@ import {
     Zipcode,
     ZipcodeWrapper,
     Error,
-  } from "./ReviewCreate.module.scss";
+  } from "../../../styles/ReviewCreate.scss";
   import {useState} from 'react'
   
   const ReviewCreate = () => {
