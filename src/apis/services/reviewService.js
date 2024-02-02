@@ -37,7 +37,7 @@ export const deleteReview = async (id) => {
 //리뷰 전체 조회
 export const getReview = async (page,pageSize) => {
   try {
-    const response = await apiutils.read('/api/review/list',{page,pageSize});
+    const response = await apiutils.read(`/api/review/list?page=${page}&pageSize=${pageSize}`);
     return response;
   } catch (error) {
     console.log('Error getting review', error);
