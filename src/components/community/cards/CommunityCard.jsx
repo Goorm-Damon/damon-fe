@@ -6,7 +6,22 @@ import { CiHeart } from "react-icons/ci";
 
 const CommunityCard = ({ data }) => {
 
-  const [contents, setContents] = useState([]);
+  const [contents, setContents] = useState(
+    {
+    communityId: 0,
+    memberId: 0,
+    memberName: "",
+    memberImage: "",
+    createdDate: "",
+    type: "",
+    title: "",
+    content: "",
+    views: 0,
+    images: [],
+    likes: [],
+    comments: []
+    });
+  // const [contents, setContents] = useState({});
 
   const fetchDetailCommu = async () => {
     try {
@@ -30,7 +45,7 @@ const CommunityCard = ({ data }) => {
             {data.title && (data.title.length > 10 ? data.title.slice(0, 10) + "..." : data.title)}
           </div>
           <div className={styles.content}>
-            {contents.content.length > 10 ? contents.content.slice(0, 10) + "..." : contents.content}
+            {data.content > 10 ? contents.content.slice(0, 10) + "..." : contents.content}
           </div>
         </div>
 
