@@ -1,0 +1,37 @@
+.card {
+  display: flex;
+  align-content: center;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 250px;
+  height: 250px;
+  flex-direction: column;
+  padding: 20px;
+  justify-content: space-around;
+  img {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+  }
+}
+
+.card__title {
+}
+
+.title {
+  z-index: 1;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+}
+
+.dates {
+  z-index: 1;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}

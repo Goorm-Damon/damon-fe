@@ -30,7 +30,6 @@ const Main = () => {
     try {
       const response = await calendarService.getCalendar(0, 10);
       setCalendars(response.data);
-      console.log("일정",calendars);
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +54,7 @@ const Main = () => {
     try {
       const response = await communityService.getCommunity('자유', 0);
       setFreeCommus(response.data.data);
-      console.log("자유모임",freeCommus);
+      // console.log("자유모임",freeCommus);
     } catch (error) {
       console.log(error);
     }
@@ -65,7 +64,6 @@ const Main = () => {
     try {
       const response = await communityService.getCommunity('번개', 0);
       setLightCommus(response.data.data);
-      console.log("번개모임",lightCommus);
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +104,7 @@ const Main = () => {
             <a>더 보기 {'>'}</a>
           </div>
           <div className={styles.calendars__container}>
-            {bestReviews && bestReviews.map((bestReview, i) => (
+            {bestReviews && bestReviews.length>0 && bestReviews.map((bestReview, i) => (
               <div className={styles.calendar__card} key={i}>
                 <ReviewCard bestReview={bestReview} />
               </div>
