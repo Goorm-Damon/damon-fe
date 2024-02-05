@@ -43,11 +43,8 @@ const CalendarCard = ({ calendar }) => {
           {calendar.endDate}
         </div>
         <div>
-
         </div>
-
       </div>
-
     </div>
   )
 }

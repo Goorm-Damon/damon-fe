@@ -58,8 +58,8 @@
 
 .calendars__container {
   display: grid;
-  gap: 32px;
-  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  grid-template-columns: repeat(5, 1fr);
   justify-items: stretch;
 }
 
