@@ -44,7 +44,6 @@ const Main = () => {
     try {
       const response = await reviewService.getReview(0, 10);
       setBestReviews(response.data);
-      console.log("베스트리뷰",bestReviews);
     } catch (error) {
       console.log(error);
     }

@@ -18,7 +18,7 @@ function App() {
       <Route path='/login' element={<Login />} />
       <Route path='/' element={<Layout />}>
         <Route index element={<Main />} />
-        <Route path='review/:id' element={<Review />} />
+        <Route path='review' element={<Review />} />
         <Route path='register/calendar' element={<RegisterCalendar />} />
         <Route path='my/calendar' element={<MyCalendar />} />
         <Route path='my/calendar/:id' element={<DetailCalendar />} />
