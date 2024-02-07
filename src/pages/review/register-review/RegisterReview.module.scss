@@ -1,0 +1,63 @@
+.page {
+  max-width: 1200px;
+  padding: 0 20%;
+  padding-bottom: 100px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  margin-top: 30px;
+
+  input {
+    border: 1px solid lightgray;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  span {
+    color: rgb(215, 87, 87);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+}
+
+.area__cost {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.review__places {
+
+  .places__title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  button {
+    background-color: white;
+    border: none;
+    height: fit-content;
+  }
+}
+
+textarea {
+  width: 100%;
+  border-radius: 8px;
+  resize: none;
+  border: 1px solid rgb(199, 199, 199);
+  padding: 10px;
+}
+
+.enroll__btn {
+  border: none;
+  padding: 20px;
+  cursor: pointer;
+  padding: 5px 20px;
+  border-radius: 5px;
+  background-color: #7298C2;
+  color: white;
+  display: flex;
+  float: right;
+  margin-top: 10px;
+}

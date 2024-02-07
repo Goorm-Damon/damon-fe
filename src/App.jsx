@@ -8,6 +8,7 @@ import MyCalendar from './pages/calendars/my-calendar/MyCalendar';
 import Login from './pages/login/Login'
 import Review from './pages/review/review';
 import DetailCalendar from './pages/calendars/detail-calendar/DetailCalendar';
+import RegisterReview from './pages/review/register-review/RegisterReview';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<Main />} />
         <Route path='review' element={<Review />} />
+        <Route path='register/review' element={<RegisterReview />} />
         <Route path='register/calendar' element={<RegisterCalendar />} />
         <Route path='my/calendar' element={<MyCalendar />} />
         <Route path='my/calendar/:id' element={<DetailCalendar />} />
