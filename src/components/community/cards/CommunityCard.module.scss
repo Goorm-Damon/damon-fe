@@ -1,0 +1,22 @@
+.card {
+  width: 100%;
+  // border: 1px solid gray;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // padding: 10px;
+}
+
+.reaction {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.card__contents {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}

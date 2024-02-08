@@ -1,5 +1,5 @@
 .container {
-  position: absolute;
+  position: fixed;
   min-width: 300px;
   // width: 30%;
   height: 100vh;
@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   padding: 10px 20px;
+  box-shadow: -2px -7px 20px 3px gray;
 
   input {
     padding: 11px 19px;
@@ -17,6 +18,12 @@
     background-color: #fbfbfb;
     color: #263747;
     width: 300px;
+  }
+  
+  span {
+    color: rgb(215, 87, 87);
+    font-size: 12px;
+    font-weight: 600;
   }
 }
 

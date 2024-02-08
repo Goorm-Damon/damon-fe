@@ -1,0 +1,27 @@
+.area__sidebar {
+  padding: 0px 50px 0px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 100px;
+}
+
+.area__labels {
+  padding: 10px 10px;
+  width: 60px;
+  border: 2px solid #7298c2;
+  color: #7298c2;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnActive {
+  color: white;
+  background-color: #7298c2;
+}

@@ -7,7 +7,7 @@ async function call(apiUrl, method, requestData = {}) {
         const response = await axios({
             url: apiUrl,
             method,
-            headers : {'Authorization' : localStorage.getItem('token')},
+            // headers : {'Authorization' : localStorage.getItem('token')},
             ...requestData
         });
         return handleResponse(response);
@@ -83,6 +83,11 @@ async function del (apiUrl) {
     return call(apiUrl, 'DELETE');
 }
 
+async function selectDel (apiUrl,data) {
+    return call(apiUrl, 'DELETE', {data});
+}
 
 
-export default {call, handleResponse, handleError, create, read, update, del,};
+
+
+export default {call, handleResponse, handleError, create, read, update, del, selectDel};

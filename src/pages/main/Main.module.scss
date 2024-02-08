@@ -6,7 +6,7 @@
   overflow-x: hidden;
 }
 .preview__container {
-  margin-top: 56px;
+  margin-top: 45px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -54,4 +54,20 @@
   flex-direction: row;
   justify-content: space-between;
   gap: 30px;
+}
+
+.calendars__container {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(5, 1fr);
+  justify-items: stretch;
+}
+
+.calendar__card {
+  width: 250px;
+  height: 250px;
+}
+
+.commu__card {
+  
 }

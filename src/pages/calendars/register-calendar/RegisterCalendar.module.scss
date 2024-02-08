@@ -1,78 +1,28 @@
-.register {
-  max-width: 1200px;
-  padding: 0 20px;
-  padding-bottom: 100px;
-  margin: 0 auto;
-  overflow-x: hidden;
-  // min-height: calc(100vh - 3.125rem - 24.625rem - 5rem);
-  min-height: 1300px;
+// .register {
+//   max-width: 1200px;
+//   padding: 0 20px;
+//   padding-bottom: 100px;
+//   margin: 0 auto;
+//   overflow-x: hidden;
+//   // min-height: calc(100vh - 3.125rem - 24.625rem - 5rem);
+//   min-height: 1300px;
 
 
-  input {
-    padding: 11px 19px;
-    border: #e6eef5 solid 2px;
-    border-radius: 5px;
-    background-color: #fbfbfb;
-    color: #263747;
-    width: 300px;
-  }
+//   input {
+//     padding: 11px 19px;
+//     border: #e6eef5 solid 2px;
+//     border-radius: 5px;
+//     background-color: #fbfbfb;
+//     color: #263747;
+//     width: 300px;
+//   }
 
-  span {
-    font-size: small;
-    color: red;
-  }
-}
-
-.page__cover {
-  position: relative;
-  background-color: rgb(96, 165, 255);
-  background-size: 1.5rem 1.5rem;
-  position: relative;
-  padding: 4rem 0 2rem 0;
-}
-
-.page__title {
-  font-size: 26px;
-  letter-spacing: -0.009em;
-  line-height: 1.4;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-
-.dates {
-  display: flex;
-  flex-direction: column;
-}
-
-
-.regions {
-  width: 300px;
-}
-
-.white_btn {
-  display: flex;
-  border-radius: 8px;
-  // height: 40px;
-  justify-content: center;
-  border: none;
-  padding: 12px 20px;
-  align-items: center;
-  background-color: #5376C6;
-  color: white;
-  font-weight: 700;
-
-  &:disabled {
-    // disabled 상태일 때의 스타일
-    background-color: lightgrey;
-    color: rgb(255, 255, 255);
-  }
-}
-
-
-.date_container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+//   span {
+//     font-size: small;
+//     color: red;
+//   }
+// }
+.register__container {
+  // margin-top: 64px;
+  overflow: hidden;
 }

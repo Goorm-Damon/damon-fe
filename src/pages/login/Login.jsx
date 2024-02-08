@@ -26,20 +26,6 @@ function Login() {
           // 에러 처리 로직 추가 가능
         });
     }
-
-    // 기존의 API 호출 코드
-    axios.get('/api/time')
-      .then(response => {
-        setCurrentTime(response.data);
-      })
-      .catch(error => {
-        console.error('API 호출 중 오류 발생:', error);
-      });
-
-    return () => {
-      // 컴포넌트 언마운트 시 인터셉터 제거
-      // axios.interceptors.response.eject(responseInterceptor);
-    };
   }, [navigate]);
 
   return (
@@ -57,4 +43,3 @@ function Login() {
 }
 
 export default Login;
-

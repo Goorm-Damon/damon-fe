@@ -1,0 +1,48 @@
+.calendar {
+  max-width: 1200px;
+  padding: 0 20px;
+  padding-bottom: 100px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  margin-top: 30px;
+}
+
+.calendar__card {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid rgb(197, 197, 197);
+  border-radius: 8px;
+  gap: 8px;
+  display: flex;
+  margin: 5px;
+  justify-content: space-around;
+  cursor: pointer;
+}
+
+.title {
+}
+
+.main__title {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.editLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+
+.edit__btn {
+  color: rgb(137, 137, 137);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

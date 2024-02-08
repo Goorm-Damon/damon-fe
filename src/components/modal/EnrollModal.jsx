@@ -3,7 +3,7 @@ import styles from './EnrollModal.module.scss'
 import { useRecoilState } from 'recoil';
 import { calendarInfoState } from '../../states/calendar/calendarInfoState';
 
-const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo }) => {
+const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo, setSearchMarkers, searchMarkers,setPlaces }) => {
   const [calenderInfo, setCalenderInfo] = useRecoilState(calendarInfoState);
 
   const [memo, setMemo] = useState("");
@@ -15,14 +15,14 @@ const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo }) => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
   useEffect(() => {
     setPlaceInfo(prevPlaceInfo => ({
       ...prevPlaceInfo,
       memo: memo
     }));
-
   }, [memo])
-  
+
 
   const handleAddClaneder = () => {
     // setPlaceInfo(prevPlaceInfo => ({
@@ -30,11 +30,12 @@ const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo }) => {
     //   memo: memo
     // }));
     alert("일정에 추가되었습니다.");
+    setPlaces([]);
     setModalOpen(false);
 
     setCalenderInfo((prev) => ({
       ...prev,
-      travels: [...prev.travels,placeInfo]
+      travels: [...prev.travels, placeInfo]
     }));
   };
 
@@ -45,8 +46,10 @@ const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo }) => {
           <div className={styles.content}>
             <p>{placeInfo.locationName}</p>
             <div>
-              <input
+              <textarea
                 placeholder='메모를 입력해주세요'
+                cols="70"
+                rows="20"
                 onChange={onChange}
                 value={memo}
               />
