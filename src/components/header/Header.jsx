@@ -6,6 +6,7 @@ import { headerState } from '../../states/header/headerState';
 import "react-datepicker/dist/react-datepicker.module.css"
 import { calendarInfoState, clickedDateState, getCalendarIdState, showCreateState } from '../../states/calendar/calendarInfoState';
 import * as calendarService from '../../apis/services/calendarService';
+import { useAuthActions } from '../../hooks/useAuthActions';
 
 const getToken = localStorage.getItem('token');
 
@@ -22,6 +23,7 @@ const Header = () => {
   const calendarId = useRecoilValue(getCalendarIdState);
   const [calendar, setCalendar] = useRecoilState(calendarInfoState);
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태를 관리하는 변수
+  const { logout } = useAuthActions();
 
   // 수정 모드를 토글하는 함수
   const toggleEditing = () => {
@@ -54,9 +56,9 @@ const Header = () => {
   }, [location, setHeaderSettings]);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
-  }
+    logout(); // 로그아웃 처리
+    navigate('/'); // 홈으로 리다이렉트
+  };
 
   const handleSubmit = async () => {
     try {
@@ -169,7 +171,7 @@ const Header = () => {
             {getToken ?
               <div onClick={handleLogout} className={styles.header__logout}>로그아웃</div>
               :
-              <div onClick={navigateTo('/login')} className={styles.header__logout}>로그인</div>
+              <div onClick={navigateTo('/')} className={styles.header__logout}>로그인</div>
 
             }
           </div>

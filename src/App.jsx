@@ -1,9 +1,7 @@
 // import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/layout/Layout';
-import ProtectedRoute from './components/ProtectedRoute';
-import './axiosconfig'; // Axios 인터셉터 설정 import
-import { AuthProvider } from './context/AuthContext';
+import { RecoilRoot } from 'recoil';
 import Login from './pages/login/Login'
 import Main from './pages/main/Main';
 import Review from './pages/review/review';
@@ -16,14 +14,12 @@ import ReviewCreate from './pages/review/reviewCreate/ReviewCreate';
 
 function App() {
   return (
-    <AuthProvider>
+    <RecoilRoot>
     <Routes>
       {/* <비인가페이지 들어가는곳> */}
       <Route path='/' element={<Login />} />
       <Route path='/oauth2/authorization/kakao' element={<KakaoRedirectHandler />} />
       <Route path='/oauth2/authorization/naver' element={<NaverRedirectHandler />} />
-
-      <Route element={<ProtectedRoute />}>
         <Route path='/' element={<Layout />}>
           <Route path='main' element={<Main />} />
           <Route path='review' element={<Review />} />
@@ -33,9 +29,8 @@ function App() {
           {/* <Route path='register/community' element={<coummunityAdd />} /> */}
           {/* <Route path='view/myschedule' element={<MySchedule />} /> */}
         </Route>
-      </Route>
     </Routes>
-    </AuthProvider>
+    </RecoilRoot>
   );
 }
 
