@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Login from './pages/login/Login'
 import Main from './pages/main/Main';
-import Review from './pages/review/Review';
+import Review from './pages/review/review';
 import ReviewCreatePage from './pages/review/reviewCreate/ReviewCreate';
 import RegisterCalendar from './pages/calendars/register-calendar/RegisterCalendar';
 import KakaoRedirectHandler from './components/login/KakaoLoginRedirect'
