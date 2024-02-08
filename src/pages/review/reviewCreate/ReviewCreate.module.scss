@@ -1,128 +1,104 @@
-.wrapper {
-  width: 1200px;
-  margin: 100px auto;
-  padding: 80px 102px 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  // box-shadow: 0px 0px 10px gray;
-}
+// 기본 폰트 및 컬러 설정
+$font-stack: 'Helvetica', sans-serif;
+$primary-color: #304FFE; // 파란색
+$secondary-color: #757575; // 회색
+$border-radius: 4px;
+$border-color: #ccc; // 경계선 색상
 
-.title,
-.label {
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
-  text-align: left;
-}
+// 폼 및 폼 요소의 기본 스타일
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: $font-stack;
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: $secondary-color;
+  }
 
-.title {
-  font-size: 30px;
-  text-align: left;
-  width: 100%; // 전체 폭을 사용하도록 설정
-  max-width: 996px; // 타이틀의 최대 폭을 설정
-  padding-left: 16px; // 왼쪽 패딩을 줘서 내용이 왼쪽에 정렬되도록 함
-}
+  .input-group, .select-container, .date-picker-container, .image-upload-container {
+    margin-bottom: 15px;
+  }
 
-.writerWrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-top: 40px;
-}
+  .text-input, .number-input, .file-input, .textarea-input, .date-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    box-sizing: border-box;
 
-.inputWrapper {
-  padding-top: 40px;
-}
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
 
-.writer,
-.password,
-.subject,
-.contents,
-.zipcode,
-.address,
-.youtube {
-  width: 996px;
-  padding: 16px;
-  border: 1px solid #bdbdbd;
-}
+  .textarea-input {
+    height: 150px; // '리뷰 내용' 필드의 높이 조정
+  }
 
-.writer,
-.password {
-  width: 486px;
-}
+  .date-picker-container {
+    display: flex;
+    justify-content: space-between;
 
-.label {
-  padding-bottom: 16px;
-  font-size: 16px;
-  font-weight: 500;
-}
+    .date-input {
+      width: 48%;
+    }
+  }
 
-.zipcodeWrapper {
-  display: flex;
-  flex-direction: row;
-}
+  // React-Select 스타일
+  .select-container {
+    .select__control {
+      width: 100%;
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      padding: 2px;
+      box-sizing: border-box;
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+      }
+    }
+  }
 
-.zipcode {
-  width: 77px;
-}
+  // 이미지 업로드 스타일
+  .file-input {
+    border: none;
+    padding: 0;
+  }
 
-.searchButton {
-  width: 124px;
-  height: 52px;
-  margin-left: 16px;
-  background-color: black;
-  color: white;
-  cursor: pointer;
-}
+  // 버튼 스타일
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 
-.imageWrapper,
-.optionWrapper {
-  width: 996px;
-  padding-top: 40px;
-}
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: $border-radius;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
 
-.uploadButton {
-  width: 78px;
-  height: 78px;
-  background-color: #bdbdbd;
-  margin-right: 24px;
-  cursor: pointer;
-  border: none;
-}
+      &.submit {
+        background-color: $primary-color;
+        color: white;
+        &:hover {
+          background-color: darken($primary-color, 10%);
+        }
+      }
 
-.radioButton {
-  cursor: pointer;
-}
-
-.radioLabel {
-  margin: 0 20px 0 8px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.buttonWrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding-top: 80px;
-}
-
-.cancelButton,
-.submitButton {
-  width: 179px;
-  height: 52px;
-  border: none;
-  font-size: 16px;
-  font-weight: 500;
-  margin: 0 12px;
-  cursor: pointer;
-}
-
-.cancelButton {
-  background-color: #AEAEAE;
-}
-
-.submitButton {
-  background-color: #5C83BE;
+      &.cancel {
+        background-color: $secondary-color;
+        color: white;
+        &:hover {
+          background-color: darken($secondary-color, 10%);
+        }
+      }
+    }
+  }
 }

@@ -1,58 +1,110 @@
-import React from 'react';
-import styles from './ReviewCreate.module.scss'; // 변경된 파일 이름에 맞게 import 경로도 수정
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import Select from 'react-select';
+import axios from 'axios';
+import 'react-datepicker/dist/react-datepicker.css';
+import './ReviewCreate.module.scss'; // SCSS 파일을 임포트합니다.
 
-export default function ReviewCreate() {
+const ReviewCreate = () => {
+  // 생략된 상태 관리 및 핸들러 함수들 ...
+
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.title}>리뷰 작성하기</div>
-      <div className={styles.inputWrapper}>
-        <div className={styles.label}>제목</div>
-        <input className={styles.subject} type="text" placeholder="제목을 작성해주세요." />
-      </div>
-      <div className={styles.writerWrapper}>
-        <div className={styles.inputWrapper}>
-          <div className={styles.label}>여행 기간</div>
-          <input className={styles.writer} type="text" placeholder="이름을 적어주세요." />
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <div className="input-group">
+          <label>Title:</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+            className="text-input"
+          />
         </div>
-        <div className={styles.inputWrapper}>
-          <div className={styles.label}>임의의 설정</div>
-          <input className={styles.password} type="password" placeholder="비밀번호를 작성해주세요." />
+
+        <div className="date-picker-container">
+          <div>
+            <label>Start Date:</label>
+            <DatePicker
+              selected={formData.startDate}
+              onChange={(date) => handleDateChange('startDate', date)}
+              className="date-input"
+            />
+          </div>
+
+          <div>
+            <label>End Date:</label>
+            <DatePicker
+              selected={formData.endDate}
+              onChange={(date) => handleDateChange('endDate', date)}
+              className="date-input"
+            />
+          </div>
         </div>
-      </div>
-      <div className={styles.writerWrapper}>
-        <div className={styles.inputWrapper}>
-          <div className={styles.label}>여행 기간</div>
-          <input className={styles.writer} type="text" placeholder="이름을 적어주세요." />
+
+        <div className="select-container">
+          <label>Region:</label>
+          <Select
+            value={formData.region}
+            onChange={handleSelectChange}
+            options={[
+              { value: 'asia', label: 'Asia' },
+              { value: 'europe', label: 'Europe' },
+              // 추가 지역 옵션
+            ]}
+            classNamePrefix="select"
+          />
         </div>
-        <div className={styles.inputWrapper}>
-          <div className={styles.label}>임의의 설정</div>
-          <input className={styles.password} type="password" placeholder="비밀번호를 작성해주세요." />
+
+        <div className="input-group">
+          <label>Total Cost:</label>
+          <input
+            type="number"
+            name="totalCost"
+            value={formData.totalCost}
+            onChange={handleInputChange}
+            className="number-input"
+          />
         </div>
-      </div>
-      <div className={styles.writerWrapper}>
-        <div className={styles.inputWrapper}>
-          <div className={styles.label}>여행 기간</div>
-          <input className={styles.writer} type="text" placeholder="이름을 적어주세요." />
+
+        <div className="input-group">
+          <label>Recommended Places:</label>
+          <input
+            type="text"
+            name="recommendedPlaces"
+            value={formData.recommendedPlaces}
+            onChange={handleInputChange}
+            className="text-input"
+          />
         </div>
-        <div className={styles.inputWrapper}>
-          <div className={styles.label}>임의의 설정</div>
-          <input className={styles.password} type="password" placeholder="비밀번호를 작성해주세요." />
+
+        <div className="image-upload-container">
+          <label>Images:</label>
+          <input
+            type="file"
+            multiple
+            onChange={handleImageChange}
+            className="file-input"
+          />
         </div>
-      </div>
-      <div className={styles.imageWrapper}>
-        <div className={styles.label}>사진첨부</div>
-        <button className={styles.uploadButton}>+</button>
-        <button className={styles.uploadButton}>+</button>
-        <button className={styles.uploadButton}>+</button>
-      </div>
-      <div className={styles.inputWrapper}>
-        <div className={styles.label}>내용</div>
-        <textarea className={styles.contents} placeholder="내용을 작성해주세요."></textarea>
-      </div>
-      <div className={styles.buttonWrapper}>
-        <button className={styles.cancelButton}>취소하기</button>
-        <button className={styles.submitButton}>등록하기</button>
-      </div>
+
+        <div className="input-group">
+          <label>Content:</label>
+          <textarea
+            name="content"
+            value={formData.content}
+            onChange={handleInputChange}
+            className="textarea-input"
+          />
+        </div>
+
+        <div className="button-container">
+          <button type="submit" className="submit">Submit</button>
+          <button type="button" className="cancel">Cancel</button>
+        </div>
+      </form>
     </div>
   );
-}
+};
+
+export default ReviewCreate;
