@@ -5,7 +5,7 @@ import naverLogo from '../../assets/naver_logo.png';
 function NaverLoginButton() {
 
   const CLIENT_ID = 'spdOdDxRE5b1jvsH5qAi';
-  const REDIRECT_URI = encodeURIComponent('http://localhost:8080/login/oauth2/code/naver');
+  const REDIRECT_URI = encodeURIComponent('http://localhost:8080/oauth2/authorization/naver');
 
   // 랜덤 state 값 생성
   const generateRandomString = () => {

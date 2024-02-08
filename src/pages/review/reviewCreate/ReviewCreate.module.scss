@@ -1,0 +1,128 @@
+.wrapper {
+  width: 1200px;
+  margin: 100px auto;
+  padding: 80px 102px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  // box-shadow: 0px 0px 10px gray;
+}
+
+.title,
+.label {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  text-align: left;
+}
+
+.title {
+  font-size: 30px;
+  text-align: left;
+  width: 100%; // 전체 폭을 사용하도록 설정
+  max-width: 996px; // 타이틀의 최대 폭을 설정
+  padding-left: 16px; // 왼쪽 패딩을 줘서 내용이 왼쪽에 정렬되도록 함
+}
+
+.writerWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 40px;
+}
+
+.inputWrapper {
+  padding-top: 40px;
+}
+
+.writer,
+.password,
+.subject,
+.contents,
+.zipcode,
+.address,
+.youtube {
+  width: 996px;
+  padding: 16px;
+  border: 1px solid #bdbdbd;
+}
+
+.writer,
+.password {
+  width: 486px;
+}
+
+.label {
+  padding-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.zipcodeWrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.zipcode {
+  width: 77px;
+}
+
+.searchButton {
+  width: 124px;
+  height: 52px;
+  margin-left: 16px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.imageWrapper,
+.optionWrapper {
+  width: 996px;
+  padding-top: 40px;
+}
+
+.uploadButton {
+  width: 78px;
+  height: 78px;
+  background-color: #bdbdbd;
+  margin-right: 24px;
+  cursor: pointer;
+  border: none;
+}
+
+.radioButton {
+  cursor: pointer;
+}
+
+.radioLabel {
+  margin: 0 20px 0 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.buttonWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 80px;
+}
+
+.cancelButton,
+.submitButton {
+  width: 179px;
+  height: 52px;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 12px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background-color: #AEAEAE;
+}
+
+.submitButton {
+  background-color: #5C83BE;
+}

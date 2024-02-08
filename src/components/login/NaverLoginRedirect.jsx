@@ -9,16 +9,17 @@ function NaverLoginRedirectHandler() {
     const fetchAuthResult = async () => {
       try {
         // URL에서 인가 코드와 상태 토큰 추출
-        const code = new URLSearchParams(window.location.search).get('code');
-        
-        // 백엔드 서버에 인가 코드와 상태 토큰을 전달하고 JWT 토큰을 요청
-        const response = await axios.post('/api/auth/naver/callback', {
-          code,
-        });
+       // URL에서 JWT 토큰 추출 (가정)
+      const token = new URLSearchParams(window.location.search).get('token');
 
-        // 성공 처리 로직
-        localStorage.setItem('token', response.data.token);
+      if (token) {
+        // 성공 처리 로직: 토큰을 로컬 스토리지에 저장하고 메인 페이지로 이동
+        localStorage.setItem('token', token);
         navigate('/main'); // 인증 성공 후 리다이렉트할 경로
+      } else {
+        // 토큰이 없다면 에러 처리
+        throw new Error('Token not found');
+      }
       } catch (error) {
         // 에러 처리 로직
         console.error('로그인 처리 중 에러 발생', error);
