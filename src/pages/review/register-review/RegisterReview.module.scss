@@ -1,16 +1,12 @@
 .page {
   max-width: 1200px;
-  padding: 0 20%;
+  padding: 0 10%;
   padding-bottom: 100px;
   margin: 0 auto;
   overflow-x: hidden;
   margin-top: 30px;
 
-  input {
-    border: 1px solid lightgray;
-    padding: 10px;
-    border-radius: 5px;
-  }
+
 
   span {
     color: rgb(215, 87, 87);
@@ -20,10 +16,29 @@
 
 }
 
+input {
+  border: 1px solid lightgray;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.review__title {
+  width: 50%;
+}
+
 .area__cost {
   display: flex;
   flex-direction: row;
   gap: 20px;
+
+  .review__area {
+    width: 100%;
+  }
+
+  .review__expense {
+    width: 100%;
+  }
 }
 
 .review__places {
@@ -32,12 +47,32 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 50%;
+    justify-content: space-between;
+  }
+
+  .add_place {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    input {
+      width: 50%;
+    }
   }
 
   button {
     background-color: white;
     border: none;
     height: fit-content;
+    cursor: pointer;
+    color: #7298C2;
+    font-weight: 600;
+  }
+
+  .minus__btn {
+    cursor: pointer;
   }
 }
 
@@ -60,4 +95,65 @@ textarea {
   display: flex;
   float: right;
   margin-top: 10px;
+}
+
+.ck.ck-editor__editable:not(.ck-editor__nested-editable) {
+  min-height: 400px;
+  margin-bottom: 20px;
+}
+
+.tags__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .tag__input {
+    padding: 0;
+    width: 100px;
+    border: none;
+    outline: none;
+    min-width: 50px;
+    font-size: 14px;
+  }
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 5px;
+  gap: 5px;
+  p {
+    font-size: 14px;
+  }
+}
+
+.review__images {
+
+  label {
+    display: flex;
+    width: 140px;
+    height: 140px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center
+  }
+  input {
+    display: none;
+  }
+
+  .preview__images {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin: 20px 0px;
+  }
+  img {
+    width: 140px;
+    height: 140px;
+    border-radius: 5px;
+  }
 }

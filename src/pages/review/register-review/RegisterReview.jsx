@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './RegisterReview.module.scss';
 import Select from "react-select";
 import DatePicker from "react-datepicker";
@@ -7,6 +7,11 @@ import { useRecoilState } from 'recoil';
 import { reviewInfoState } from '../../../states/review/reviewState';
 import { useNavigate } from 'react-router-dom';
 import * as reviewService from '../../../apis/services/reviewService';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { FaMinus } from "react-icons/fa";
+import { IoCloseOutline } from "react-icons/io5";
+import { BsPlusCircleDotted } from "react-icons/bs";
 
 const areas = [
   { value: 'GAPYEONG', label: "가평" },
@@ -22,6 +27,8 @@ const areas = [
 
 const RegisterReview = () => {
   const navigate = useNavigate();
+  const [postImg, setPostImg] = useState([]);
+  const [previewImg, setPreviewImg] = useState([]);
   const [reviewInfo, setReviewInfo] = useState({
     title: "",
     startDate: null,
@@ -32,6 +39,22 @@ const RegisterReview = () => {
     freeTags: [],
     content: "",
   });
+
+  function uploadFile(e) {
+    const files = Array.from(e.target.files); // Convert FileList to array
+    const fileUrls = [];
+
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        fileUrls.push(e.target.result); // Add the file URL to the array
+        if (fileUrls.length === files.length) { // Check if all files are read
+          setPreviewImg(fileUrls); // Update the state with all file URLs
+        }
+      };
+      reader.readAsDataURL(file); // Start reading the file
+    });
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,6 +83,13 @@ const RegisterReview = () => {
     setReviewInfo(prev => ({ ...prev, suggests: filteredPlaces }));
   };
 
+  const handleRemoveTag = (index) => {
+    setReviewInfo(prev => ({
+      ...prev,
+      freeTags: prev.freeTags.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSubmit = async () => {
     try {
       console.log(reviewInfo);
@@ -75,6 +105,11 @@ const RegisterReview = () => {
       console.error(error);
     }
   }
+
+  useEffect(() => {
+    console.log(reviewInfo.freeTags);
+  }, [reviewInfo.freeTags])
+
 
   return (
     <div>
@@ -112,9 +147,6 @@ const RegisterReview = () => {
             <input name="cost" type="text" value={reviewInfo.cost} onChange={handleInputChange} />
           </div>
         </div>
-
-
-
         <div className={styles.review__places}>
           <div className={styles.places__title}>
             <p>추천 장소</p>
@@ -122,29 +154,93 @@ const RegisterReview = () => {
           </div>
 
           {reviewInfo.suggests.map((place, index) => (
-            <div key={index}>
-              <input type="text" value={place} onChange={(e) => handlePlaceChange(e.target.value, index)} />
-              <button type="button" onClick={() => handleRemovePlace(index)}>삭제</button>
+            <div key={index} className={styles.add_place}>
+              <input
+                type="text"
+                value={place}
+                onChange={(e) => handlePlaceChange(e.target.value, index)}
+                placeholder='추천하고 싶은 장소를 입력해주세요'
+              />
+              <div className={styles.minus__btn} type="button" onClick={() => handleRemovePlace(index)}><FaMinus /></div>
             </div>
           ))}
 
         </div>
         <div className={styles.review__images}>
           <p>이미지 추가하기</p>
-          <input />
+
+          <div className={styles.preview__images}>
+            <label for="imgs">
+              <div>
+                <BsPlusCircleDotted />
+              </div>
+            </label>
+            <input accept=".png, .svg, .jpeg, .jpg" type="file"
+              id='imgs'
+              multiple
+              onChange={uploadFile}
+            />
+            {
+              previewImg.map((imgSrc, i) =>
+                <div key={i}>
+                  {/* <button type="button">
+                  <img alt="업로드 이미지 제거" src="src/assets/icon-close-button.svg" />
+                </button> */}
+                  <img alt={imgSrc} src={imgSrc} />
+                </div>
+              )
+            }
+          </div>
+
         </div>
         <div className={styles.review__content}>
           <p>리뷰 내용</p>
-          <textarea
-                placeholder='메모를 입력해주세요'
-                cols="70"
-                rows="20"
-                name="content"
-                onChange={handleInputChange}
-                value={reviewInfo.content}
-              />
+          {/* <textarea
+            placeholder='메모를 입력해주세요'
+            cols="70"
+            rows="20"
+            name="content"
+            onChange={handleInputChange}
+            value={reviewInfo.content}
+          /> */}
+          <CKEditor
+            className={styles.editor}
+            editor={ClassicEditor}
+            name="content"
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              setReviewInfo(prev => ({ ...prev, content: data }));
+            }}
+          />
         </div>
-
+        <div className={styles.tags__container}>
+          {reviewInfo.freeTags.map((tag, index) => (
+            <div key={index} className={styles.tags}>
+              <p>#{tag}</p>
+              <div className={styles.del__btn} onClick={() => handleRemoveTag(index)}><IoCloseOutline /></div>
+            </div>
+          ))}
+          <div className={styles.tags}>
+            <p>#</p>
+            <input
+              className={styles.tag__input}
+              placeholder='태그 입력'
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  const trimmedValue = e.target.value.trim();
+                  if (trimmedValue) {
+                    setReviewInfo(prev => ({
+                      ...prev,
+                      freeTags: [...prev.freeTags, trimmedValue],
+                    }));
+                    e.target.value = '';
+                  }
+                  e.preventDefault();
+                }
+              }}
+            />
+          </div>
+        </div>
         <button className={styles.enroll__btn} type="button" onClick={handleSubmit}>등록하기</button>
       </div>
     </div>
