@@ -15,7 +15,7 @@ import ReviewCreateRemakePage from './pages/review/reviewCreate/ReviewCreateRema
 function App() {
   return (
     <Routes>
-      <Route path='/login' element={<Login />} />
+      <Route path='/' element={<Login />} />
       <Route path='/oauth2/authorization/kakao' element={<KakaoRedirectHandler />} />
       <Route path='/oauth2/authorization/naver' element={<NaverRedirectHandler />} />
 
