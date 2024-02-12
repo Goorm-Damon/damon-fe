@@ -7,7 +7,6 @@
   margin-top: 30px;
 
 
-
   span {
     color: rgb(215, 87, 87);
     font-size: 12px;
@@ -16,11 +15,21 @@
 
 }
 
-input {
+.inputs {
   border: 1px solid lightgray;
   padding: 10px;
   border-radius: 5px;
   width: 100%;
+}
+
+.page__title {
+  margin-bottom: 30px;
+}
+
+.page__contents {
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .review__title {
@@ -156,4 +165,8 @@ textarea {
     height: 140px;
     border-radius: 5px;
   }
+}
+
+.category__name {
+  font-weight: 600;
 }

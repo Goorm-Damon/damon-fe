@@ -3,6 +3,7 @@ import styles from './review.module.scss'; // 리뷰 페이지의 스타일
 import * as reviewService from '../../apis/services/reviewService';
 import AreaSidebar from '../../components/sidebars/area-sidebar/AreaSidebar';
 import MainReviewCard from '../../components/review/cards/main-card/MainReviewCard';
+import { useNavigate } from 'react-router-dom';
 
 const areas = [
   { value: 'ALL', label: "전체" },
@@ -19,8 +20,14 @@ const areas = [
 
 const Review = () => {
 
+  const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
   const [area, setArea] = useState('ALL');
+
+    // 페이지 이동을 위한 함수
+    const navigateTo = (path) => () => {
+      navigate(path);
+    };
 
   const fetchCalendars = async () => {
     try {
@@ -51,7 +58,7 @@ const Review = () => {
             />
             <div className={styles.editLine}>
               <p>Total {reviews.length}</p>
-              <button>+리뷰 작성</button>
+              <button onClick={navigateTo('/register/review')} >+리뷰 작성</button>
             </div>
           </section>
           <section>

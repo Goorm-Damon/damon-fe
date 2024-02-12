@@ -3,6 +3,7 @@ import styles from './MainReviewCard.module.scss'
 import { FaHeart } from "react-icons/fa6";
 import { FaComment } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const areas = {
   'GAPYEONG': '가평',
@@ -18,8 +19,15 @@ const areas = {
 };
 
 const MainReviewCard = ({ review }) => {
+
+  const navigate = useNavigate();
+
+  const handleDatails = (reviewId) => () => {
+    navigate(`/review/${reviewId}`, {state: {reviewId:reviewId}});
+  }
+
   return (
-    <div className={styles.reiview__card}>
+    <div className={styles.reiview__card} onClick={handleDatails(review.id)}>
       <div className={styles.card__left}>
         {/* <img arc='regions-img/gapyeong.svg' /> */}
         <div className={styles.card__img}>

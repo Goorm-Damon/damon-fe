@@ -1,18 +1,31 @@
 .card {
   width: 100%;
   // border: 1px solid gray;
-  padding: 10px;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // padding: 10px;
+  border: 1px solid #d7d7d7;
+  border-radius: 10px;
+
+  .title {
+    color: #444444;
+    font-weight: 600;
+  }
 }
 
 .reaction {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
+
+  p {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #444444;
+  }
 }
 
 .card__contents {

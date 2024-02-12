@@ -157,7 +157,7 @@ const Header = () => {
                     <li onClick={navigateTo('/register/post')}>게시글 등록</li>
                   </ul>
                 </li>
-                <li className={styles.header__menu2}>마이룸
+                <li className={styles.header__menu} onClick={navigateTo('/mypage')}>마이룸
                   <ul className={isHovered ? styles.subVisible : styles.sub}>
                     <li onClick={navigateTo('/my/reviews')}>내 리뷰</li>
                     <li onClick={navigateTo('/my/calendar')}>내 일정</li>

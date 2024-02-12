@@ -4,13 +4,11 @@
   border-radius: 8px;
   display: flex;
   flex-direction: row;
-  padding: 20px;
-
+  // padding: 20px;
+  align-items: center;
 }
 
 .card__left {
-  padding: 10px;
-
   img {
     width: 230px;
     height: 230px;
@@ -26,7 +24,7 @@
   width: 230px;
   height: 230px;
   justify-content: space-between;
-  padding: 15px;
+  padding: 14px;
 }
 
 .card__tag {

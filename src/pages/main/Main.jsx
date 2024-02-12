@@ -100,10 +100,10 @@ const Main = () => {
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
             <h2>베스트 리뷰</h2>
-            <a>더 보기 {'>'}</a>
+            <a onClick={navigateTo('/review')}>더 보기 {'>'}</a>
           </div>
           <div className={styles.calendars__container}>
-            {bestReviews && bestReviews.length>0 && bestReviews.map((bestReview, i) => (
+            {bestReviews && bestReviews.slice(0, 4).map((bestReview, i) => (
               <div className={styles.calendar__card} key={i}>
                 <ReviewCard bestReview={bestReview} />
               </div>
