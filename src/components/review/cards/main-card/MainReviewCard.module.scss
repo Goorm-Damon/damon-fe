@@ -41,11 +41,13 @@
 .card__heart {
   display: flex;
   justify-content: flex-end;
+  cursor: pointer;
 }
 
 .card__right {
   padding: 0px 20px;
   width: 100%;
+  cursor: pointer;
 }
 
 .content {

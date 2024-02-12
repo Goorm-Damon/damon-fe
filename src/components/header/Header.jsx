@@ -41,6 +41,13 @@ const Header = () => {
     navigate(path);
   };
 
+  // 페이지 이동을 위한 함수
+  const navigateTo2 = (path) => (event) => {
+    event.stopPropagation();
+    navigate(path);
+  };
+
+
   // 현재 경로에 따라 헤더 상태 업데이트
   useEffect(() => {
     if (location.pathname.includes('register/calendar')) {
@@ -159,9 +166,9 @@ const Header = () => {
                 </li>
                 <li className={styles.header__menu} onClick={navigateTo('/mypage')}>마이룸
                   <ul className={isHovered ? styles.subVisible : styles.sub}>
-                    <li onClick={navigateTo('/my/reviews')}>내 리뷰</li>
-                    <li onClick={navigateTo('/my/calendar')}>내 일정</li>
-                    <li onClick={navigateTo('/my/community')}>내 커뮤니티</li>
+                    <li onClick={navigateTo2('/my/reviews')}>내 리뷰</li>
+                    <li onClick={navigateTo2('/my/calendar')}>내 일정</li>
+                    <li onClick={navigateTo2('/my/community')}>내 커뮤니티</li>
                   </ul>
                 </li>
               </ul>

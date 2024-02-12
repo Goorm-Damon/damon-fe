@@ -5,31 +5,32 @@ const MyPage = () => {
   return (
     <div>
       <div className={styles.page}>
-        <section className={styles.profile__top}>
+        {/* <section className={styles.profile__top}> */}
           <div className={styles.profile}>
             <div className={styles.profile__img}>
               <img />
 
             </div>
-            <input className={styles.profile__nickname}/> 
-            <p>편집</p>
+            <div className={styles.profile__right}>
+              <input className={styles.profile__nickname} />
+              <p>편집</p>
+            </div>
+          </div>
+        {/* </section> */}
+        <section className={styles.my__contents}>
+          <div className={styles.menu__container}>
+            <p>내가 쓴 리뷰</p>
+          </div>
+          <div className={styles.menu__container}>
+            <p>내 여행 일정</p>
+          </div>
+          <div className={styles.menu__container}>
+            <p>내가 작성 한 커뮤니티</p>
+          </div>
+          <div className={styles.menu__container}>
+            <p>좋아요 한 게시글</p>
           </div>
         </section>
-        <section>
-          <div className={styles.my__review}>
-
-          </div>
-          <div className={styles.my__calendar}>
-
-          </div>
-          <div className={styles.my__commu}>
-
-          </div>
-          <div className={styles.like__calendar}>
-
-          </div>
-        </section>
-
       </div>
     </div>
   )

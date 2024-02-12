@@ -87,24 +87,27 @@ const MyCalendar = () => {
           </div>
         </div>
         {calendars.content.map((item, i) => (
-          <div
-            className={styles.calendar__card}
-            key={i}
-            onClick={handleDetails(item.calendarId)}
-          >
-            <div className={styles.title}>
-              {edit && (
-                <input
-                  type="checkbox"
-                  id={item.calendarId}
-                  checked={selectedItems.calendarIds.includes(item.calendarId)}
-                  onChange={handleCheckboxChange(item.calendarId)}
-                />
-              )}
-              {item.title}
-            </div>
-            <div>
-              {item.startDate} ~ {item.endDate}
+          <div style={{display:'flex'}}>
+            {edit && (
+              <input
+                type="checkbox"
+                id={item.calendarId}
+                checked={selectedItems.calendarIds.includes(item.calendarId)}
+                onChange={handleCheckboxChange(item.calendarId)}
+              />
+            )}
+            <div
+              className={`${styles.calendar__card} ${edit ? styles.defaultCursor : ''}`}
+              key={i}
+              onClick={handleDetails(item.calendarId)}
+            >
+              <div className={styles.title}>
+
+                {item.title}
+              </div>
+              <div>
+                {item.startDate} ~ {item.endDate}
+              </div>
             </div>
           </div>
         ))}

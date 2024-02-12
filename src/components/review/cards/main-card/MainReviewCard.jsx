@@ -27,7 +27,7 @@ const MainReviewCard = ({ review }) => {
   }
 
   return (
-    <div className={styles.reiview__card} onClick={handleDatails(review.id)}>
+    <div className={styles.reiview__card}>
       <div className={styles.card__left}>
         {/* <img arc='regions-img/gapyeong.svg' /> */}
         <div className={styles.card__img}>
@@ -41,7 +41,7 @@ const MainReviewCard = ({ review }) => {
         </div>
       </div>
 
-      <div className={styles.card__right}>
+      <div className={styles.card__right} onClick={handleDatails(review.id)}>
         <div className={styles.user}>
           {review.createTime.slice(0, 10)}
         </div>
