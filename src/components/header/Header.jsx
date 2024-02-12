@@ -8,8 +8,6 @@ import { calendarInfoState, clickedDateState, getCalendarIdState, showCreateStat
 import * as calendarService from '../../apis/services/calendarService';
 import { useAuthActions } from '../../hooks/useAuthActions';
 
-const getToken = localStorage.getItem('token');
-
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,7 +21,7 @@ const Header = () => {
   const calendarId = useRecoilValue(getCalendarIdState);
   const [calendar, setCalendar] = useRecoilState(calendarInfoState);
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태를 관리하는 변수
-  const { logout } = useAuthActions();
+  const { logout, token } = useAuthActions(); // useAuthActions 훅으로부터 token 상태 가져오기
 
   // 수정 모드를 토글하는 함수
   const toggleEditing = () => {
@@ -113,7 +111,6 @@ const Header = () => {
         //상세일정 페이지로 이동해야함.
         resetClicked();
         navigate('/');
-
       } else {
         console.error(response.error);
       }
@@ -168,7 +165,7 @@ const Header = () => {
                 </li>
               </ul>
             </nav>
-            {getToken ?
+            {token ? // Recoil 상태인 token을 사용하여 조건부 렌더링
               <div onClick={handleLogout} className={styles.header__logout}>로그아웃</div>
               :
               <div onClick={navigateTo('/')} className={styles.header__logout}>로그인</div>
