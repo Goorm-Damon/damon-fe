@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './ReviewCard.module.scss'
 import * as reviewService from '../../../../apis/services/reviewService';
 import { useNavigate } from 'react-router-dom';
-import ReactHtmlParser from 'html-react-parser';
+import HTMLReactParser from 'html-react-parser';
 
 
 const ReviewCard = ({ bestReview }) => {
@@ -57,7 +57,7 @@ const ReviewCard = ({ bestReview }) => {
         </div>
       </div>
       <div className={styles.card__content}>
-        {/* {ReactHtmlParser(contents.content).length > 20 ? ReactHtmlParser(contents.content).slice(0, 20) + "..." : ReactHtmlParser(contents.content)} */}
+        {/* {HTMLReactParser(contents.content).length > 20 ? HTMLReactParser(contents.content).slice(0, 20) + "..." : HTMLReactParser(contents.content)} */}
       </div>
     </div>
   )

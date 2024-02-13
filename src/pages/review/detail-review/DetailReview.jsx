@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { reviewInfoState } from '../../../states/review/reviewState';
 import { useRecoilState } from 'recoil';
 import * as reviewService from '../../../apis/services/reviewService';
-import ReactHtmlParser from 'html-react-parser';
+import HTMLReactParser from 'html-react-parser';
 
 
 const DetailReview = () => {
@@ -53,7 +53,7 @@ const DetailReview = () => {
           </div>
           <div className={styles.contents}>
             <p className={styles.category__name}>리뷰 내용</p>
-            <div>{ReactHtmlParser(reviewInfo.content)}</div>
+            <div>{HTMLReactParser(reviewInfo.content)}</div>
           </div>
         </section>
 
