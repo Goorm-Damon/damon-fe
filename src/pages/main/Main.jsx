@@ -9,6 +9,9 @@ import CalendarCard from '../../components/calendar/cards/CalendarCard';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ReviewCard from '../../components/review/cards/best-card/ReviewCard';
 import CommunityCard from '../../components/community/cards/CommunityCard';
+import { useRecoilState } from 'recoil';
+import { userInfostate } from '../../states/user/userInfoState';
+
 
 
 const getToken = localStorage.getItem('token');
@@ -24,6 +27,9 @@ const Main = () => {
   const [bestReviews, setBestReviews] = useState([]);
   const [lightCommus, setLightCommus] = useState([]);
   const [freeCommus, setFreeCommus] = useState([]);
+  const PARAMS = new URL(document.location).searchParams;
+  const accessToken = PARAMS.get("token");
+  const [userInfo, setUserInfo] = useRecoilState(userInfostate);
 
 
   const fetchCalendars = async () => {
@@ -68,13 +74,32 @@ const Main = () => {
     }
   }
 
+  const fetchUser = () => {
+    const PARAMS = new URL(document.location).searchParams;
+    const accessToken = PARAMS.get("token");
+    if (accessToken) {
+      try {
+        setUserInfo({
+          ...userInfo,
+          accessToken: accessToken,
+        });
+        localStorage.setItem('accessToken', accessToken);
+        console.log(userInfo);
 
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else {
+      console.log("로그인 필요");
+    }
+  }
 
   useEffect(() => {
     fetchCalendars();
     fetchBestReviews();
     fetchFreecommu();
     fetchLightCommu();
+    // fetchUser();
   }, []);
 
 
@@ -82,7 +107,7 @@ const Main = () => {
     <div>
       <Banner />
       <div className={styles.main}>
-        {/* {getToken && */}
+        {userInfo.accessToken &&
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
             <h2>최근 일정</h2>
@@ -96,7 +121,7 @@ const Main = () => {
             ))}
           </div>
         </section>
-        {/* } */}
+        }
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
             <h2>베스트 리뷰</h2>

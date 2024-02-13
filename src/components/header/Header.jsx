@@ -6,8 +6,7 @@ import { headerState } from '../../states/header/headerState';
 import "react-datepicker/dist/react-datepicker.module.css"
 import { calendarInfoState, clickedDateState, getCalendarIdState, showCreateState } from '../../states/calendar/calendarInfoState';
 import * as calendarService from '../../apis/services/calendarService';
-
-const getToken = localStorage.getItem('token');
+import { userInfostate } from '../../states/user/userInfoState';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -22,6 +21,7 @@ const Header = () => {
   const calendarId = useRecoilValue(getCalendarIdState);
   const [calendar, setCalendar] = useRecoilState(calendarInfoState);
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태를 관리하는 변수
+  const [userInfo, setUserInfo] = useRecoilState(userInfostate);
 
   // 수정 모드를 토글하는 함수
   const toggleEditing = () => {
@@ -47,6 +47,29 @@ const Header = () => {
     navigate(path);
   };
 
+  const fetchUser = () => {
+    const PARAMS = new URL(document.location).searchParams;
+    const accessToken = PARAMS.get("token");
+    if (accessToken) {
+      try {
+        setUserInfo({
+          ...userInfo,
+          accessToken: accessToken,
+        });
+        localStorage.setItem('accessToken', accessToken);
+        console.log(userInfo);
+
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else {
+      console.log("로그인 필요");
+    }
+  }
+
+  useEffect(() => {
+    fetchUser();
+  },[])
 
   // 현재 경로에 따라 헤더 상태 업데이트
   useEffect(() => {
@@ -59,11 +82,6 @@ const Header = () => {
       setHeaderSettings({ showDefalut: true, showFeatures: false, showDetail: false, showModify: false });
     }
   }, [location, setHeaderSettings]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
-  }
 
   const handleSubmit = async () => {
     try {
@@ -127,6 +145,13 @@ const Header = () => {
       console.error(error);
     }
   }
+  const handleLogout = () => {
+    setUserInfo(prevUserInfo => ({
+      ...prevUserInfo,
+      accessToken: '' // 또는 undefined, null 등 필요에 따라
+    }));
+    navigate('/');
+  };
 
   return (
     <section className={styles.header}>
@@ -173,7 +198,7 @@ const Header = () => {
                 </li>
               </ul>
             </nav>
-            {getToken ?
+            {userInfo.accessToken ?
               <div onClick={handleLogout} className={styles.header__logout}>로그아웃</div>
               :
               <div onClick={navigateTo('/login')} className={styles.header__logout}>로그인</div>
