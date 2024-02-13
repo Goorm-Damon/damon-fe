@@ -144,7 +144,7 @@ const Header = () => {
       ...prevUserInfo,
       accessToken: '' // 또는 undefined, null 등 필요에 따라
     }));
-    navigate('/main');
+    navigate('/');
   };
 
   return (
