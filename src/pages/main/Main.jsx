@@ -75,8 +75,10 @@ const Main = () => {
   }
 
   const fetchUser = () => {
+    const PARAMS = new URL(document.location).searchParams;
+    const accessToken = PARAMS.get("token");
     if (accessToken) {
-      try {  
+      try {
         setUserInfo({
           ...userInfo,
           accessToken: accessToken,
@@ -92,8 +94,6 @@ const Main = () => {
     }
   }
 
-
-
   useEffect(() => {
     fetchCalendars();
     fetchBestReviews();
@@ -107,7 +107,7 @@ const Main = () => {
     <div>
       <Banner />
       <div className={styles.main}>
-        {/* {getToken && */}
+        {userInfo.accessToken &&
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
             <h2>최근 일정</h2>
@@ -121,7 +121,7 @@ const Main = () => {
             ))}
           </div>
         </section>
-        {/* } */}
+        }
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
             <h2>베스트 리뷰</h2>

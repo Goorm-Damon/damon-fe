@@ -1,5 +1,6 @@
 import React from 'react'
-import KakaoLogin from "react-kakao-login";
+import styles from './SocialKakao.module.scss'
+import kakaoLogo from '../../../assets/Kakao_Logo.png';
 
 const SocialKakao = () => {
 
@@ -11,8 +12,11 @@ const SocialKakao = () => {
   }
 
   return (
-    <div>
-      <button onClick={handleLogin}>카카오 로그인</button>
+    <div className={styles.container}>
+      <button className={styles.kakao__btn} onClick={handleLogin}>
+      <img src={kakaoLogo} alt="Kakao_logo" className={styles.kakao__logo} />
+        <p>카카오로 시작하기</p>
+      </button>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
-import KakaoLogin from "react-kakao-login";
+import styles from './SocialNaver.module.scss'
+import naverLogo from '../../../assets/naver_logo.png'
 
 const SocialNaver = () => {
 
@@ -18,8 +19,11 @@ const SocialNaver = () => {
   }
 
   return (
-    <div>
-      <button onClick={handleLogin}>네이버 로그인</button>
+    <div className={styles.container}>
+      <button className={styles.naver__btn} onClick={handleLogin}>
+      <img src={naverLogo} alt="naver_logo" className={styles.naver__logo} />
+        <p>네이버로 시작하기</p>
+      </button>
     </div>
   )
 }
