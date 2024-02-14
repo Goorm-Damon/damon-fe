@@ -104,6 +104,11 @@ textarea {
   display: flex;
   float: right;
   margin-top: 10px;
+  &:disabled {
+    // disabled 상태일 때의 스타일
+    background-color: lightgrey;
+    color: rgb(255, 255, 255);
+  }
 }
 
 .ck.ck-editor__editable:not(.ck-editor__nested-editable) {

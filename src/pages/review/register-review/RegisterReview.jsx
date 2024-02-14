@@ -39,7 +39,7 @@ const RegisterReview = () => {
     freeTags: [],
     content: "",
   });
-  
+
 
   function uploadFile(e) {
     const files = Array.from(e.target.files); // Convert FileList to array
@@ -98,7 +98,7 @@ const RegisterReview = () => {
       if (response.success) {
         alert("리뷰 등록되었습니다.");
         //상세 리뷰 페이지로 이동해야함.
-        navigate(`/review/${response.data.id}`, {state: {reviewId:response.data.id}});
+        navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
 
       } else {
         console.error(response.error);
@@ -120,12 +120,12 @@ const RegisterReview = () => {
         <h1 className={styles.page__title}>리뷰 작성하기</h1>
         <section className={styles.page__contents}>
           <div className={styles.review__title}>
-            <p className={styles.category__name}>리뷰 제목</p>
+            <p className={styles.category__name}>리뷰 제목<span> *</span></p>
             <input name="title" type="text" value={reviewInfo.title} onChange={handleInputChange} placeholder="제목을 입력해주세요" className={styles.inputs} />
           </div>
 
           <div className={styles.review__dates}>
-            <p className={styles.category__name}>여행 기간</p>
+            <p className={styles.category__name}>여행 기간<span> *</span></p>
             <DatePicker
               selectsRange={true}
               startDate={reviewInfo.startDate}
@@ -137,7 +137,7 @@ const RegisterReview = () => {
           </div>
           <div className={styles.area__cost}>
             <div className={styles.review__area}>
-              <p className={styles.category__name}>지역 카테고리</p>
+              <p className={styles.category__name}>지역 카테고리<span> *</span></p>
               <Select
                 onChange={handleAreaChange}
                 options={areas}
@@ -148,7 +148,7 @@ const RegisterReview = () => {
 
             <div className={styles.review__expense}>
               <p className={styles.category__name}>총 경비</p>
-              <input name="cost" type="text" value={reviewInfo.cost} onChange={handleInputChange} className={styles.inputs}/>
+              <input name="cost" type="text" value={reviewInfo.cost} onChange={handleInputChange} className={styles.inputs} />
             </div>
           </div>
           <div className={styles.review__places}>
@@ -199,15 +199,7 @@ const RegisterReview = () => {
 
           </div>
           <div className={styles.review__content}>
-            <p className={styles.category__name}>리뷰 내용</p>
-            {/* <textarea
-            placeholder='메모를 입력해주세요'
-            cols="70"
-            rows="20"
-            name="content"
-            onChange={handleInputChange}
-            value={reviewInfo.content}
-          /> */}
+            <p className={styles.category__name}>리뷰 내용<span> *</span></p>
             <CKEditor
               className={styles.editor}
               editor={ClassicEditor}
@@ -247,7 +239,14 @@ const RegisterReview = () => {
             />
           </div>
         </div>
-        <button className={styles.enroll__btn} type="button" onClick={handleSubmit}>등록하기</button>
+        <button
+          className={styles.enroll__btn}
+          type="button"
+          onClick={handleSubmit}
+          disabled={!reviewInfo.title || !reviewInfo.area || !reviewInfo.startDate || !reviewInfo.endDate || !reviewInfo.content}
+        >
+          등록하기
+        </button>
       </div>
     </div>
   );
