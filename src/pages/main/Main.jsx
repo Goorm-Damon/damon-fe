@@ -108,19 +108,19 @@ const Main = () => {
       <Banner />
       <div className={styles.main}>
         {userInfo.accessToken &&
-        <section className={styles.preview__container}>
-          <div className={styles.preview__title}>
-            <h2>최근 일정</h2>
-            <a onClick={navigateTo('/my/calendar')}>더 보기 {'>'}</a>
-          </div>
-          <div className={styles.calendars__container}>
-            {calendars.content && calendars.content.slice(0, 4).map((calendar, i) => (
-              <div className={styles.calendar__card} key={i}>
-                <CalendarCard calendar={calendar} />
-              </div>
-            ))}
-          </div>
-        </section>
+          <section className={styles.preview__container}>
+            <div className={styles.preview__title}>
+              <h2>최근 일정</h2>
+              <a onClick={navigateTo('/my/calendar')}>더 보기 {'>'}</a>
+            </div>
+            <div className={styles.calendars__container}>
+              {calendars.content && calendars.content.slice(0, 4).map((calendar, i) => (
+                <div className={styles.calendar__card} key={i}>
+                  <CalendarCard calendar={calendar} />
+                </div>
+              ))}
+            </div>
+          </section>
         }
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
@@ -141,22 +141,27 @@ const Main = () => {
               <h2>자유게시판</h2>
               <a>더 보기 {'>'}</a>
             </div>
+            <div className={styles.commu__container}>
             {freeCommus.content && freeCommus.content.slice(0, 4).map((freeCommu, i) => (
               <div className={styles.commu__card} key={i}>
                 <CommunityCard data={freeCommu} />
               </div>
             ))}
+            </div>
           </section>
           <section className={styles.preview__container2}>
             <div className={styles.preview__title}>
               <h2>최근 번개 모임</h2>
               <a>더 보기 {'>'}</a>
             </div>
-            {lightCommus.content && lightCommus.content.slice(0, 4).map((lightCommu, i) => (
-              <div className={styles.commu__card} key={i}>
-                <CommunityCard data={lightCommu} />
-              </div>
-            ))}
+            <div className={styles.commu__container}>
+              {lightCommus.content && lightCommus.content.slice(0, 4).map((lightCommu, i) => (
+                <div className={styles.commu__card} key={i}>
+                  <CommunityCard data={lightCommu} />
+                </div>
+              ))}
+            </div>
+
           </section>
         </div>
 

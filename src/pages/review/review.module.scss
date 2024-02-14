@@ -8,25 +8,30 @@
   margin: 0 auto;
   overflow-x: hidden;
 }
+
 .review {
   width: 100%;
+
   input {
     height: 50px;
     padding: 20px;
     width: 100%;
     border-radius: 5px;
     border: 1px solid lightgray;
+    outline: none;
   }
 }
 
 .review__top {
   margin-top: 45px;
 }
+
 .editLine {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
   button {
     border: none;
     cursor: pointer;
