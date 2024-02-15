@@ -153,7 +153,8 @@ textarea {
     border-radius: 10px;
     cursor: pointer;
     align-items: center;
-    justify-content: center
+    justify-content: center;
+    padding: 70px;
   }
   input {
     display: none;
@@ -164,6 +165,7 @@ textarea {
     flex-direction: row;
     gap: 10px;
     margin: 20px 0px;
+    overflow: scroll;
   }
   img {
     width: 140px;

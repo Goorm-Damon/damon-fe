@@ -12,6 +12,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FaMinus } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import { BsPlusCircleDotted } from "react-icons/bs";
+import axios from 'axios';
 
 const areas = [
   { value: 'GAPYEONG', label: "가평" },
@@ -40,9 +41,27 @@ const RegisterReview = () => {
     content: "",
   });
 
+  const onUploadImage = async (e) => { 
+    const formData = new FormData();
+    if(postImg) {
+      for(let i=0; i<postImg.length(); i++) {
+        formData.append("file", formData[i]);
+      }
+
+      axios.post('http://localhost:8080/api/upload', formData)
+      .then(response => {
+        // 이미지 업로드 성공 시 처리
+        console.log("이미지 업로드 성공");
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }
+  };
 
   function uploadFile(e) {
     const files = Array.from(e.target.files); // Convert FileList to array
+    setPostImg(files);
     const fileUrls = [];
 
     files.forEach(file => {
@@ -93,7 +112,7 @@ const RegisterReview = () => {
 
   const handleSubmit = async () => {
     try {
-      console.log(reviewInfo);
+      onUploadImage();
       const response = await reviewService.createReview(reviewInfo);
       if (response.success) {
         alert("리뷰 등록되었습니다.");
@@ -110,8 +129,8 @@ const RegisterReview = () => {
   }
 
   useEffect(() => {
-    console.log(reviewInfo.freeTags);
-  }, [reviewInfo.freeTags])
+    console.log(postImg);
+  }, [postImg])
 
 
   return (

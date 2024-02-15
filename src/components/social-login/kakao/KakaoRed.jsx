@@ -44,7 +44,7 @@ const KakaoRed = () => {
       });
 
       setAccessTokenFetching(false); // Reset fetching to false
-      navigate("/main");
+      navigate("/");
     } catch (error) {
       console.error("Error:", error);
       setAccessTokenFetching(false); // Reset fetching even in case of error

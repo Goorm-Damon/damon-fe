@@ -107,7 +107,7 @@ const Main = () => {
     <div>
       <Banner />
       <div className={styles.main}>
-        {userInfo.accessToken &&
+        {/* {userInfo.accessToken &&
           <section className={styles.preview__container}>
             <div className={styles.preview__title}>
               <h2>최근 일정</h2>
@@ -163,7 +163,7 @@ const Main = () => {
             </div>
 
           </section>
-        </div>
+        </div> */}
 
       </div>
     </div>
