@@ -23,10 +23,9 @@ function App() {
   
   return (
     <Routes>
-      {/* <Route path='/login' element={<Login />} /> */}
       <Route path='login' element={<Login />} />
-      <Route path='/oauth2/authorization/kakao' element={<KakaoRed />} />
-      <Route path='/oauth2/authorization/naver' element={<NaverRed />} />
+      <Route path='/login/oauth2/code/kakao' element={<KakaoRed />} />
+      <Route path='/login/oauth2/code/naver' element={<NaverRed />} />
 
       <Route path='/' element={<Layout />}>
         <Route index element={<Main />} />

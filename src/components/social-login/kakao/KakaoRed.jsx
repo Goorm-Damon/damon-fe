@@ -22,13 +22,9 @@ const KakaoRed = () => {
 
     try {
       setAccessTokenFetching(true); // Set fetching to true
-
       const response = await axios.post(
         // "http://13.124.113.56/api/auth/kakao",
-        "http://localhost:8080/login/oauth2/code/kakao",
-        {
-          KAKAO_CODE,
-        },
+        `http://localhost:8080/login/oauth2/code/kakao?${KAKAO_CODE}`,
         {
           headers: {
             "Content-Type": "application/json",
