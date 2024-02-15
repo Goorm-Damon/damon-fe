@@ -8,7 +8,7 @@ const KakaoRed = () => {
 
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
-  const PARAMS = new URL(document.location).searchParams;
+  const PARAMS = new URL(window.location.href).searchParams;
   const KAKAO_CODE = PARAMS.get("code");
   const [accessTokenFetching, setAccessTokenFetching] = useState(false);
 
@@ -17,17 +17,15 @@ const KakaoRed = () => {
   // Access Token 받아오기
   const getAccessToken = async () => {
     if (accessTokenFetching) return; // Return early if fetching
-
-    console.log("getAccessToken 호출");
-
     try {
       setAccessTokenFetching(true); // Set fetching to true
-      const response = await axios.post(
+      const response = await axios.GET(
         // "http://13.124.113.56/api/auth/kakao",
         `http://localhost:8080/login/oauth2/code/kakao?${KAKAO_CODE}`,
         {
           headers: {
             "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "`http://localhost:3000"
           },
         }
       );
