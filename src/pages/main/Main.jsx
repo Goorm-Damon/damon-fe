@@ -75,8 +75,7 @@ const Main = () => {
   }
 
   const fetchUser = () => {
-    const PARAMS = new URL(document.location).searchParams;
-    const accessToken = PARAMS.get("token");
+    
     if (accessToken) {
       try {
         setUserInfo({
@@ -95,11 +94,13 @@ const Main = () => {
   }
 
   useEffect(() => {
-    fetchCalendars();
-    fetchBestReviews();
-    fetchFreecommu();
-    fetchLightCommu();
-    // fetchUser();
+    // fetchCalendars();
+    // fetchBestReviews();
+    // fetchFreecommu();
+    // fetchLightCommu();
+    // // fetchUser();
+    console.log("메인 화면으로 이동");
+
   }, []);
 
 

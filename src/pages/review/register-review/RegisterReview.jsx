@@ -44,9 +44,9 @@ const RegisterReview = () => {
   const onUploadImage = async (e) => { 
     const formData = new FormData();
     if(postImg) {
-      for(let i=0; i<postImg.length(); i++) {
-        formData.append("file", formData[i]);
-      }
+      postImg.forEach((file) => {
+        formData.append("file", file);
+      });
 
       axios.post('http://localhost:8080/api/upload', formData)
       .then(response => {
