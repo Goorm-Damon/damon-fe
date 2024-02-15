@@ -25,9 +25,9 @@ const KakaoRed = () => {
 
       const response = await axios.post(
         // "http://13.124.113.56/api/auth/kakao",
-        "http://localhost:8080/kakaoLogin",
+        "http://localhost:8080/login/oauth2/code/kakao",
         {
-          authorizationCode: KAKAO_CODE,
+          KAKAO_CODE,
         },
         {
           headers: {
