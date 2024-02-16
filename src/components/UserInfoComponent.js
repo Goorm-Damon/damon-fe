@@ -8,7 +8,7 @@ const UserInfoComponent = ({ serverToken }) => {
   const fetchUserInfo = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:8080/kakao/info', {
+      const response = await axios.get('http://localhost:8080/api/kakao/info', {
         headers: {
           Authorization: serverToken
         }

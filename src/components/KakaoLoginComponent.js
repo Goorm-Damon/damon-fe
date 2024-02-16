@@ -16,7 +16,7 @@ const KakaoLoginComponent = ({ onSetToken }) => {
   // URL에서 받은 코드를 사용하여 서버로 로그인 요청을 보냄
   const handleCodeExchange = async (code) => {
     try {
-      const response = await axios.get(`http://localhost:8080/kakao/login?code=${code}`);
+      const response = await axios.get(`http://localhost:8080/api/kakao/login?code=${code}`);
       const serverToken = response.data;
       // 서버에서 받은 토큰을 부모 컴포넌트로 전달하여 상태를 업데이트합니다.
       onSetToken(serverToken);
