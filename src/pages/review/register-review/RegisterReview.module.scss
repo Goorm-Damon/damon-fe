@@ -7,7 +7,6 @@
   margin-top: 30px;
 
 
-
   span {
     color: rgb(215, 87, 87);
     font-size: 12px;
@@ -16,11 +15,21 @@
 
 }
 
-input {
+.inputs {
   border: 1px solid lightgray;
   padding: 10px;
   border-radius: 5px;
   width: 100%;
+}
+
+.page__title {
+  margin-bottom: 30px;
+}
+
+.page__contents {
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .review__title {
@@ -95,6 +104,11 @@ textarea {
   display: flex;
   float: right;
   margin-top: 10px;
+  &:disabled {
+    // disabled 상태일 때의 스타일
+    background-color: lightgrey;
+    color: rgb(255, 255, 255);
+  }
 }
 
 .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
@@ -139,7 +153,8 @@ textarea {
     border-radius: 10px;
     cursor: pointer;
     align-items: center;
-    justify-content: center
+    justify-content: center;
+    padding: 70px;
   }
   input {
     display: none;
@@ -150,10 +165,15 @@ textarea {
     flex-direction: row;
     gap: 10px;
     margin: 20px 0px;
+    overflow: scroll;
   }
   img {
     width: 140px;
     height: 140px;
     border-radius: 5px;
   }
+}
+
+.category__name {
+  font-weight: 600;
 }

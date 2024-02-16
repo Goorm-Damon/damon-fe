@@ -4,6 +4,18 @@ import * as calendarService from '../../../apis/services/calendarService';
 import styles from './MyCalendar.module.scss';
 import { useNavigate } from 'react-router-dom';
 
+const img_url = {
+  'GAPYEONG': 'regions-img/gapyeong.svg',
+  'GANGWON': 'regions-img/gangwon.svg',
+  'GEYONGGI': 'regions-img/incheon.svg',
+  'INCHEON': 'regions-img/incheon.svg',
+  'SEOUL': 'regions-img/seoul.svg',
+  'CHUNGCHEONG': 'regions-img/chungcheong.svg',
+  'GYEONGSANG': 'regions-img/gyeongsang.svg',
+  'JEOLLLA': 'regions-img/jeolla.svg',
+  'JEJU': 'regions-img/jeju.svg',
+};
+
 const MyCalendar = () => {
   // Assuming calendars will have a structure { totalElements: number, content: array }
   const [calendars, setCalendars] = useState({ totalElements: 0, content: [] });
@@ -65,7 +77,9 @@ const MyCalendar = () => {
 
   useEffect(() => {
     console.log(selectedItems);
-  }, [selectedItems]);
+    console.log(calendars);
+
+  }, [selectedItems,calendars]);
 
   return (
     <div>
@@ -87,24 +101,29 @@ const MyCalendar = () => {
           </div>
         </div>
         {calendars.content.map((item, i) => (
-          <div
-            className={styles.calendar__card}
-            key={i}
-            onClick={handleDetails(item.calendarId)}
-          >
-            <div className={styles.title}>
-              {edit && (
-                <input
-                  type="checkbox"
-                  id={item.calendarId}
-                  checked={selectedItems.calendarIds.includes(item.calendarId)}
-                  onChange={handleCheckboxChange(item.calendarId)}
-                />
-              )}
-              {item.title}
-            </div>
-            <div>
-              {item.startDate} ~ {item.endDate}
+          <div style={{display:'flex'}}>
+            {edit && (
+              <input
+                type="checkbox"
+                id={item.calendarId}
+                checked={selectedItems.calendarIds.includes(item.calendarId)}
+                onChange={handleCheckboxChange(item.calendarId)}
+              />
+            )}
+            <div
+              className={`${styles.calendar__card} ${edit ? styles.defaultCursor : ''}`}
+              key={i}
+              onClick={handleDetails(item.calendarId)}
+            >
+              <img src={img_url[item.area]} className={styles.area__img} />
+
+              <div className={styles.title}>
+
+                {item.title}
+              </div>
+              <div>
+                {item.startDate} ~ {item.endDate}
+              </div>
             </div>
           </div>
         ))}

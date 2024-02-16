@@ -1,6 +1,6 @@
 .calendar {
   max-width: 1200px;
-  padding: 0 20px;
+  padding: 0 20%;
   padding-bottom: 100px;
   margin: 0 auto;
   overflow-x: hidden;
@@ -45,4 +45,14 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.defaultCursor {
+  cursor: default;
+}
+
+.area__img {
+  // width: 200px;
 }

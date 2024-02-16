@@ -1,0 +1,21 @@
+.naver__btn {
+  border-radius: 10px;
+  border: none;
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  background-color: #03C75A;
+  color: white;
+  cursor: pointer;
+
+  p {
+    margin-right: 30px;
+  }
+}
+
+.naver__logo {
+  width: 30px;
+}

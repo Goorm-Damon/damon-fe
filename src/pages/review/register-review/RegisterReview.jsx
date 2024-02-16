@@ -12,6 +12,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FaMinus } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import { BsPlusCircleDotted } from "react-icons/bs";
+import axios from 'axios';
 
 const areas = [
   { value: 'GAPYEONG', label: "가평" },
@@ -40,8 +41,27 @@ const RegisterReview = () => {
     content: "",
   });
 
+  const onUploadImage = async (e) => { 
+    const formData = new FormData();
+    if(postImg) {
+      postImg.forEach((file) => {
+        formData.append("file", file);
+      });
+
+      axios.post('http://localhost:8080/api/upload', formData)
+      .then(response => {
+        // 이미지 업로드 성공 시 처리
+        console.log("이미지 업로드 성공");
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }
+  };
+
   function uploadFile(e) {
     const files = Array.from(e.target.files); // Convert FileList to array
+    setPostImg(files);
     const fileUrls = [];
 
     files.forEach(file => {
@@ -92,11 +112,13 @@ const RegisterReview = () => {
 
   const handleSubmit = async () => {
     try {
-      console.log(reviewInfo);
+      onUploadImage();
       const response = await reviewService.createReview(reviewInfo);
       if (response.success) {
         alert("리뷰 등록되었습니다.");
         //상세 리뷰 페이지로 이동해야함.
+        navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
+
       } else {
         console.error(response.error);
       }
@@ -107,116 +129,111 @@ const RegisterReview = () => {
   }
 
   useEffect(() => {
-    console.log(reviewInfo.freeTags);
-  }, [reviewInfo.freeTags])
+    console.log(postImg);
+  }, [postImg])
 
 
   return (
     <div>
       <div className={styles.page}>
         <h1 className={styles.page__title}>리뷰 작성하기</h1>
+        <section className={styles.page__contents}>
+          <div className={styles.review__title}>
+            <p className={styles.category__name}>리뷰 제목<span> *</span></p>
+            <input name="title" type="text" value={reviewInfo.title} onChange={handleInputChange} placeholder="제목을 입력해주세요" className={styles.inputs} />
+          </div>
 
-        <div className={styles.review__title}>
-          <p>리뷰 제목 <span className={styles.required}>*필수 입력사항입니다.</span></p>
-          <input name="title" type="text" value={reviewInfo.title} onChange={handleInputChange} placeholder="제목을 입력해주세요" />
-        </div>
-
-        <div className={styles.review__dates}>
-          <p>여행 기간 <span className={styles.required}>*필수 입력사항입니다.</span></p>
-          <DatePicker
-            selectsRange={true}
-            startDate={reviewInfo.startDate}
-            endDate={reviewInfo.endDate}
-            onChange={handleDateChange}
-            dateFormat="yyyy/MM/dd"
-          />
-        </div>
-        <div className={styles.area__cost}>
-          <div className={styles.review__area}>
-            <p>지역 카테고리 <span className={styles.required}>*필수 입력사항입니다.</span></p>
-            <Select
-              onChange={handleAreaChange}
-              options={areas}
-              placeholder="지역을 선택해주세요"
-              isClearable
+          <div className={styles.review__dates}>
+            <p className={styles.category__name}>여행 기간<span> *</span></p>
+            <DatePicker
+              selectsRange={true}
+              startDate={reviewInfo.startDate}
+              endDate={reviewInfo.endDate}
+              onChange={handleDateChange}
+              dateFormat="yyyy/MM/dd"
+              className={styles.inputs}
             />
           </div>
-
-          <div className={styles.review__expense}>
-            <p>총 경비</p>
-            <input name="cost" type="text" value={reviewInfo.cost} onChange={handleInputChange} />
-          </div>
-        </div>
-        <div className={styles.review__places}>
-          <div className={styles.places__title}>
-            <p>추천 장소</p>
-            <button type="button" onClick={handleAddPlace}>+ 장소 추가</button>
-          </div>
-
-          {reviewInfo.suggests.map((place, index) => (
-            <div key={index} className={styles.add_place}>
-              <input
-                type="text"
-                value={place}
-                onChange={(e) => handlePlaceChange(e.target.value, index)}
-                placeholder='추천하고 싶은 장소를 입력해주세요'
+          <div className={styles.area__cost}>
+            <div className={styles.review__area}>
+              <p className={styles.category__name}>지역 카테고리<span> *</span></p>
+              <Select
+                onChange={handleAreaChange}
+                options={areas}
+                placeholder="지역을 선택해주세요"
+                isClearable
               />
-              <div className={styles.minus__btn} type="button" onClick={() => handleRemovePlace(index)}><FaMinus /></div>
             </div>
-          ))}
 
-        </div>
-        <div className={styles.review__images}>
-          <p>이미지 추가하기</p>
+            <div className={styles.review__expense}>
+              <p className={styles.category__name}>총 경비</p>
+              <input name="cost" type="text" value={reviewInfo.cost} onChange={handleInputChange} className={styles.inputs} />
+            </div>
+          </div>
+          <div className={styles.review__places}>
+            <div className={styles.places__title}>
+              <p className={styles.category__name}>추천 장소</p>
+              <button type="button" onClick={handleAddPlace}>+ 장소 추가</button>
+            </div>
 
-          <div className={styles.preview__images}>
-            <label for="imgs">
-              <div>
-                <BsPlusCircleDotted />
+            {reviewInfo.suggests.map((place, index) => (
+              <div key={index} className={styles.add_place}>
+                <input
+                  type="text"
+                  value={place}
+                  onChange={(e) => handlePlaceChange(e.target.value, index)}
+                  placeholder='추천하고 싶은 장소를 입력해주세요'
+                  className={styles.inputs}
+                />
+                <div className={styles.minus__btn} type="button" onClick={() => handleRemovePlace(index)}><FaMinus /></div>
               </div>
-            </label>
-            <input accept=".png, .svg, .jpeg, .jpg" type="file"
-              id='imgs'
-              multiple
-              onChange={uploadFile}
-            />
-            {
-              previewImg.map((imgSrc, i) =>
-                <div key={i}>
-                  {/* <button type="button">
+            ))}
+
+          </div>
+          <div className={styles.review__images}>
+            <p className={styles.category__name}>이미지 추가하기</p>
+
+            <div className={styles.preview__images}>
+              <label for="imgs">
+                <div>
+                  <BsPlusCircleDotted />
+                </div>
+              </label>
+              <input accept=".png, .svg, .jpeg, .jpg" type="file"
+                id='imgs'
+                multiple
+                onChange={uploadFile}
+              />
+              {
+                previewImg.map((imgSrc, i) =>
+                  <div key={i}>
+                    {/* <button type="button">
                   <img alt="업로드 이미지 제거" src="src/assets/icon-close-button.svg" />
                 </button> */}
-                  <img alt={imgSrc} src={imgSrc} />
-                </div>
-              )
-            }
-          </div>
+                    <img alt={imgSrc} src={imgSrc} />
+                  </div>
+                )
+              }
+            </div>
 
-        </div>
-        <div className={styles.review__content}>
-          <p>리뷰 내용</p>
-          {/* <textarea
-            placeholder='메모를 입력해주세요'
-            cols="70"
-            rows="20"
-            name="content"
-            onChange={handleInputChange}
-            value={reviewInfo.content}
-          /> */}
-          <CKEditor
-            className={styles.editor}
-            editor={ClassicEditor}
-            name="content"
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              setReviewInfo(prev => ({ ...prev, content: data }));
-            }}
-          />
-        </div>
+          </div>
+          <div className={styles.review__content}>
+            <p className={styles.category__name}>리뷰 내용<span> *</span></p>
+            <CKEditor
+              className={styles.editor}
+              editor={ClassicEditor}
+              name="content"
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setReviewInfo(prev => ({ ...prev, content: data }));
+              }}
+            />
+          </div>
+        </section>
         <div className={styles.tags__container}>
           {reviewInfo.freeTags.map((tag, index) => (
             <div key={index} className={styles.tags}>
-              <p>#{tag}</p>
+              <p># {tag}</p>
               <div className={styles.del__btn} onClick={() => handleRemoveTag(index)}><IoCloseOutline /></div>
             </div>
           ))}
@@ -241,7 +258,14 @@ const RegisterReview = () => {
             />
           </div>
         </div>
-        <button className={styles.enroll__btn} type="button" onClick={handleSubmit}>등록하기</button>
+        <button
+          className={styles.enroll__btn}
+          type="button"
+          onClick={handleSubmit}
+          disabled={!reviewInfo.title || !reviewInfo.area || !reviewInfo.startDate || !reviewInfo.endDate || !reviewInfo.content}
+        >
+          등록하기
+        </button>
       </div>
     </div>
   );

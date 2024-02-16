@@ -7,7 +7,7 @@ async function call(apiUrl, method, requestData = {}) {
         const response = await axios({
             url: apiUrl,
             method,
-            // headers : {'Authorization' : localStorage.getItem('token')},
+            headers : {'Authorization' : localStorage.getItem('accessToken')},
             ...requestData
         });
         return handleResponse(response);

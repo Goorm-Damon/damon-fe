@@ -5,11 +5,12 @@
   margin: 0 auto;
   overflow-x: hidden;
 }
+
 .preview__container {
   margin-top: 45px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 15px;
 }
 
 .preview__container2 {
@@ -24,6 +25,7 @@
   align-content: flex-end;
   align-items: stretch;
   flex-wrap: wrap;
+
   h2 {
     font-size: 26px;
     font-weight: 700;
@@ -31,7 +33,8 @@
     line-height: 1.5;
     word-break: keep-all;
   }
-  a{
+
+  a {
     color: #667380;
     font-size: 16px;
     font-weight: 700;
@@ -46,7 +49,7 @@
 .card__area {
   display: grid;
   gap: 32px;
-  
+
 }
 
 .boards {
@@ -68,6 +71,8 @@
   height: 250px;
 }
 
-.commu__card {
-  
+.commu__container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }

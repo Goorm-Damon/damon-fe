@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styles from './CommunityCard.module.scss'
 import * as communityService from '../../../apis/services/communityService';
-import { TbMessageCircle } from "react-icons/tb";
-import { CiHeart } from "react-icons/ci";
+import { FaComment } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa6";
 
 const CommunityCard = ({ data }) => {
 
@@ -42,19 +42,18 @@ const CommunityCard = ({ data }) => {
       <div className={styles.card}>
         <div className={styles.card__contents}>
           <div className={styles.title}>
-            {data.title && (data.title.length > 10 ? data.title.slice(0, 10) + "..." : data.title)}
+            {data.title && (data.title.length > 20 ? data.title.slice(0, 20) + "..." : data.title)}
           </div>
-          <div className={styles.content}>
+          {/* <div className={styles.content}>
             {data.content > 10 ? contents.content.slice(0, 10) + "..." : contents.content}
-          </div>
+          </div> */}
         </div>
 
         <div className={styles.reaction}>
-          <p><TbMessageCircle /></p>{contents.likes && contents.likes.length}
-          <p><CiHeart /></p>{contents.comments & contents.comments.length}
+          <p><FaHeart color='#F05D67'/> {contents.comments & contents.comments.length}</p>
+          <p><FaComment color='#5996DD'/> {contents.likes && contents.likes.length}</p>
         </div>
       </div>
-      <hr />
     </div>
   )
 }

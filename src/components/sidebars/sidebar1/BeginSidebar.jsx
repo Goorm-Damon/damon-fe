@@ -31,13 +31,6 @@ const BeginSidebar = ({ onSwitch }) => {
 
   const navigate = useNavigate();
 
-  // const handleConfirmAndSwitch = () => {
-  //   handleConfirm();
-  //   navigate('/register/calender/step2')
-  // };
-
-
-
   const handleConfirm = () => {
 
     setCalenderInfo((prev) => ({

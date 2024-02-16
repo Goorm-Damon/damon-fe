@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styles from './ReviewCard.module.scss'
 import * as reviewService from '../../../../apis/services/reviewService';
+import { useNavigate } from 'react-router-dom';
+import HTMLReactParser from 'html-react-parser';
 
 
 const ReviewCard = ({ bestReview }) => {
@@ -23,6 +25,12 @@ const ReviewCard = ({ bestReview }) => {
       reviewComments: [],
     });
 
+  const navigate = useNavigate();
+
+  const handleDatails = (reviewId) => () => {
+    navigate(`/review/${reviewId}`, { state: { reviewId: reviewId } });
+  }
+
   const fetchDetailReview = async () => {
     try {
       const response = await reviewService.getDetailReview(bestReview.id);
@@ -38,7 +46,7 @@ const ReviewCard = ({ bestReview }) => {
 
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={handleDatails(bestReview.id)}>
       {/* <img src={} /> */}
       <div className={styles.card__title}>
         <div className={styles.title}>
@@ -49,7 +57,7 @@ const ReviewCard = ({ bestReview }) => {
         </div>
       </div>
       <div className={styles.card__content}>
-        {contents.content.length > 20 ? contents.content.slice(0, 20) + "..." : contents.content}
+        {/* {HTMLReactParser(contents.content).length > 20 ? HTMLReactParser(contents.content).slice(0, 20) + "..." : HTMLReactParser(contents.content)} */}
       </div>
     </div>
   )

@@ -9,6 +9,9 @@ import CalendarCard from '../../components/calendar/cards/CalendarCard';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ReviewCard from '../../components/review/cards/best-card/ReviewCard';
 import CommunityCard from '../../components/community/cards/CommunityCard';
+import { useRecoilState } from 'recoil';
+import { userInfostate } from '../../states/user/userInfoState';
+
 
 
 const getToken = localStorage.getItem('token');
@@ -24,6 +27,9 @@ const Main = () => {
   const [bestReviews, setBestReviews] = useState([]);
   const [lightCommus, setLightCommus] = useState([]);
   const [freeCommus, setFreeCommus] = useState([]);
+  const PARAMS = new URL(document.location).searchParams;
+  const accessToken = PARAMS.get("token");
+  const [userInfo, setUserInfo] = useRecoilState(userInfostate);
 
 
   const fetchCalendars = async () => {
@@ -68,13 +74,33 @@ const Main = () => {
     }
   }
 
+  const fetchUser = () => {
+    
+    if (accessToken) {
+      try {
+        setUserInfo({
+          ...userInfo,
+          accessToken: accessToken,
+        });
+        localStorage.setItem('accessToken', accessToken);
+        console.log(userInfo);
 
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else {
+      console.log("로그인 필요");
+    }
+  }
 
   useEffect(() => {
-    fetchCalendars();
-    fetchBestReviews();
-    fetchFreecommu();
-    fetchLightCommu();
+    // fetchCalendars();
+    // fetchBestReviews();
+    // fetchFreecommu();
+    // fetchLightCommu();
+    // // fetchUser();
+    console.log("메인 화면으로 이동");
+
   }, []);
 
 
@@ -82,28 +108,28 @@ const Main = () => {
     <div>
       <Banner />
       <div className={styles.main}>
-        {/* {getToken && */}
-        <section className={styles.preview__container}>
-          <div className={styles.preview__title}>
-            <h2>최근 일정</h2>
-            <a onClick={navigateTo('/my/calendar')}>더 보기 {'>'}</a>
-          </div>
-          <div className={styles.calendars__container}>
-            {calendars.content && calendars.content.slice(0, 4).map((calendar, i) => (
-              <div className={styles.calendar__card} key={i}>
-                <CalendarCard calendar={calendar} />
-              </div>
-            ))}
-          </div>
-        </section>
-        {/* } */}
+        {/* {userInfo.accessToken &&
+          <section className={styles.preview__container}>
+            <div className={styles.preview__title}>
+              <h2>최근 일정</h2>
+              <a onClick={navigateTo('/my/calendar')}>더 보기 {'>'}</a>
+            </div>
+            <div className={styles.calendars__container}>
+              {calendars.content && calendars.content.slice(0, 4).map((calendar, i) => (
+                <div className={styles.calendar__card} key={i}>
+                  <CalendarCard calendar={calendar} />
+                </div>
+              ))}
+            </div>
+          </section>
+        }
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
             <h2>베스트 리뷰</h2>
-            <a>더 보기 {'>'}</a>
+            <a onClick={navigateTo('/review')}>더 보기 {'>'}</a>
           </div>
           <div className={styles.calendars__container}>
-            {bestReviews && bestReviews.length>0 && bestReviews.map((bestReview, i) => (
+            {bestReviews && bestReviews.slice(0, 4).map((bestReview, i) => (
               <div className={styles.calendar__card} key={i}>
                 <ReviewCard bestReview={bestReview} />
               </div>
@@ -116,24 +142,29 @@ const Main = () => {
               <h2>자유게시판</h2>
               <a>더 보기 {'>'}</a>
             </div>
+            <div className={styles.commu__container}>
             {freeCommus.content && freeCommus.content.slice(0, 4).map((freeCommu, i) => (
               <div className={styles.commu__card} key={i}>
                 <CommunityCard data={freeCommu} />
               </div>
             ))}
+            </div>
           </section>
           <section className={styles.preview__container2}>
             <div className={styles.preview__title}>
               <h2>최근 번개 모임</h2>
               <a>더 보기 {'>'}</a>
             </div>
-            {lightCommus.content && lightCommus.content.slice(0, 4).map((lightCommu, i) => (
-              <div className={styles.commu__card} key={i}>
-                <CommunityCard data={lightCommu} />
-              </div>
-            ))}
+            <div className={styles.commu__container}>
+              {lightCommus.content && lightCommus.content.slice(0, 4).map((lightCommu, i) => (
+                <div className={styles.commu__card} key={i}>
+                  <CommunityCard data={lightCommu} />
+                </div>
+              ))}
+            </div>
+
           </section>
-        </div>
+        </div> */}
 
       </div>
     </div>

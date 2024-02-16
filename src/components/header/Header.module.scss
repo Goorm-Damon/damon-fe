@@ -79,7 +79,16 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 150%;
+  cursor: pointer;
+
   // transition: color 0.2s esae-out 0s;
+  &:hover {
+    transition-duration: 0.2s;
+    transition: 0.2s all ease;
+    color: #5376C6;
+    // font-weight: 600;
+
+  }
 }
 
 .gnb {
@@ -185,6 +194,7 @@
 .btn {
   border: none;
   padding: 20px;
+
   &:hover {
     cursor: pointer;
   }
