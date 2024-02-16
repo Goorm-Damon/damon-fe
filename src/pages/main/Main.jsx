@@ -36,6 +36,7 @@ const Main = () => {
     try {
       const response = await calendarService.getCalendar(0, 10);
       setCalendars(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
       // alert(error.details.message);
@@ -114,7 +115,7 @@ const Main = () => {
               <a onClick={navigateTo('/my/calendar')}>더 보기 {'>'}</a>
             </div>
             <div className={styles.calendars__container}>
-              {calendars>0 && calendars.content.slice(0, 4).map((calendar, i) => (
+              {calendars.content && calendars.content.slice(0, 4).map((calendar, i) => (
                 <div className={styles.calendar__card} key={i}>
                   <CalendarCard calendar={calendar} />
                 </div>
