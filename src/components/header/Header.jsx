@@ -202,7 +202,6 @@ const Header = () => {
               <div onClick={handleLogout} className={styles.header__logout}>로그아웃</div>
               :
               <div onClick={navigateTo('/login')} className={styles.header__logout}>로그인</div>
-
             }
           </div>
         }

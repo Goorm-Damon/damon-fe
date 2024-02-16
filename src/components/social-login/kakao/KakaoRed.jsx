@@ -10,33 +10,36 @@ const KakaoRed = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
   const PARAMS = new URL(document.location).searchParams;
   const KAKAO_CODE = PARAMS.get("code");
-  const [accessTokenFetching, setAccessTokenFetching] = useState(false);
 
   console.log("KAKAO_CODE:", KAKAO_CODE);
-  // `http://localhost:8080/login/oauth2/code/kakao?code=${KAKAO_CODE}`,
 
   useEffect(() => {
     const kakaoLogin = async () => {
+      if (!KAKAO_CODE) {
+        navigate("/");
+        return;
+      }
       try {
         const res = await axios({
           method: "GET",
           url: `/login/oauth2/code/kakao?code=${KAKAO_CODE}`,
           headers: {
             "Content-Type": "application/json;charset=utf-8",
-            "Access-Control-Allow-Origin": "http://localhost:3000", // Fixed typo
           },
         });
-        console.log(res);
+          localStorage.setItem('accessToken', res.data);        
+        setUserInfo(preUserInfo => ({
+          ...preUserInfo,
+          accessToken: res.data
+        }));
         navigate("/");
+
       } catch (error) {
         console.error('Error during Axios request:', error);
-        // Handle error appropriately
       }
     };
-    if (KAKAO_CODE) {
-      kakaoLogin();
-    }
-  }, [KAKAO_CODE]);
+    kakaoLogin();
+  }, []);
 
 
   return (

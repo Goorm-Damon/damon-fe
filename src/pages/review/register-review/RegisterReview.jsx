@@ -45,7 +45,7 @@ const RegisterReview = () => {
     const formData = new FormData();
     if(postImg) {
       postImg.forEach((file) => {
-        formData.append("file", file);
+        formData.append("upload", file);
       });
 
       axios.post('http://localhost:8080/api/upload', formData)
