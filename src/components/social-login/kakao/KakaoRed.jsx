@@ -26,7 +26,7 @@ const KakaoRed = () => {
             "Access-Control-Allow-Origin": "http://localhost:3000", // Fixed typo
           },
         });
-        console.log("코드 받아서 백으로 전송");
+        console.log(res);
         navigate("/");
       } catch (error) {
         console.error('Error during Axios request:', error);

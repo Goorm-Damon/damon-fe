@@ -9,6 +9,7 @@ const SocialKakao = () => {
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
   const handleLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
+    console.log("카카오 인가코드 uri 시작")
   }
 
   return (
