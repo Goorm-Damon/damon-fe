@@ -23,16 +23,18 @@ const KakaoRed = () => {
         const res = await axios({
           method: "GET",
           url: `/login/oauth2/code/kakao?code=${KAKAO_CODE}`,
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-          },
+          // headers: {
+          //   "Content-Type": "application/json;charset=utf-8",
+          // },
         });
           localStorage.setItem('accessToken', res.data);        
         setUserInfo(preUserInfo => ({
           ...preUserInfo,
           accessToken: res.data
         }));
-        navigate("/");
+        if(localStorage.getItem('accessToken')) {
+          navigate("/");
+        }
 
       } catch (error) {
         console.error('Error during Axios request:', error);

@@ -38,6 +38,7 @@ const Main = () => {
       setCalendars(response.data);
     } catch (error) {
       console.log(error);
+      // alert(error.details.message);
     }
   }
 
@@ -113,7 +114,7 @@ const Main = () => {
               <a onClick={navigateTo('/my/calendar')}>더 보기 {'>'}</a>
             </div>
             <div className={styles.calendars__container}>
-              {calendars.content && calendars.content.slice(0, 4).map((calendar, i) => (
+              {calendars>0 && calendars.content.slice(0, 4).map((calendar, i) => (
                 <div className={styles.calendar__card} key={i}>
                   <CalendarCard calendar={calendar} />
                 </div>

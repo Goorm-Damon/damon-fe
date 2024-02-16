@@ -37,7 +37,7 @@ export const deleteCommunity = async (id) => {
 //커뮤니티 페이징 조회
 export const getCommunity = async (type,page) => {
   try {
-    const response = await apiutils.read(`/api/community/?type=${type}&page=${page}`);
+    const response = await apiutils.read(`/api/community?type=${type}&page=${page}`);
     return response;
   } catch (error) {
     console.log('Error getting community', error);
