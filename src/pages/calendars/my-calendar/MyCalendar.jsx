@@ -109,7 +109,7 @@ const MyCalendar = () => {
               </div>
             </div>
             <div className={styles.container}>
-            {calendars.content.map((item, i) => (
+            {calendars.content && calendars.content.map((item, i) => (
               <div style={{ display: 'flex' }}>
                 {edit && (
                   <input
