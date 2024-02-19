@@ -150,6 +150,7 @@ const Header = () => {
       ...prevUserInfo,
       accessToken: '' // 또는 undefined, null 등 필요에 따라
     }));
+    localStorage.removeItem('accessToken');
     navigate('/');
   };
 
@@ -202,7 +203,6 @@ const Header = () => {
               <div onClick={handleLogout} className={styles.header__logout}>로그아웃</div>
               :
               <div onClick={navigateTo('/login')} className={styles.header__logout}>로그인</div>
-
             }
           </div>
         }

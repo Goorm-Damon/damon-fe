@@ -48,13 +48,24 @@ export const deleteSelecCalendar = async (deleteIds) => {
 //내 일정 리스트 조회
 export const getCalendar = async (page,size) => {
   try {
-    const response = await apiutils.read(`/api/my/calendar?page=${page}&size=${size}`);
+    const response = await apiutils.read(`/api/top5/calendar`);
     return response;
   } catch (error) {
     console.log('Error getting Calendar', error);
     return error;
   }
 }
+
+//내 일정 리스트 조회
+// export const getCalendar = async (page,size) => {
+//   try {
+//     const response = await apiutils.read(`/api/my/calendar?page=${page}&size=${size}`);
+//     return response;
+//   } catch (error) {
+//     console.log('Error getting Calendar', error);
+//     return error;
+//   }
+// }
 
 //일정 상세 조회
 export const getDetailCalendar = async (id) => {

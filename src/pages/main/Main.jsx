@@ -14,7 +14,7 @@ import { userInfostate } from '../../states/user/userInfoState';
 
 
 
-const getToken = localStorage.getItem('token');
+const getToken = localStorage.getItem('accessToken');
 
 
 const Main = () => {
@@ -36,8 +36,10 @@ const Main = () => {
     try {
       const response = await calendarService.getCalendar(0, 10);
       setCalendars(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
+      // alert(error.details.message);
     }
   }
 
@@ -75,7 +77,6 @@ const Main = () => {
   }
 
   const fetchUser = () => {
-    
     if (accessToken) {
       try {
         setUserInfo({
@@ -94,12 +95,11 @@ const Main = () => {
   }
 
   useEffect(() => {
-    // fetchCalendars();
-    // fetchBestReviews();
-    // fetchFreecommu();
-    // fetchLightCommu();
-    // // fetchUser();
-    console.log("메인 화면으로 이동");
+    fetchCalendars();
+    fetchBestReviews();
+    fetchFreecommu();
+    fetchLightCommu();
+    // fetchUser();
 
   }, []);
 
@@ -108,7 +108,7 @@ const Main = () => {
     <div>
       <Banner />
       <div className={styles.main}>
-        {/* {userInfo.accessToken &&
+        {userInfo.accessToken &&
           <section className={styles.preview__container}>
             <div className={styles.preview__title}>
               <h2>최근 일정</h2>
@@ -121,6 +121,11 @@ const Main = () => {
                 </div>
               ))}
             </div>
+            {!(calendars.content) &&
+              <div className={styles.none__calendar}>
+                <p>일정을 추가해 보세요</p>
+              </div>
+            }
           </section>
         }
         <section className={styles.preview__container}>
@@ -143,11 +148,11 @@ const Main = () => {
               <a>더 보기 {'>'}</a>
             </div>
             <div className={styles.commu__container}>
-            {freeCommus.content && freeCommus.content.slice(0, 4).map((freeCommu, i) => (
-              <div className={styles.commu__card} key={i}>
-                <CommunityCard data={freeCommu} />
-              </div>
-            ))}
+              {freeCommus.content && freeCommus.content.slice(0, 4).map((freeCommu, i) => (
+                <div className={styles.commu__card} key={i}>
+                  <CommunityCard data={freeCommu} />
+                </div>
+              ))}
             </div>
           </section>
           <section className={styles.preview__container2}>
@@ -162,10 +167,8 @@ const Main = () => {
                 </div>
               ))}
             </div>
-
           </section>
-        </div> */}
-
+        </div>
       </div>
     </div>
   )
