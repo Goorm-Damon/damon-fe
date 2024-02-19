@@ -48,7 +48,7 @@ const RegisterReview = () => {
         formData.append("upload", file);
       });
 
-      axios.post('http://localhost:8080/api/upload', formData)
+      axios.post('/api/upload', formData)
       .then(response => {
         // 이미지 업로드 성공 시 처리
         console.log("이미지 업로드 성공");
@@ -194,7 +194,7 @@ const RegisterReview = () => {
             <p className={styles.category__name}>이미지 추가하기</p>
 
             <div className={styles.preview__images}>
-              <label for="imgs">
+              <label htmlFor="imgs">
                 <div>
                   <BsPlusCircleDotted />
                 </div>

@@ -22,10 +22,7 @@ const KakaoRed = () => {
       try {
         const res = await axios({
           method: "GET",
-          url: `/login/oauth2/code/kakao?code=${KAKAO_CODE}`,
-          // headers: {
-          //   "Content-Type": "application/json;charset=utf-8",
-          // },
+          url: `/api/user/login?code=${KAKAO_CODE}`,
         });
           localStorage.setItem('accessToken', res.data);        
         setUserInfo(preUserInfo => ({
