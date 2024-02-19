@@ -121,6 +121,11 @@ const Main = () => {
                 </div>
               ))}
             </div>
+            {!(calendars.content) &&
+              <div className={styles.none__calendar}>
+                <p>일정을 추가해 보세요</p>
+              </div>
+            }
           </section>
         }
         <section className={styles.preview__container}>
@@ -143,11 +148,11 @@ const Main = () => {
               <a>더 보기 {'>'}</a>
             </div>
             <div className={styles.commu__container}>
-            {freeCommus.content && freeCommus.content.slice(0, 4).map((freeCommu, i) => (
-              <div className={styles.commu__card} key={i}>
-                <CommunityCard data={freeCommu} />
-              </div>
-            ))}
+              {freeCommus.content && freeCommus.content.slice(0, 4).map((freeCommu, i) => (
+                <div className={styles.commu__card} key={i}>
+                  <CommunityCard data={freeCommu} />
+                </div>
+              ))}
             </div>
           </section>
           <section className={styles.preview__container2}>

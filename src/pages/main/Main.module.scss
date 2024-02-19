@@ -75,3 +75,14 @@
   flex-direction: column;
   gap: 5px;
 }
+
+.none__calendar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    font-weight: 600;
+    color: lightgray;
+  }
+}
