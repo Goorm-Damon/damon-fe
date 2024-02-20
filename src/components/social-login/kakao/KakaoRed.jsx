@@ -23,12 +23,16 @@ const KakaoRed = () => {
         const res = await axios({
           method: "GET",
           url: `/api/user/login?code=${KAKAO_CODE}`,
+          // headers: {
+          //   "Content-Type": "application/json;charset=utf-8",
+          // },
         });
-          localStorage.setItem('accessToken', res.data);        
+        localStorage.setItem('accessToken', res.data);        
         setUserInfo(preUserInfo => ({
           ...preUserInfo,
           accessToken: res.data
         }));
+
         if(localStorage.getItem('accessToken')) {
           navigate("/");
         }
