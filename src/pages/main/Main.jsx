@@ -27,14 +27,12 @@ const Main = () => {
   const [bestReviews, setBestReviews] = useState([]);
   const [lightCommus, setLightCommus] = useState([]);
   const [freeCommus, setFreeCommus] = useState([]);
-  const PARAMS = new URL(document.location).searchParams;
-  const accessToken = PARAMS.get("token");
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
 
 
   const fetchCalendars = async () => {
     try {
-      const response = await calendarService.getCalendar(0, 10);
+      const response = await calendarService.getMyCalendar(0, 10);
       setCalendars(response.data);
       console.log(response.data);
     } catch (error) {
@@ -76,31 +74,11 @@ const Main = () => {
     }
   }
 
-  const fetchUser = () => {
-    if (accessToken) {
-      try {
-        setUserInfo({
-          ...userInfo,
-          accessToken: accessToken,
-        });
-        localStorage.setItem('accessToken', accessToken);
-        console.log(userInfo);
-
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    } else {
-      console.log("로그인 필요");
-    }
-  }
-
   useEffect(() => {
     fetchCalendars();
     fetchBestReviews();
     fetchFreecommu();
     fetchLightCommu();
-    // fetchUser();
-
   }, []);
 
 
