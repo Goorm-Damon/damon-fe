@@ -23,13 +23,16 @@ const MainReviewCard = ({ review }) => {
   const navigate = useNavigate();
 
   const handleDatails = (reviewId) => () => {
-    navigate(`/review/${reviewId}`, {state: {reviewId:reviewId}});
+    navigate(`/review/${reviewId}`, { state: { reviewId: reviewId } });
   }
 
   return (
-    <div className={styles.reiview__card}>
+    <div className={styles.review__card}>
       <div className={styles.card__left}>
-        {/* <img arc='regions-img/gapyeong.svg' /> */}
+        {review.imageUrls && review.imageUrls.map((image, idx) => (
+          <img arc={image} />
+        ))}
+
         <div className={styles.card__img}>
           <div className={styles.card__heart}>
             <FaRegHeart size={25} />
@@ -43,7 +46,7 @@ const MainReviewCard = ({ review }) => {
 
       <div className={styles.card__right} onClick={handleDatails(review.id)}>
         <div className={styles.user}>
-          {review.createTime.slice(0, 10)}
+          {review.createTime && review.createTime.slice(0, 10)}
         </div>
         <div className={styles.card__contents}>
           <div className={styles.title}>

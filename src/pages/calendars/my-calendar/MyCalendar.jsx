@@ -110,7 +110,7 @@ const MyCalendar = () => {
             </div>
             <div className={styles.container}>
             {calendars.content && calendars.content.map((item, i) => (
-              <div style={{ display: 'flex' }}>
+              <div>
                 {edit && (
                   <input
                     type="checkbox"
