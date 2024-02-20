@@ -75,7 +75,7 @@ const MyCalendar = () => {
 
   const fetchCalendars = async () => {
     try {
-      const response = await calendarService.getCalendar(0, 10);
+      const response = await calendarService.getMyCalendar(0, 10);
       setCalendars(response.data);
     } catch (error) {
       console.log(error);

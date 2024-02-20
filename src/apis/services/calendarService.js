@@ -57,15 +57,15 @@ export const getCalendar = async (page,size) => {
 }
 
 //내 일정 리스트 조회
-// export const getCalendar = async (page,size) => {
-//   try {
-//     const response = await apiutils.read(`/api/my/calendar?page=${page}&size=${size}`);
-//     return response;
-//   } catch (error) {
-//     console.log('Error getting Calendar', error);
-//     return error;
-//   }
-// }
+export const getMyCalendar = async (page,size) => {
+  try {
+    const response = await apiutils.read(`/api/my/calendar?page=${page}&size=${size}`);
+    return response;
+  } catch (error) {
+    console.log('Error getting Calendar', error);
+    return error;
+  }
+}
 
 //일정 상세 조회
 export const getDetailCalendar = async (id) => {
