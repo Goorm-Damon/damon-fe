@@ -4,11 +4,8 @@ import kakaoLogo from '../../../assets/Kakao_Logo.png';
 
 const SocialKakao = () => {
 
-  const Rest_api_key = 'ab3a8af0dfdacf22fc47199199e5bb2f';
-  const redirect_uri = 'http://localhost:3000/login/oauth2/code/kakao';
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
   const handleLogin = () => {
-    window.location.href = KAKAO_AUTH_URL;
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
     console.log("카카오 인가코드 uri 시작")
   }
 
