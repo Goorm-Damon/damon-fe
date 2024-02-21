@@ -42,7 +42,10 @@ const DetailReview = () => {
         </div>
         <section>
           <div className={styles.image__box}>
-            <img className={styles.images} src={reviewInfo.imageUrls[0]} />
+            {reviewInfo.imageUrls &&
+              <img className={styles.images} src={reviewInfo.imageUrls[0]} />
+            }
+
           </div>
         </section>
         <section className={styles.page__contents}>
@@ -52,14 +55,7 @@ const DetailReview = () => {
           </div>
           <div className={styles.dates}>
             <p className={styles.category__name}>여행 기간</p>
-            <div className={styles.dates__area}>
-              {reviewInfo.startDate.map((date, idx) => (
-                <p>{date}.</p>
-              ))} ~
-              {reviewInfo.endDate.map((date, idx) => (
-                <p>{date}.</p>
-              ))}
-            </div>
+            <p>{reviewInfo.startDate} ~ {reviewInfo.endDate}</p>
 
           </div>
           <div className={styles.cost}>

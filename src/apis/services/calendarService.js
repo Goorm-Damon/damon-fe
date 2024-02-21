@@ -46,7 +46,7 @@ export const deleteSelecCalendar = async (deleteIds) => {
 }
 
 //내 일정 리스트 조회
-export const getCalendar = async (page,size) => {
+export const getCalendar = async () => {
   try {
     const response = await apiutils.read(`/api/top5/calendar`);
     return response;

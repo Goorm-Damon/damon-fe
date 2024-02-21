@@ -32,7 +32,7 @@ const Main = () => {
 
   const fetchCalendars = async () => {
     try {
-      const response = await calendarService.getMyCalendar(0, 10);
+      const response = await calendarService.getCalendar();
       setCalendars(response.data);
       console.log(response.data);
     } catch (error) {
@@ -93,13 +93,13 @@ const Main = () => {
               <a onClick={navigateTo('/my/calendar')}>더 보기 {'>'}</a>
             </div>
             <div className={styles.calendars__container}>
-              {calendars.content && calendars.content.slice(0, 4).map((calendar, i) => (
+              {calendars && calendars.slice(0, 4).map((calendar, i) => (
                 <div className={styles.calendar__card} key={i}>
                   <CalendarCard calendar={calendar} />
                 </div>
               ))}
             </div>
-            {!(calendars.content) &&
+            {!(calendars) &&
               <div className={styles.none__calendar}>
                 <p>일정을 추가해 보세요</p>
               </div>
