@@ -48,14 +48,7 @@ const RegisterReview = () => {
         formData.append("upload", file);
       });
 
-      axios.post('/api/upload', formData)
-      .then(response => {
-        // 이미지 업로드 성공 시 처리
-        console.log("이미지 업로드 성공");
-      })
-      .catch(error => {
-        console.error(error);
-      });
+      setReviewInfo(prev => ({ ...prev, imageUrls: formData }));
     }
   };
 
