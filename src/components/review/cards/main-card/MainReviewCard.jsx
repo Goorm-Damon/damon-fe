@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './MainReviewCard.module.scss'
 import { FaHeart } from "react-icons/fa6";
 import { FaComment } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import * as reviewService from '../../../../apis/services/reviewService';
+import { useRecoilState } from 'recoil';
+import { likedReviewState } from '../../../../states/review/likeReviewState';
 
 const areas = {
   'GAPYEONG': '가평',
@@ -19,23 +21,57 @@ const areas = {
   'ALL': '전체'
 };
 
-const MainReviewCard = ({ review }) => {
+const MainReviewCard = ({ review,likeReview }) => {
 
   const navigate = useNavigate();
   const [Heart, setHeart] = useState(false);
+  const [likedReviews, setLikedReviews] = useRecoilState(likedReviewState);
+
 
   const handleDatails = (reviewId) => () => {
     navigate(`/review/${reviewId}`, { state: { reviewId: reviewId } });
   }
-
   const fetchLikeReview = async () => {
     try {
       const response = await reviewService.likeReview(review.id);
       console.log(response);
+  
+      const isLiked = likedReviews.includes(review.id);
+      if (isLiked) {
+        // 이미 좋아요한 경우, 해당 리뷰 id 제거
+        setLikedReviews(likedReviews.filter(id => id !== review.id));
+      } else {
+        // 아직 좋아요하지 않은 경우, 해당 리뷰 id 추가
+        setLikedReviews([...likedReviews, review.id]);
+      }
+      setHeart(!Heart);
+
+    } catch (error) {
+      console.error('Error toggling like for review:', error);
+    }
+  };
+
+  // 내 좋아요 리스트 불러오기
+  const getLikeReviews = async () => {
+    try {
+        const response = await reviewService.getLikeReview(0,5);
+        const ids = response.data.map(review => review.id); // "좋아요 한 게시물"의 id 값들을 추출
+        setLikedReviews(ids); // 추출한 id 값들을 상태에 저장
+        if(likedReviews.includes(review.id)) {
+          setHeart(true);
+        }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  useEffect(() => {
+    getLikeReviews();
+    if(likeReview) {
+      setHeart(true);
+    }
+  }, [])
+  
 
   return (
     <div className={styles.review__card}>
@@ -47,7 +83,7 @@ const MainReviewCard = ({ review }) => {
 
           <div className={styles.card__heart}>
             {Heart ?
-              <FaHeart color='#F05D67' size={25} />
+              <FaHeart color='#F05D67' size={25} onClick={fetchLikeReview}/>
               :
               <FaRegHeart size={25} onClick={fetchLikeReview} />
             }

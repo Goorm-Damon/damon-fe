@@ -3,10 +3,14 @@ import styles from './LikeReview.module.scss'
 import MainReviewCard from '../../../components/review/cards/main-card/MainReviewCard';
 import * as reviewService from '../../../apis/services/reviewService';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { likedReviewState } from '../../../states/review/likeReviewState';
 
 const LikeReview = () => {
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
+  const [likedReviews, setLikedReviews] = useRecoilState(likedReviewState);
+  const likeReview = true;
 
     // 페이지 이동을 위한 함수
     const navigateTo = (path) => () => {
@@ -15,8 +19,10 @@ const LikeReview = () => {
 
   const fetchLikeReviews = async () => {
     try {
-        const response = await reviewService.getLikeReview(0,10);
-        setReviews(response.data);  
+        const response = await reviewService.getLikeReview(0,5);
+        setReviews(response.data);
+        setLikedReviews(response.data);  
+        console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -36,14 +42,13 @@ const LikeReview = () => {
             />
             <div className={styles.editLine}>
               <p>Total {reviews.length}</p>
-              <button onClick={navigateTo('/register/review')} >+리뷰 작성</button>
             </div>
           </section>
           <section>
             <div className={styles.review__cards}>
               {reviews && reviews.length > 0 && reviews.map((review, i) => (
                 <div className={styles.calendar__card} key={i}>
-                  <MainReviewCard review={review} />
+                  <MainReviewCard review={review} likeReview={likeReview}/>
                 </div>
               ))}
             </div>
