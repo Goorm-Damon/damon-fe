@@ -48,7 +48,7 @@ const Main = () => {
 
   const fetchBestReviews = async () => {
     try {
-      const response = await reviewService.getBestReview();
+      const response = await reviewService.getReview(0, 10);
       setBestReviews(response.data);
     } catch (error) {
       console.log(error);
@@ -108,7 +108,7 @@ const Main = () => {
         }
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
-            <h2>베스트 리뷰</h2>
+            <h2>최근 리뷰</h2>
             <a onClick={navigateTo('/review')}>더 보기 {'>'}</a>
           </div>
           <div className={styles.calendars__container}>
