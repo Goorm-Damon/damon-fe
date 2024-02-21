@@ -79,10 +79,31 @@
 
   textarea {
     width: 100%;
-    
+
     border-radius: 8px;
     resize: none;
     border: 1px solid rgb(199, 199, 199);
     padding: 10px;
   }
+}
+
+.close_btn {
+  background-color: #AEAEAE;
+  color: white;
+  padding: 5px 20px;
+  border-radius: 5px;
+  border: none;
+}
+
+.enroll_btn {
+  background-color: #7298C2;
+  color: white;
+  padding: 5px 20px;
+  border-radius: 5px;
+  border: none;
+}
+
+.btns {
+  display: flex;
+  gap: 5px;
 }

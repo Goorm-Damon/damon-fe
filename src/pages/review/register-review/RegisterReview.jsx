@@ -123,7 +123,6 @@ const RegisterReview = () => {
       postImg.forEach((file) => {
         formData.append("image", file);
       });
-  
       axios.post('/api/upload', formData)
         .then((response) => {
           // 이미지 업로드 성공 시 처리 // 여러 이미지를 보내야하는 경우 지금처럼 체인 형식으로 진행하면 리뷰가 이미지 만큼 생성되는 오류 발생함.
@@ -150,6 +149,20 @@ const RegisterReview = () => {
         });
     } else {
       // 여기에서는 이미지 없을 시 처리하도록 처리
+      console.log("이미지 없음");
+      try {
+        const response = reviewService.createReview(reviewInfo);
+        if (response.success) {
+          alert("리뷰 등록되었습니다.");
+          //상세일정 페이지로 이동해야함.
+          navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
+        } else {
+          console.error(response.error);
+        }
+      }
+      catch (error) {
+        console.error(error);
+      }
     }
   };
 

@@ -9,14 +9,24 @@
   flex-direction: column;
   padding: 20px;
   justify-content: space-around;
+  position: relative; // 이를 기준으로 내부 요소들을 절대 위치시킵니다.
+  overflow: hidden; // 이미지가 테두리를 넘어가지 않게 함
+
   img {
-    width: 250px;
-    height: 250px;
-    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; // 컨테이너와 동일한 너비
+    height: 100%; // 컨테이너와 동일한 높이
+    border-radius: 10px; // 컨테이너의 border-radius를 따름
+    object-fit: cover; // 이미지 비율을 유지하며 컨테이너를 채움
+    z-index: 0; // 다른 내용 뒤에 위치
   }
 }
 
 .card__title {
+  z-index: 1; // 이미지 위에 오도록 z-index 설정
+  position: relative; // z-index 적용을 위해 필요
 }
 
 .title {
@@ -25,6 +35,7 @@
   font-weight: 700;
   display: flex;
   justify-content: center;
+  position: relative; // z-index 적용을 위해 필요
 }
 
 .dates {
@@ -34,4 +45,5 @@
   margin-top: 10px;
   display: flex;
   justify-content: center;
+  position: relative; // z-index 적용을 위해 필요
 }

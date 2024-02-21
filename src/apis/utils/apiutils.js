@@ -83,6 +83,10 @@ async function del (apiUrl) {
     return call(apiUrl, 'DELETE');
 }
 
+async function patch (apiUrl) {
+    return call(apiUrl, 'PATCH');
+}
+
 async function selectDel (apiUrl,data) {
     return call(apiUrl, 'DELETE', {data});
 }
@@ -90,4 +94,4 @@ async function selectDel (apiUrl,data) {
 
 
 
-export default {call, handleResponse, handleError, create, read, update, del, selectDel};
+export default {call, handleResponse, handleError, create, read, update, del, selectDel, patch};

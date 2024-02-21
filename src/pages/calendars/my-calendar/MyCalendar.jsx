@@ -67,11 +67,21 @@ const MyCalendar = () => {
   const handleDelete = async () => {
     try {
       const response = await calendarService.deleteSelecCalendar(selectedItems);
-      // Consider refetching the calendars here to reflect the changes
+      if (response.success) {
+        alert("일정 삭제되었습니다.");
+        console.log("response", response);
+        //상세일정 페이지로 이동해야함.a
+        navigate('/my/calendar', { replace: true });
+        // 페이지 이동이 확실히 반영된 후 새로고침
+        setTimeout(() => window.location.reload(), 100);
+      } else {
+        console.error(response.error);
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
 
   const fetchCalendars = async () => {
     try {

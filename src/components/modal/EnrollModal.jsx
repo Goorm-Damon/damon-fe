@@ -54,7 +54,7 @@ const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo, setSearchMarkers, 
                 value={memo}
               />
             </div>
-            <div>
+            <div className={styles.btns}>
               <button className={styles.close_btn} onClick={closeModal}>
                 취소
               </button>

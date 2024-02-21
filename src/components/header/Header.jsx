@@ -41,10 +41,9 @@ const Header = () => {
     navigate(path);
   };
 
-  // 페이지 이동을 위한 함수
   const navigateTo2 = (path) => (event) => {
     event.stopPropagation();
-    navigate(path);
+    userVerification(path);
   };
 
   const fetchUser = () => {
@@ -69,7 +68,7 @@ const Header = () => {
 
   useEffect(() => {
     fetchUser();
-  },[])
+  }, [])
 
   // 현재 경로에 따라 헤더 상태 업데이트
   useEffect(() => {
@@ -146,11 +145,24 @@ const Header = () => {
       console.error(error);
     }
   }
+
+
+  
+  const userVerification = (path) => {
+    if (!userInfo.accessToken) {
+      const userResponse = window.confirm("로그인이 필요한 창입니다. 로그인하시겠습니까?");
+      if (userResponse) {
+        navigate('/login');
+      } else {
+        navigate('/');
+      }
+    } else {
+      navigate(path);
+    }
+  }
+
   const handleLogout = () => {
-    setUserInfo(prevUserInfo => ({
-      ...prevUserInfo,
-      accessToken: '' // 또는 undefined, null 등 필요에 따라
-    }));
+    setUserInfo('');
     localStorage.removeItem('accessToken');
     navigate('/');
   };
@@ -186,12 +198,12 @@ const Header = () => {
                 <li className={styles.header__menu} onClick={navigateTo('/community')}>커뮤니티</li>
                 <li className={styles.header__menu2}>등록
                   <ul className={isHovered ? styles.subVisible : styles.sub}>
-                    <li onClick={navigateTo('/register/review')}>리뷰 등록</li>
-                    <li onClick={navigateTo('/register/calendar')}>일정 등록</li>
-                    <li onClick={navigateTo('/register/post')}>게시글 등록</li>
+                    <li onClick={navigateTo2('/register/review')}>리뷰 등록</li>
+                    <li onClick={navigateTo2('/register/calendar')}>일정 등록</li>
+                    <li onClick={navigateTo2('/register/post')}>게시글 등록</li>
                   </ul>
                 </li>
-                <li className={styles.header__menu} onClick={navigateTo('/mypage')}>마이룸
+                <li className={styles.header__menu} onClick={navigateTo2('/mypage')}>마이룸
                   <ul className={isHovered ? styles.subVisible : styles.sub}>
                     <li onClick={navigateTo2('/my/review')}>내 리뷰</li>
                     <li onClick={navigateTo2('/my/calendar')}>내 일정</li>
