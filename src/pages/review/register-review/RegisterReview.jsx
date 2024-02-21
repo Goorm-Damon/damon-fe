@@ -39,18 +39,32 @@ const RegisterReview = () => {
     suggests: [],
     freeTags: [],
     content: "",
+    image: ""
   });
 
-  const onUploadImage = async (e) => { 
-    const formData = new FormData();
-    if(postImg) {
-      postImg.forEach((file) => {
-        formData.append("upload", file);
-      });
+  // const onUploadImage = async (e) => { 
+  //   const formData = new FormData();
+  //   if(postImg) {
+  //     postImg.forEach((file) => {
+  //       formData.append("image", file);
+  //     });
 
-      setReviewInfo(prev => ({ ...prev, imageUrls: formData }));
-    }
-  };
+  //     axios.post('/api/upload', formData)
+  //     .then(response => {
+  //       // 이미지 업로드 성공 시 처리
+  //       console.log("이미지 업로드 성공");
+  //       console.log("이미지 업로드 결과:", response.data);
+
+  //       setReviewInfo(prev => ({ ...prev, image: response.data }));
+
+  //       console.log("리뷰 정보:", reviewInfo);
+  //     })
+  //     .catch(error => {
+  //       console.log("이미지 업로드 실패");
+  //       console.error(error);
+  //     });
+  //   }
+  // };
 
   function uploadFile(e) {
     const files = Array.from(e.target.files); // Convert FileList to array
@@ -103,26 +117,44 @@ const RegisterReview = () => {
     }));
   };
 
-  const handleSubmit = async () => {
-    try {
-      onUploadImage();
-      const response = await reviewService.createReview(reviewInfo);
-      if (response.success) {
-        alert("리뷰 등록되었습니다.");
-        //상세 리뷰 페이지로 이동해야함.
-        navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
-
-      } else {
-        console.error(response.error);
-      }
+  const handleSubmit = () => {
+    const formData = new FormData();
+    if (postImg) {
+      postImg.forEach((file) => {
+        formData.append("image", file);
+      });
+  
+      axios.post('/api/upload', formData)
+        .then((response) => {
+          // 이미지 업로드 성공 시 처리 // 여러 이미지를 보내야하는 경우 지금처럼 체인 형식으로 진행하면 리뷰가 이미지 만큼 생성되는 오류 발생함.
+          console.log("이미지 업로드 성공:", response.data);
+  
+          setReviewInfo(prev => ({ ...prev, image: response.data }));
+  
+          // 리뷰 등록 // 비동기 이슈로 다음과 같이 수정
+          const reviewDataWithImage = { ...reviewInfo, image: response.data };
+          console.log("리뷰 정보:", reviewDataWithImage);
+          return reviewService.createReview(reviewDataWithImage);
+        })
+        .then((response) => {
+          if (response.success) {
+            alert("리뷰 등록되었습니다.");
+            //상세 리뷰 페이지로 이동해야함.
+            navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
+          } else {
+            console.error(response.error);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      // 여기에서는 이미지 없을 시 처리하도록 처리
     }
-    catch (error) {
-      console.error(error);
-    }
-  }
+  };
 
   useEffect(() => {
-    console.log(postImg);
+    // console.log(postImg);
   }, [postImg])
 
 
