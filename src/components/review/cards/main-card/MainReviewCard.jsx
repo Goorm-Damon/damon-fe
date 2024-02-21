@@ -49,6 +49,9 @@ const MainReviewCard = ({ review }) => {
           {review.createTime && review.createTime.slice(0, 10)}
         </div>
         <div className={styles.card__contents}>
+          <div className={styles.user__info}>
+            <p>{review.name}</p>
+          </div>
           <div className={styles.title}>
             <p>{review.title}</p>
             <div className={styles.card__reaction}>

@@ -56,6 +56,17 @@ export const getAreaReview = async (page,pageSize,area) => {
   }
 }
 
+//내 리뷰 전체 조회
+export const getMyReview = async () => {
+  try {
+    const response = await apiutils.read(`/api/review/my/list`);
+    return response;
+  } catch (error) {
+    console.log('Error getting my review', error);
+    return error;
+  }
+}
+
 //리뷰 상세 조회
 export const getDetailReview = async (id) => {
   try {

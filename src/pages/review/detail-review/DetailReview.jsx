@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './DetailReview.module.scss'
 import { useLocation } from 'react-router-dom';
 import { reviewInfoState } from '../../../states/review/reviewState';
@@ -12,10 +12,9 @@ const DetailReview = () => {
 
   const reviewId = useLocation().state.reviewId;
   const [reviewInfo, setReviewInfo] = useRecoilState(reviewInfoState);
+  const [click, setClick] = useState(false);
 
-  useEffect(() => {
-    fetchDetailReview();
-  }, []);
+  const handlemenu = () => setClick(!click);
 
   const fetchDetailReview = async () => {
     try {
@@ -26,6 +25,11 @@ const DetailReview = () => {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    fetchDetailReview();
+  }, []);
+
   return (
     <div>
       <div className={styles.page}>
@@ -36,7 +40,7 @@ const DetailReview = () => {
             </div>
             <p>{reviewInfo.name}</p>
           </div>
-          <div className={styles.menu__Btn}>
+          <div className={styles.menu__Btn} onClick={handlemenu}>
             <CiMenuKebab />
           </div>
         </div>

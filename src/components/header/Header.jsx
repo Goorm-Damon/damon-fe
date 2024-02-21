@@ -88,6 +88,7 @@ const Header = () => {
       const response = await calendarService.createCalendar(calendarInfo);
       if (response.success) {
         alert("일정 등록되었습니다.");
+        console.log(response);
         //상세일정 페이지로 이동해야함.
         resetClicked();
         navigate(`/my/calendar/${response.data.calendarId}`, { state: { calendarId: response.data.calendarId } });
@@ -192,7 +193,7 @@ const Header = () => {
                 </li>
                 <li className={styles.header__menu} onClick={navigateTo('/mypage')}>마이룸
                   <ul className={isHovered ? styles.subVisible : styles.sub}>
-                    <li onClick={navigateTo2('/my/reviews')}>내 리뷰</li>
+                    <li onClick={navigateTo2('/my/review')}>내 리뷰</li>
                     <li onClick={navigateTo2('/my/calendar')}>내 일정</li>
                     <li onClick={navigateTo2('/my/community')}>내 커뮤니티</li>
                   </ul>
