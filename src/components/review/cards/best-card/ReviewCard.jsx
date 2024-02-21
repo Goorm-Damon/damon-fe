@@ -35,6 +35,7 @@ const ReviewCard = ({ bestReview }) => {
     try {
       const response = await reviewService.getDetailReview(bestReview.id);
       setContents(response.data);
+      console.log(contents);
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +48,7 @@ const ReviewCard = ({ bestReview }) => {
 
   return (
     <div className={styles.card} onClick={handleDatails(bestReview.id)}>
-      {/* <img src={} /> */}
+      <img src={contents.imageUrls} className={styles.card__img}/>
       <div className={styles.card__title}>
         <div className={styles.title}>
           {contents.title.length > 10 ? contents.title.slice(0, 10) + "..." : contents.title}
