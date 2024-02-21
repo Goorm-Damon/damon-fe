@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './MainReviewCard.module.scss'
 import { FaHeart } from "react-icons/fa6";
 import { FaComment } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import * as reviewService from '../../../../apis/services/reviewService';
 
 const areas = {
   'GAPYEONG': '가평',
@@ -21,22 +22,35 @@ const areas = {
 const MainReviewCard = ({ review }) => {
 
   const navigate = useNavigate();
+  const [Heart, setHeart] = useState(false);
 
   const handleDatails = (reviewId) => () => {
     navigate(`/review/${reviewId}`, { state: { reviewId: reviewId } });
   }
 
+  const fetchLikeReview = async () => {
+    try {
+      const response = await reviewService.likeReview(review.id);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className={styles.review__card}>
       <div className={styles.card__left}>
-        {review.imageUrls && review.imageUrls.map((image, idx) => (
-          <img arc={image} />
-        ))}
-
+        {review.mainImage &&
+          <img className={styles.imgs} src={review.mainImage} />
+        }
         <div className={styles.card__img}>
+
           <div className={styles.card__heart}>
-            <FaRegHeart size={25} />
-            {/* <FaHeart color='#F05D67' size={25}/> */}
+            {Heart ?
+              <FaHeart color='#F05D67' size={25} />
+              :
+              <FaRegHeart size={25} onClick={fetchLikeReview} />
+            }
           </div>
           <div className={styles.card__tag}>
             <div>#{areas[review.area]}</div>
@@ -55,7 +69,9 @@ const MainReviewCard = ({ review }) => {
           <div className={styles.title}>
             <p>{review.title}</p>
             <div className={styles.card__reaction}>
-              <FaHeart color='#F05D67' />{review.likeCount}
+              <div>
+                <FaHeart color='#F05D67' />{review.likeCount}
+              </div>
               <FaComment color='#5996DD' />{review.commentCount}
               <p className={styles.view__count}>조회수 {review.viewCount}</p>
             </div>

@@ -16,6 +16,7 @@ import Login from './pages/social-login/Login';
 import KakaoRed from './components/social-login/kakao/KakaoRed';
 import NaverRed from './components/social-login/naver/NaverRed';
 import MyReview from './pages/review/my-review/MyReview';
+import LikeReview from './pages/mypage/like-review/LikeReview';
 
 
 
@@ -38,6 +39,8 @@ function App() {
         <Route path='my/calendar' element={<MyCalendar />} />
         <Route path='my/calendar/:id' element={<DetailCalendar />} />
         <Route path='mypage' element={<MyPage />} />
+        <Route path='my/like/review' element={<LikeReview />} />
+
       </Route>
     </Routes>
   );

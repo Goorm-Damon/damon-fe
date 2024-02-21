@@ -34,6 +34,17 @@ export const deleteReview = async (id) => {
   }
 }
 
+//리뷰 좋아요
+export const likeReview = async (id) => {
+  try {
+    const response = await apiutils.patch(`/api/review/${id}`);
+    return response;
+  } catch (error) {
+    console.log('Error deleting review', error);
+    return error;
+  }
+}
+
 //리뷰 전체 조회
 export const getReview = async (page,pageSize) => {
   try {
@@ -74,6 +85,17 @@ export const getDetailReview = async (id) => {
     return response;
   } catch (error) {
     console.log('Error getting review', error);
+    return error;
+  }
+}
+
+//좋아요 한 리뷰 조회
+export const getLikeReview = async (page,pageSize) => {
+  try {
+    const response = await apiutils.read(`/api/review/likes?page=${page}&pageSize=${pageSize}`);
+    return response;
+  } catch (error) {
+    console.log('Error getting likes review', error);
     return error;
   }
 }

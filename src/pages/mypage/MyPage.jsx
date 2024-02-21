@@ -8,7 +8,7 @@ import axios from 'axios';
 const MyPage = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
-  
+
   // 페이지 이동을 위한 함수
   const navigateTo = (path) => () => {
     navigate(path);
@@ -32,20 +32,6 @@ const MyPage = () => {
       console.error('Error fetching user info:', error);
     }
   };
-  
-
-  useEffect(() => {
-    if (!userInfo.accessToken) {
-      const userResponse = window.confirm("로그인이 필요한 창입니다. 로그인하시겠습니까?");
-      if (userResponse) {
-        navigate('/login');
-      } else {
-        navigate('/');
-      }
-    } else {
-      getUser();
-    }
-  }, [userInfo.accessToken, navigate]);
 
   return (
     <div>
@@ -74,7 +60,7 @@ const MyPage = () => {
           <div className={styles.menu__container}>
             <p>내가 작성 한 커뮤니티</p>
           </div>
-          <div className={styles.menu__container}>
+          <div className={styles.menu__container} onClick={navigateTo('/my/like/review')}>
             <p>좋아요 한 게시글</p>
           </div>
         </section>
