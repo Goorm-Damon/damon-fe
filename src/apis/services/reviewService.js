@@ -99,3 +99,14 @@ export const getLikeReview = async (page,pageSize) => {
     return error;
   }
 }
+
+//베스트 리뷰 조회
+export const getBestReview = async () => {
+  try {
+    const response = await apiutils.read(`/api/review/best`);
+    return response;
+  } catch (error) {
+    console.log('Error getting best review', error);
+    return error;
+  }
+}
