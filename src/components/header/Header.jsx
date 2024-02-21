@@ -147,10 +147,7 @@ const Header = () => {
     }
   }
   const handleLogout = () => {
-    setUserInfo(prevUserInfo => ({
-      ...prevUserInfo,
-      accessToken: '' // 또는 undefined, null 등 필요에 따라
-    }));
+    setUserInfo('');
     localStorage.removeItem('accessToken');
     navigate('/');
   };
