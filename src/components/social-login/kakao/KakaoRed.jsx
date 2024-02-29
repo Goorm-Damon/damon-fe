@@ -23,9 +23,10 @@ const KakaoRed = () => {
           'Authorization': `Bearer ${accessToken}`, // 여기에 토큰을 추가
         },
       });
+      const { data } = infoRes.data; // 응답에서 데이터만 추출
       setUserInfo(preUserInfo => ({
         ...preUserInfo,
-        data: infoRes.data.data
+        data: data
       }));
     } catch (error) {
       console.error('Error fetching user info:', error);
@@ -43,13 +44,16 @@ const KakaoRed = () => {
           method: "GET",
           url: `/api/user/login?code=${KAKAO_CODE}`,
         });
-        localStorage.setItem('accessToken', res.data);
+        const { data } = res.data; // 응답에서 데이터만 추출
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
         setUserInfo(preUserInfo => ({
           ...preUserInfo,
-          accessToken: res.data
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken
         }));
         if (localStorage.getItem('accessToken')) {
-          await getUser(res.data); // 사용자 정보를 가져오는 함수 호출
+          await getUser(data.accessToken); // 사용자 정보를 가져오는 함수 호출
           navigate("/");
         }
 
