@@ -1,10 +1,10 @@
 # Service
 ```
-http://13.124.113.56
+http://damon.kr
 ```
 # Swagger
 ```
-http://13.124.113.56/doc
+http://damon.kr:8080/doc
 ```
 
 # Monitoring
