@@ -24,9 +24,10 @@ const MyPage = () => {
           'Authorization': `Bearer ${userInfo.accessToken}`, // 여기에 토큰을 추가
         },
       });
+      const { data } = infoRes.data; // 응답에서 데이터만 추출
       setUserInfo(preUserInfo => ({
         ...preUserInfo,
-        data: infoRes.data.data
+        data: data
       }));
     } catch (error) {
       console.error('Error fetching user info:', error);

@@ -1,8 +1,13 @@
-# EC2 IP
+# Service
 ```
-13.124.113.56
+http://damon.kr
 ```
 # Swagger
 ```
-13.124.113.56:8080/doc
+http://damon.kr:8080/doc
+```
+
+# Monitoring
+```
+http://ego2server.iptime.org
 ```
