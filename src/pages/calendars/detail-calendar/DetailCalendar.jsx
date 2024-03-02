@@ -6,6 +6,8 @@ import DetailSidebar from '../../../components/sidebars/detail-sidebar/DetailSid
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { calendarInfoState, clickedDateState, placeLatLonState } from '../../../states/calendar/calendarInfoState';
 import EnrollModal from '../../../components/modal/EnrollModal';
+import AddPlace from '../../../components/sidebars/sidebar2/add-place/AddPlace';
+import { headerState } from '../../../states/header/headerState';
 
 const { kakao } = window;
 
@@ -29,6 +31,8 @@ const DetailCalendar = () => {
   const [places, setPlaces] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchMarkers, setSearchMarkers] = useState([]);
+  const [headerSettings, setHeaderSettings] = useRecoilState(headerState);
+  const { showDefalut, showFeatures, showDetail, showModify } = headerSettings;
   const [markers, setMarkers] = useState([]);
   const clickedDate = useRecoilValue(clickedDateState);
   const placeLatLon = useRecoilValue(placeLatLonState);
@@ -152,15 +156,18 @@ const DetailCalendar = () => {
   return (
     <div className={styles.register__container}>
       {modalOpen && <EnrollModal setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} setSearchMarkers={setSearchMarkers} searchMarkers={searchMarkers} setPlaces={setPlaces} />}
-      <DetailSidebar showModal={showModal} places={places} setSearchPlace={setSearchPlace} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
-
       <div id="map" style={{
         width: '80%',
         height: '100vh',
         float: 'right'
       }}>
       </div>
-
+      <div className={styles.register__sidebars}>
+      <DetailSidebar showModal={showModal} places={places} setSearchPlace={setSearchPlace} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
+      {showModify && 
+      <AddPlace setSearchPlace={setSearchPlace} places={places} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} showModal={showModal} setModalOpen={setModalOpen}/>
+      }
+      </div>
     </div>
 
   )

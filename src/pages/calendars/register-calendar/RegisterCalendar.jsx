@@ -6,6 +6,8 @@ import { headerState } from '../../../states/header/headerState';
 import { calendarInfoState, clickedDateState, placeLatLonState, showCreateState } from '../../../states/calendar/calendarInfoState';
 import EnrollModal from '../../../components/modal/EnrollModal';
 import styles from './RegisterCalendar.module.scss'
+import AddPlace from '../../../components/sidebars/sidebar2/add-place/AddPlace';
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 
 const { kakao } = window;
@@ -16,6 +18,7 @@ const RegisterCalendar = () => {
   const [searchPlace, setSearchPlace] = useState("");
   const [places, setPlaces] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [addSidebarOpen, setAddSidebarOpen] = useState(true);
   const [placeInfo, setPlaceInfo] = useState({
     locationName: '',
     latitude: '',
@@ -41,6 +44,11 @@ const RegisterCalendar = () => {
     setModalOpen(true);
   };
 
+  // 장소추가 사이드바
+  const showAddSidebar = () => {
+    setAddSidebarOpen(!addSidebarOpen);
+  };
+
   const switchSidebar = () => {
     setHeaderSettings({ showDefalut: false, showFeatures: true });
   };
@@ -48,18 +56,17 @@ const RegisterCalendar = () => {
   useEffect(() => {
     setPlaces([]); // places 초기화
     setSearchPlace("");
-  }, [clickedDate,placeLatLon]);
-  
-
+    console.log(places);
+  }, [clickedDate, placeLatLon]);
 
   useEffect(() => {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const mapOptions = {
-    center: placeLatLon.length > 0
-      ? new kakao.maps.LatLng(placeLatLon[0].latitude, placeLatLon[0].longitude) // 첫 번째 좌표로 중심 설정
-      : new kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심 좌표
-    level: 5,
-  };
+      center: placeLatLon.length > 0
+        ? new kakao.maps.LatLng(placeLatLon[0].latitude, placeLatLon[0].longitude) // 첫 번째 좌표로 중심 설정
+        : new kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심 좌표
+      level: 5,
+    };
     const map = new kakao.maps.Map(mapContainer, mapOptions);
 
     // 장소 검색 객체를 생성
@@ -94,7 +101,7 @@ const RegisterCalendar = () => {
           image: markerImage,
         });
         // setMarkers(prev => [...prev, marker]);
-      //검색한 장소에 마커표시
+        //검색한 장소에 마커표시
       } else {
         const marker = new kakao.maps.Marker({
           map: map,
@@ -115,22 +122,37 @@ const RegisterCalendar = () => {
     if (searchPlace) {
       ps.keywordSearch(searchPlace, placesSearchCB);
     }
-  }, [searchPlace, placeLatLon,clickedDate]);
+  }, [searchPlace, placeLatLon, clickedDate]);
 
 
   return (
     <div className={styles.register__container}>
       {modalOpen && <EnrollModal searchMarkers={searchMarkers} setSearchMarkers={setSearchMarkers} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} setPlaces={setPlaces} />}
-      {!showCreate ?
-        <BeginSidebar onSwitch={switchSidebar} /> :
-        <CreateSidebar setSearchPlace={setSearchPlace} places={places} showModal={showModal} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />}
-
       <div id="map" style={{
         width: '80%',
         height: '100vh',
         float: 'right'
       }}>
       </div>
+      {!showCreate ?
+        <BeginSidebar onSwitch={switchSidebar} /> :
+        <div className={styles.register__sidebars}>
+          <CreateSidebar setSearchPlace={setSearchPlace} places={places} showModal={showModal} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
+          {addSidebarOpen ?
+            <>
+              <AddPlace setSearchPlace={setSearchPlace} places={places} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} showModal={showModal} setModalOpen={setModalOpen} />
+              <div onClick={showAddSidebar} className={styles.sidebar__btn}>
+                <IoIosArrowBack />
+              </div>
+            </>
+            :
+            <div onClick={showAddSidebar} className={styles.sidebar__btn}>
+              <IoIosArrowForward />
+            </div>
+          }
+
+        </div>
+      }
     </div>
   )
 }

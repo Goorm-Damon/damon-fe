@@ -2,3 +2,10 @@
   // margin-top: 64px;
   overflow: hidden;
 }
+
+.register__sidebars {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  z-index: 10;
+}

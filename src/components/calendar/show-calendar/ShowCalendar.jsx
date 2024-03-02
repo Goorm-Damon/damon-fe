@@ -63,27 +63,6 @@ const ShowCalendar = ({ calendar,index,showModal,setPlaceInfo, placeInfo }) => {
   }
       
 
-  //드래그 시작할 때 실행
-  const dragStart = (e,position) => {
-    dragItem.current = position;
-    console.log(e.target.innerHTML);
-  }
-  // 드래그 중인 대상이 위로 포개졌을 때
-  const dragEnter = (e,position) => {
-    dragOverItem.current = position;
-    console.log(e.target.innerHTML);
-  }
-  //드랍 (커서 뗐을 때)
-  const drop = (e) => {
-    const newList = [...list];
-    const dragItemValue = newList[dragItem.current];
-    newList.splice(dragItem.current,1);
-    newList.splice(dragOverItem.current,0,dragItemValue);
-    dragItem.current = null;
-    dragOverItem.current= null;
-    setList(newList);
-  }
-
   useEffect(() => {
     console.log(calendar);
   }, []);
@@ -94,13 +73,9 @@ const ShowCalendar = ({ calendar,index,showModal,setPlaceInfo, placeInfo }) => {
       // onClick={(e) => handleModal(calendar, e)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      draggable
-      onDragStart={(e) => dragStart(e, index)}
-      onDragEnter={(e) => dragEnter(e, index)}
-      onDragEnd={drop}
-      onDragOver={(e)=> e.preventDefault()}
     >
       <div className={styles.titles}>
+        <div className={styles.index_circle}>{index}</div>
         <p>{calendar.locationName}</p>
         {((isHovered && !showDetail) || (isHovered && showModify && showDetail)) &&(
           <div className={styles.dele_btn} onClick={handleDeleteClick}>
@@ -109,6 +84,7 @@ const ShowCalendar = ({ calendar,index,showModal,setPlaceInfo, placeInfo }) => {
         )}
       </div>
       <div className={styles.contents}>
+        <div className={styles.contents__background}></div>
         <p>{calendar.memo}</p>
       </div>
     </div>
