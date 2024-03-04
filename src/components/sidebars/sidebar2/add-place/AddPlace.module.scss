@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   justify-content: space-between;
-  box-shadow: -2px -7px 20px 3px gray;
+  box-shadow: 16px 0px 20px 3px #959595;
 
 
   input {
@@ -51,7 +51,7 @@
 .result_list {
   margin-top: 20px;
   height: 73vh;
-  overflow: scroll;
+  overflow-y: auto;
 
   @media (min-height:1200px) {
     height: 83vh;
@@ -94,9 +94,4 @@
   cursor: pointer;
   font-weight: 600;
   margin-top: 20px;
-}
-
-.Calendar__Container {
-  height: 83vh;
-  overflow-y: auto;
 }
