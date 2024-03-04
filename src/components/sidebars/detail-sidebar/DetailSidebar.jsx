@@ -43,32 +43,50 @@ const DetailSidebar = ({ showModal, places, setSearchPlace, setPlaceInfo, placeI
   }
 
   const handleEnd = (result) => {
-    // 목적지가 없으면(이벤트 취소) 이 함수를 종료합니다.
-    if (!result.destination) return;
+    if (!result.destination) return; // 목적지가 없으면 함수 종료
   
-    // 드래그 앤 드롭으로 순서가 변경된 새로운 배열 생성
-    const newTravels = Array.from(calendarInfo.travels);
-    // 변경시키는 아이템을 배열에서 임시로 제거
-    const [reorderedItem] = newTravels.splice(result.source.index, 1);
-    // 아이템을 새 위치에 삽입
-    newTravels.splice(result.destination.index, 0, reorderedItem);
+    // 드래그 앤 드롭으로 순서 변경
+    const newFilteredTravels = Array.from(filteredTravels);
+    const [reorderedItem] = newFilteredTravels.splice(result.source.index, 1);
+    newFilteredTravels.splice(result.destination.index, 0, reorderedItem);
   
-    // 바뀐 인덱스를 바탕으로 각 travel의 ordernum을 업데이트
-    const updatedTravels = newTravels.map((travel, index) => ({
+    // 변경된 순서로 order 업데이트
+    const updatedFilteredTravels = newFilteredTravels.map((travel, index) => ({
       ...travel,
-      order: index // ordernum을 업데이트. 여기서는 1부터 시작하는 인덱스로 설정
+      order: index
     }));
   
-    // 변경된 travels 배열로 calendarInfoState를 업데이트
+    // 기존 travels에서 해당 day의 항목을 제거
+    const remainingTravels = calendarInfo.travels.filter(travel => travel.day !== clickedDate);
+  
+    // updatedFilteredTravels를 remainingTravels에 삽입
+    const updatedTravels = [...remainingTravels, ...updatedFilteredTravels].sort((a, b) => {
+      if (a.day === b.day) {
+        return a.order - b.order; // 같은 day 내에서는 order 순으로 정렬
+      }
+      return a.day - b.day; // 다른 day는 day 순으로 정렬
+    });
+  
+    // 변경된 travels 배열로 calendarInfoState 업데이트
+    setCalendarInfo(prev => ({
+      ...prev,
+      travels: updatedTravels
+    }));
+  };
+
+  useEffect(() => {
+    const sortedTravels = [...calendarInfo.travels].sort((a, b) => {
+      if (a.day !== b.day) {
+        return a.day - b.day;
+      }
+      return a.order - b.order;
+    });
+
     setCalendarInfo({
       ...calendarInfo,
-      travels: updatedTravels
+      travels: sortedTravels
     });
-  };
-  
-  useEffect(()=> {
-    console.log(filteredTravels);
-  },[clickedDate])
+  }, []);
 
   return (
     <div className={styles.container}>

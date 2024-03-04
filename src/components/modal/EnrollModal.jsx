@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styles from './EnrollModal.module.scss'
-import { useRecoilState } from 'recoil';
-import { calendarInfoState } from '../../states/calendar/calendarInfoState';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { calendarInfoState, filteredTravelsSelector } from '../../states/calendar/calendarInfoState';
 
 const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo, setSearchMarkers, searchMarkers,setPlaces }) => {
   const [calenderInfo, setCalenderInfo] = useRecoilState(calendarInfoState);
+  const filteredTravels = useRecoilValue(filteredTravelsSelector);
 
   const [memo, setMemo] = useState("");
 
@@ -19,9 +20,10 @@ const EnrollModal = ({ setModalOpen, placeInfo, setPlaceInfo, setSearchMarkers, 
   useEffect(() => {
     setPlaceInfo(prevPlaceInfo => ({
       ...prevPlaceInfo,
-      memo: memo
+      memo: memo,
+      order: filteredTravels.length
     }));
-  }, [memo])
+  }, [memo,filteredTravels])
 
 
   const handleAddClaneder = () => {
