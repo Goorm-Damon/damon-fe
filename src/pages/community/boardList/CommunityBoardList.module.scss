@@ -1,0 +1,45 @@
+.postContainer {
+    border: 1px solid #d7d7d7;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .postHeader {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .postContent {
+    margin-bottom: 20px;
+  }
+  
+  .postFooter {
+    color: #444444;
+    margin-bottom: 10px;
+  }
+  
+  .postActions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .commentSection {
+    margin-top: 20px;
+  }
+  
+  textarea {
+    width: 100%;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
