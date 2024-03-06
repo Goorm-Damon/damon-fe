@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import styles from './CommunityBoardList.module.css'; // Make sure to import the correct CSS file
+import styles from '../boardList/CommunityBoardList.module.scss';
+import CommunityLists from './CommunityLists'; // Import the CommunityLists component
+import CommunityList from './CommunityList'; // Import the CommunityList component
 
 const CommunityBoardList = ({ post }) => {
   const [comment, setComment] = useState('');
@@ -13,10 +15,15 @@ const CommunityBoardList = ({ post }) => {
     console.log('Comment submitted:', comment);
   };
 
+  // Check if the post object is defined
+  if (!post) {
+    return <div>Loading...</div>; // You can render a loading indicator or handle the absence of post data in a different way
+  }
+
   return (
     <div className={styles.postContainer}>
       <div className={styles.postHeader}>
-        <p>작성자: {post.author}</p>
+        <p>작성자: {post.author || 'Unknown'}</p>
       </div>
       <div className={styles.postContent}>
         <h2>{post.title}</h2>
@@ -36,6 +43,14 @@ const CommunityBoardList = ({ post }) => {
           onChange={handleCommentChange}
         />
         <button onClick={handleCommentSubmit}>댓글 등록하기</button>
+      </div>
+      <div className={styles.communitySection}>
+        {/* Include the CommunityLists component here */}
+        <CommunityLists />
+      </div>
+      <div className={styles.communityListSection}>
+        {/* Include the CommunityList component here */}
+        <CommunityList name="Sample Community" />
       </div>
     </div>
   );
