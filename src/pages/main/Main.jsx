@@ -99,7 +99,7 @@ const Main = () => {
                 </div>
               ))}
             </div>
-            {!(calendars) &&
+            {(calendars.length<=0) &&
               <div className={styles.none__calendar}>
                 <p>일정을 추가해 보세요</p>
               </div>

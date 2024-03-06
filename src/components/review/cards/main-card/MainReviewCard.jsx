@@ -31,10 +31,10 @@ const MainReviewCard = ({ review,likeReview }) => {
   const handleDatails = (reviewId) => () => {
     navigate(`/review/${reviewId}`, { state: { reviewId: reviewId } });
   }
+  
   const fetchLikeReview = async () => {
     try {
       const response = await reviewService.likeReview(review.id);
-      console.log(response);
   
       const isLiked = likedReviews.includes(review.id);
       if (isLiked) {
@@ -105,9 +105,7 @@ const MainReviewCard = ({ review,likeReview }) => {
           <div className={styles.title}>
             <p>{review.title}</p>
             <div className={styles.card__reaction}>
-              <div>
-                <FaHeart color='#F05D67' />{review.likeCount}
-              </div>
+              <FaHeart color='#F05D67' />{review.likeCount}
               <FaComment color='#5996DD' />{review.commentCount}
               <p className={styles.view__count}>조회수 {review.viewCount}</p>
             </div>

@@ -29,7 +29,7 @@ const Review = () => {
       navigate(path);
     };
 
-  const fetchCalendars = async () => {
+  const fetchReviews = async () => {
     try {
       if (area == 'ALL') {
         const response = await reviewService.getReview(0, 10);
@@ -44,7 +44,7 @@ const Review = () => {
   };
 
   useEffect(() => {
-    fetchCalendars();
+    fetchReviews();
   }, [area]);
 
   return (

@@ -161,7 +161,7 @@ const MyCalendar = () => {
             
           </div>
           :
-          <div>
+          <div className={styles.none__calendar}>
             등록된 일정이 없습니다.
           </div>
         }

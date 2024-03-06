@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .dates__area {
@@ -81,4 +81,24 @@
   }
 }
 
-.menu__Btn {}
+.free__tags {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  color: #b9b9b9;
+  font-weight: 600;
+}
+
+.menu__Btn {
+  cursor: pointer;
+}
+
+.icons {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 10px;
+  .icon {
+    cursor: pointer;
+  }
+}

@@ -1,39 +1,38 @@
-// import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
+import styles from './DropDown.module.scss'
 
-// const areas = [
-//   {
-//     id: '1',
-//     title: '수정',
-//     path: '/services/aboutUs',
-//     cName: 'dropdown-link'
-//   },
-//   {
-//     id: '2',
-//     title: '카카오로 공유',
-//     path: '',
-//     cName: 'dropdown-link'
-//   },
-// ];
+const MenuItems = [
+  {
+    id: '1',
+    title: '수정',
+    path: '/edit',
+    cName: 'dropdown-edit'
+  },
+  {
+    id: '1',
+    title: '삭제',
+    path: '/services/aboutUs',
+    cName: 'dropdown-delete'
+  },
+  {
+    id: '2',
+    title: '카카오로 공유',
+    path: '',
+    cName: 'dropdown-share'
+  },
+];
 
-// const DropDown = ({setClick, click}) => {
+const DropDown = () => {
 
-//     const handleClick = () => setClick(!click);
+  return (
+    <>
+      <ul className={styles.dropdown__menu}>
+        <li className={styles.menu_edit}>수정</li>
+        <li className={styles.menu_dele}>삭제</li>
+      </ul>
+    </>
+  );
+}
 
-//     return (
-//         <>
-//             <ul onClick={handleClick} className={click ? 'dropdown-menu clicked' : 'dropdown-menu'}>
-//                 {MenuItems.map((item, index) => {
-//                     return (
-//                         <li key={index}>
-//                             <Link className={item.cName} to={item.path} onClick={() => setClick(false)}>
-//                                 {item.title}
-//                             </Link>
-//                         </li>
-//                     );
-//                 })}
-//             </ul>
-//         </>
-//     );
-// }
-
-// export default DropDown
+export default DropDown
