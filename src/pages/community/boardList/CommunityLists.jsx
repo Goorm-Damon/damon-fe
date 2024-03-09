@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import CommunityList from './CommunityList';
 
-import classes from './CommunityLists.module.css'; // Make sure the file name is correct
+import classes from './CommunityLists.module.scss'; // Make sure the file name is correct
 
 const DUMMY_COMMUNITYLISTS = [
   { id: 'u1', name: 'Max' },

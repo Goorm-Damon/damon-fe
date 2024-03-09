@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import styles from '../boardList/CommunityBoardList.module.scss';
-import CommunityLists from './CommunityLists'; // Import the CommunityLists component
-import CommunityList from './CommunityList'; // Import the CommunityList component
+import CommunityLists from '../boardList/CommunityLists';
+import CommunityList from '../boardList/CommunityList';
+import { useNavigate } from 'react-router-dom';
 
 const CommunityBoardList = ({ post }) => {
   const [comment, setComment] = useState('');
+  const navigate = useNavigate();
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
@@ -22,36 +24,20 @@ const CommunityBoardList = ({ post }) => {
 
   return (
     <div className={styles.postContainer}>
-      <div className={styles.postHeader}>
-        <p>작성자: {post.author || 'Unknown'}</p>
-      </div>
-      <div className={styles.postContent}>
-        <h2>{post.title}</h2>
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
-      </div>
-      <div className={styles.postFooter}>
-        <p>좋아요: {post.likes} | 댓글수: {post.comments.length}</p>
-      </div>
-      <div className={styles.postActions}>
-        <button onClick={() => console.log('Go back to list')}>목록으로</button>
-        <button onClick={() => console.log('Edit post')}>수정하기</button>
-      </div>
-      <div className={styles.commentSection}>
+      <header className={styles.header}>
+        <div onClick={() => navigate('/')}>커뮤니티</div>
+      </header>
+      <div className={styles.commentContainer}>
         <textarea
-          placeholder="댓글을 입력하세요..."
+          placeholder="Add your comment..."
           value={comment}
           onChange={handleCommentChange}
         />
-        <button onClick={handleCommentSubmit}>댓글 등록하기</button>
+        <button onClick={handleCommentSubmit}>Submit Comment</button>
       </div>
-      <div className={styles.communitySection}>
-        {/* Include the CommunityLists component here */}
-        <CommunityLists />
-      </div>
-      <div className={styles.communityListSection}>
-        {/* Include the CommunityList component here */}
-        <CommunityList name="Sample Community" />
-      </div>
+      <CommunityLists />
+      <CommunityList name="Example Community" />
+      {/* Add more CommunityList components or use dynamic data as needed */}
     </div>
   );
 };
