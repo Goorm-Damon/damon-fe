@@ -110,3 +110,36 @@ export const getBestReview = async () => {
     return error;
   }
 }
+
+//리뷰 댓글 등록
+export const createComment = async (reviewId,commentData) => {
+  try {
+    const response = await apiutils.create(`/api/review/${reviewId}/comments`, commentData);
+    return response;
+  } catch (error) {
+    console.log('Error creating comment', error);
+    return error;
+  }
+}
+
+//리뷰 댓글 삭제
+export const deleteComment = async (reviewId, commentId) => {
+  try {
+    const response = await apiutils.del(`/api/review/${reviewId}/comments/${commentId}`);
+    return response;
+  } catch (error) {
+    console.log('Error deleting comment', error);
+    return error;
+  }
+}
+
+//리뷰 댓글 수정
+export const editComment = async (reviewId, commentId, commentData) => {
+  try {
+    const response = await apiutils.patchComment(`/api/review/${reviewId}/comments/${commentId}`, commentData);
+    return response;
+  } catch (error) {
+    console.log('Error editing comment', error);
+    return error;
+  }
+}

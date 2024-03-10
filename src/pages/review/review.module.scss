@@ -1,8 +1,8 @@
 .page {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   max-width: 1200px;
-  padding: 0 50px;
+  // padding: 0 50px;
   width: 100%;
   padding-bottom: 100px;
   margin: 0 auto;
@@ -11,12 +11,11 @@
 
 .review {
   width: 100%;
-  padding: 0 50px;
 
   input {
     height: 50px;
     padding: 20px;
-    width: 100%;
+    width: 40rem;
     border-radius: 5px;
     border: 1px solid lightgray;
     outline: none;
@@ -49,4 +48,13 @@
   gap: 18px;
   display: flex;
   flex-direction: column;
+}
+
+.none__review {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20%;
+  color: lightgray;
+  font-weight: 600;
 }

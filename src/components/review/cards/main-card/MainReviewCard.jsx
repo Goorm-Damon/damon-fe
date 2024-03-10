@@ -31,7 +31,7 @@ const MainReviewCard = ({ review,likeReview }) => {
   const handleDatails = (reviewId) => () => {
     navigate(`/review/${reviewId}`, { state: { reviewId: reviewId } });
   }
-  
+
   const fetchLikeReview = async () => {
     try {
       const response = await reviewService.likeReview(review.id);
@@ -75,7 +75,7 @@ const MainReviewCard = ({ review,likeReview }) => {
 
   return (
     <div className={styles.review__card}>
-      <div className={styles.card__left}>
+      <div className={styles.card__top}>
         {review.mainImage &&
           <img className={styles.imgs} src={review.mainImage} />
         }
@@ -94,7 +94,7 @@ const MainReviewCard = ({ review,likeReview }) => {
         </div>
       </div>
 
-      <div className={styles.card__right} onClick={handleDatails(review.id)}>
+      <div className={styles.card__bottom} onClick={handleDatails(review.id)}>
         <div className={styles.user}>
           {review.createTime && review.createTime.slice(0, 10)}
         </div>
@@ -124,7 +124,7 @@ const MainReviewCard = ({ review,likeReview }) => {
               <p>{review.cost}</p>
             </div>
             <div className={styles.review__tags}>
-              {review.freeTags.slice(0, 8).map((freeTag, idx) => (
+              {review.freeTags && review.freeTags.slice(0, 5).map((freeTag, idx) => (
                 <p>#{freeTag}</p>
               ))}
             </div>

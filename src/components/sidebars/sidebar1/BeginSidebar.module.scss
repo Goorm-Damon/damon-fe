@@ -1,7 +1,7 @@
 .container {
   position: fixed;
   min-width: 300px;
-  // width: 30%;
+  margin-top: 64px;
   height: 100vh;
   background-color: white;
   z-index: 10;
@@ -19,7 +19,7 @@
     color: #263747;
     width: 300px;
   }
-  
+
   span {
     color: rgb(215, 87, 87);
     font-size: 12px;

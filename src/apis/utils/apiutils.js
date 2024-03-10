@@ -18,7 +18,8 @@ async function call(apiUrl, method, requestData = {}) {
 
 //리프레시토큰 요청 api
 function postRefreshToken() {
-    const response = create('/api/user/refresh',localStorage.getItem('accessToken'));
+    const refreshToken = localStorage.getItem('refreshToken');
+    const response = createRef(`/api/user/refresh?refreshToken=${refreshToken}`);
     return response;
 }
 
@@ -33,14 +34,14 @@ axios.interceptors.response.use(
             response: { status },
         } = error;
 
-        if (status === 403) {
-            if (error.response.data.message === 'Forbidden') {
+        if ((status === 403)||(status === 400)) {
+            if ((error.response.data.message === 'Forbidden')||(error.response.data.message === '잘못된 토큰 정보입니다.')) {
                 const originRequest = config;
                 try {
                     const tokenResponse = await postRefreshToken();
                     if (tokenResponse.status === 200) {
-                        const newAccessToken = tokenResponse.data.token;
-                        localStorage.setItem('accessToken', tokenResponse.data.token);
+                        const newAccessToken = tokenResponse.data.accessToken;
+                        localStorage.setItem('accessToken', tokenResponse.data.accessToken);
                         localStorage.setItem(
                             'refreshToken',
                             tokenResponse.data.refreshToken,
@@ -49,6 +50,9 @@ axios.interceptors.response.use(
                         axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
                         originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
                         return axios(originRequest);
+                    }
+                    else {
+                        alert(tokenResponse.status);
                     }
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
@@ -124,6 +128,10 @@ async function create(apiUrl, data) {
     return call(apiUrl, 'POST', { data });
 }
 
+async function createRef(apiUrl) {
+    return call(apiUrl, 'POST');
+}
+
 async function read(apiUrl) {
     return call(apiUrl, 'GET');
 }
@@ -140,6 +148,10 @@ async function patch(apiUrl) {
     return call(apiUrl, 'PATCH');
 }
 
+async function patchComment(apiUrl,data) {
+    return call(apiUrl, 'PATCH', { data });
+}
+
 async function selectDel(apiUrl, data) {
     return call(apiUrl, 'DELETE', { data });
 }
@@ -147,4 +159,4 @@ async function selectDel(apiUrl, data) {
 
 
 
-export default { call, handleResponse, handleError, create, read, update, del, selectDel, patch };
+export default { call, handleResponse, handleError, create, read, update, del, selectDel, patch, patchComment };

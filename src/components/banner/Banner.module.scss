@@ -4,12 +4,12 @@
   background-color: #D1DDE5;
   // height: var(--banner-height-desktop);
   @media (min-width:768px) {
-    height: 315px;
+    height: 400px;
     // padding: 0 16px 0 16px;
   }
 
   @media (max-width: 767px) {
-    height: 294px;
+    height: 300px;
     padding: 0 0 0 24px;
   }
 }
@@ -29,7 +29,7 @@
   color: #000;
   z-index: 1;
   width: 420px;
-  padding-bottom: calc(var(--indicator-height) + var(--margin-from-indicator));
+  // padding-bottom: calc(var(--indicator-height) + var(--margin-from-indicator));
   word-break: keep-all;
 }
 
@@ -65,7 +65,7 @@
   flex-shrink: 1;
   align-items: center;
   justify-content: center;
-
+  margin-top: 50px;
 
   img {
     display: block;

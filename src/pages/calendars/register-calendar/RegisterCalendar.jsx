@@ -65,6 +65,7 @@ const RegisterCalendar = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setPlaces([]); // places 초기화
     setSearchPlace("");
     console.log(places);

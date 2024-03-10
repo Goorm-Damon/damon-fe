@@ -12,11 +12,15 @@ import { FaHeart } from "react-icons/fa6";
 import { FaRegComment } from "react-icons/fa";
 import { IoMdShare } from "react-icons/io";
 import { likedReviewState } from '../../../states/review/likeReviewState';
+import { userInfostate } from '../../../states/user/userInfoState';
+import Comment from '../../../components/comment/Comment';
 
 
 const DetailReview = () => {
   const reviewId = useLocation().state.reviewId;
   const [reviewInfo, setReviewInfo] = useRecoilState(reviewInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfostate);
+
   const [click, setClick] = useState(false);
   const [heart, setHeart] = useState(false);
   const [likedReviews, setLikedReviews] = useRecoilState(likedReviewState);
@@ -24,11 +28,11 @@ const DetailReview = () => {
 
   const handleMenu = () => setClick(!click);
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setClick(false);
-    }
-  };
+  // const handleClickOutside = (event) => {
+  //   if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //     setClick(false);
+  //   }
+  // };
 
   const fetchDetailReview = async () => {
     try {
@@ -54,13 +58,17 @@ const DetailReview = () => {
     }
   };
 
+  const moveComment = () => {
+    window.scrollTo(0, 1200);
+  }
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.addEventListener('click', handleClickOutside);
+    // document.addEventListener('click', handleClickOutside);
     fetchDetailReview();
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
+    // return () => {
+    //   document.removeEventListener('click', handleClickOutside);
+    // };
   }, []);
 
   return (
@@ -73,11 +81,15 @@ const DetailReview = () => {
             </div>
             <p>{reviewInfo.name}</p>
           </div>
-          <div ref={dropdownRef} className={styles.menu__Btn} onClick={handleMenu}>
-            <CiMenuKebab />
-          </div>
+          {(userInfo.data.nickname === reviewInfo.name) &&
+            <div ref={dropdownRef} className={styles.menu__Btn} onClick={handleMenu}>
+              <CiMenuKebab />
+            </div>
+          }
         </div>
-        {click && <DropDown />}
+        <div className={styles.dropdown__menu}>
+          {click && <DropDown setClick={setClick} reviewId={reviewId} />}
+        </div>
         <section>
           <div className={styles.image__box}>
             {reviewInfo.imageUrls && <img className={styles.images} src={reviewInfo.imageUrls[0]} />}
@@ -88,7 +100,7 @@ const DetailReview = () => {
             ) : (
               <FaRegHeart size={25} className={styles.icon} onClick={fetchLikeReview} />
             )}
-            <FaRegComment className={styles.icon} size={25} />
+            <FaRegComment className={styles.icon} size={25} onClick={moveComment}/>
             <IoMdShare className={styles.icon} size={25} />
           </div>
         </section>
@@ -118,9 +130,15 @@ const DetailReview = () => {
             <div>{HTMLReactParser(reviewInfo.content)}</div>
           </div>
           <div className={styles.free__tags}>
-            {reviewInfo.freeTags.map((tag, idx) => (
+            {reviewInfo.tags && reviewInfo.tags.map((tag, idx) => (
               <p key={idx}>#{tag} </p>
             ))}
+          </div>
+        </section>
+        <section>
+          <div>
+            <h2>댓글</h2>
+            <Comment reviewId={reviewId} />
           </div>
         </section>
       </div>

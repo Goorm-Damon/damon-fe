@@ -37,7 +37,7 @@ const RegisterReview = () => {
     area: "",
     cost: '',
     suggests: [],
-    freeTags: [],
+    tags: [],
     content: "",
     image: ""
   });
@@ -113,7 +113,7 @@ const RegisterReview = () => {
   const handleRemoveTag = (index) => {
     setReviewInfo(prev => ({
       ...prev,
-      freeTags: prev.freeTags.filter((_, i) => i !== index)
+      tags: prev.tags.filter((_, i) => i !== index)
     }));
   };
 
@@ -269,7 +269,7 @@ const RegisterReview = () => {
           </div>
         </section>
         <div className={styles.tags__container}>
-          {reviewInfo.freeTags.map((tag, index) => (
+          {reviewInfo.tags.map((tag, index) => (
             <div key={index} className={styles.tags}>
               <p># {tag}</p>
               <div className={styles.del__btn} onClick={() => handleRemoveTag(index)}><IoCloseOutline /></div>
@@ -286,7 +286,7 @@ const RegisterReview = () => {
                   if (trimmedValue) {
                     setReviewInfo(prev => ({
                       ...prev,
-                      freeTags: [...prev.freeTags, trimmedValue],
+                      tags: [...prev.tags, trimmedValue],
                     }));
                     e.target.value = '';
                   }

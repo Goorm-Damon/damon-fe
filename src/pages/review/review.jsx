@@ -4,6 +4,7 @@ import * as reviewService from '../../apis/services/reviewService';
 import AreaSidebar from '../../components/sidebars/area-sidebar/AreaSidebar';
 import MainReviewCard from '../../components/review/cards/main-card/MainReviewCard';
 import { useNavigate } from 'react-router-dom';
+import ReviewBanner from '../../components/banner/ReviewBanner';
 
 const areas = [
   { value: 'ALL', label: "전체" },
@@ -24,10 +25,10 @@ const Review = () => {
   const [reviews, setReviews] = useState([]);
   const [area, setArea] = useState('ALL');
 
-    // 페이지 이동을 위한 함수
-    const navigateTo = (path) => () => {
-      navigate(path);
-    };
+  // 페이지 이동을 위한 함수
+  const navigateTo = (path) => () => {
+    navigate(path);
+  };
 
   const fetchReviews = async () => {
     try {
@@ -45,31 +46,41 @@ const Review = () => {
 
   useEffect(() => {
     fetchReviews();
+    window.scrollTo(0, 1200);
   }, [area]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>
+      <ReviewBanner />
       <div className={styles.page}>
-        <AreaSidebar setArea={setArea} area={area} />
         <div className={styles.review}>
           <section className={styles.review__top}>
-            <input
-              placeholder='검색어를 입력하세요'
-            />
+            <AreaSidebar setArea={setArea} area={area} />
             <div className={styles.editLine}>
               <p>Total {reviews.length}</p>
               <button onClick={navigateTo('/register/review')} >+리뷰 작성</button>
             </div>
           </section>
-          <section>
-            <div className={styles.review__cards}>
-              {reviews && reviews.length > 0 && reviews.map((review, i) => (
-                <div className={styles.calendar__card} key={i}>
-                  <MainReviewCard review={review} />
-                </div>
-              ))}
+          {reviews ?
+            <section>
+              <div className={styles.review__cards}>
+                {reviews && reviews.length > 0 && reviews.map((review, i) => (
+                  <div className={styles.calendar__card} key={i}>
+                    <MainReviewCard review={review} />
+                  </div>
+                ))}
+              </div>
+            </section>
+            :
+            <div className={styles.none__review}>
+              첫 리뷰를 등록해보세요
             </div>
-          </section>
+          }
+
         </div>
       </div>
     </div>

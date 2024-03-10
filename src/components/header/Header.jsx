@@ -23,6 +23,7 @@ const Header = () => {
   const [calendar, setCalendar] = useRecoilState(calendarInfoState);
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태를 관리하는 변수
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
+  const [show, setShow] = useState(false);
 
   // 수정 모드를 토글하는 함수
   const toggleEditing = () => {
@@ -70,6 +71,20 @@ const Header = () => {
   useEffect(() => {
     fetchUser();
   }, [])
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if(window.scrollY < 70) {
+        setShow(true);
+      }
+      else {
+        setShow(false);
+      }
+    });
+    return () => {
+      window.removeEventListener("scroll", () => {});
+    };
+  }, []);
 
   // 현재 경로에 따라 헤더 상태 업데이트
   useEffect(() => {
@@ -199,13 +214,12 @@ const Header = () => {
   };
 
   return (
-    <section className={styles.header}>
+    <section className={show  ? styles.header : styles.header__white}>
       <div className={styles.header__container}>
         <div className={styles.header_logo} onClick={handleCancel}>
           DAMON
         </div>
         <div>
-          {calendar.title && (
             <div>
               {(showModify && showDetail) ? (
                 <input
@@ -217,7 +231,6 @@ const Header = () => {
                 <div onMouseEnter={toggleEditing}>{calendar.title}</div>
               )}
             </div>
-          )}
         </div>
         {showDefalut &&
           <div className={styles.header__content}>
@@ -246,7 +259,7 @@ const Header = () => {
             {userInfo.accessToken ?
               <div onClick={handleLogout} className={styles.header__logout}>로그아웃</div>
               :
-              <div onClick={navigateTo('/login')} className={styles.header__logout}>로그인</div>
+              <div onClick={navigateTo('/login')} className={styles.header__login}>로그인</div>
             }
           </div>
         }

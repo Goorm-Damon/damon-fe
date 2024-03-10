@@ -1,0 +1,90 @@
+.container {
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 103;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(215 215 215 / 57%);
+  animation: modal-bg-show 0.1s;
+  z-index: 102;
+
+  @keyframes modal-bg-show {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+.modalBlock {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  background-color: white;
+
+  animation: modal-show 0.1s;
+
+  @keyframes modal-show {
+    from {
+      opacity: 0;
+      margin-top: -50px;
+    }
+
+    to {
+      opacity: 1;
+      margin-top: 0;
+    }
+  }
+}
+
+.content {
+  position: relative;
+    z-index: 10;
+    max-width: 400px;
+    width: 100%;
+    background-color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .msg {
+      line-height: 1.5;
+      font-size: 1rem;
+      color: rgb(73, 80, 87);
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+    }
+    
+    .action_box {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      button {
+        margin-left: 0.5rem;
+      }
+    }
+}

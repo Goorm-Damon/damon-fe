@@ -8,10 +8,10 @@ import { getCalendarIdState } from '../../../states/calendar/calendarInfoState';
 const img_url = {
   'GAPYEONG': 'regions-img/gapyeong.svg',
   'GANGWON': 'regions-img/gangwon.svg',
-  'GEYONGGI': 'regions-img/incheon.svg',
+  'GEYONGGI': 'regions-img/geyonggi.svg',
   'INCHEON': 'regions-img/incheon.svg',
   'SEOUL': 'regions-img/seoul.svg',
-  'CHUNGCHEONG': 'regions-img/chungcheong.svg',
+  'CHUNGCHEONG': 'regions-img/chungcheon.svg',
   'GYEONGSANG': 'regions-img/gyeongsang.svg',
   'JEOLLLA': 'regions-img/jeolla.svg',
   'JEJU': 'regions-img/jeju.svg',
