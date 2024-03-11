@@ -3,7 +3,7 @@ import axios from "../utils/apiutils"
 //일정 등록
 export const createCalendar = async (calendarData) => {
   try {
-    const response = await axios.post('/api/calendar', calendarData);
+    const response = await axios.post('/api/calendar',calendarData);
     return response;
   } catch (error) {
     console.log('Error creating Calendar', error);

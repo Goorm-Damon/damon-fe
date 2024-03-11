@@ -50,3 +50,12 @@
   display: flex;
   flex-direction: column;
 }
+
+.none__calendar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20%;
+  color: lightgray;
+  font-weight: 600;
+}

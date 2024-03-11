@@ -136,7 +136,7 @@ const RegisterReview = () => {
           return reviewService.createReview(reviewDataWithImage);
         })
         .then((response) => {
-          if (response.success) {
+          if (response.status === 200) {
             alert("리뷰 등록되었습니다.");
             //상세 리뷰 페이지로 이동해야함.
             navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
@@ -152,7 +152,7 @@ const RegisterReview = () => {
       console.log("이미지 없음");
       try {
         const response = reviewService.createReview(reviewInfo);
-        if (response.success) {
+        if (response.status === 200) {
           alert("리뷰 등록되었습니다.");
           //상세일정 페이지로 이동해야함.
           navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });

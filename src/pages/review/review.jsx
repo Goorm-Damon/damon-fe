@@ -65,7 +65,7 @@ const Review = () => {
               <button onClick={navigateTo('/register/review')} >+리뷰 작성</button>
             </div>
           </section>
-          {reviews ?
+          {reviews.length>0 ?
             <section>
               <div className={styles.review__cards}>
                 {reviews && reviews.length > 0 && reviews.map((review, i) => (

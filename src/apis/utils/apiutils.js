@@ -4,15 +4,18 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL
 
 const instance = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    },
     timeout: 2000,
 });
 
-instance.interceptors.request.use((config) =>{
-    if(!config.headers) return config;
-    const accesstoken = localStorage.getItem('accessToken')
+instance.interceptors.request.use((config) => {
+    if (!config.headers) return config;
+    const accessToken = localStorage.getItem('accessToken')
 
-    if(accesstoken && config.headers) {
-        config.headers["Authorization"] = `Bearer ${accesstoken}`;
+    if (accessToken && config.headers) {
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
     return config;
 })
