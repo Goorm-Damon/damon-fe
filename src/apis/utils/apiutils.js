@@ -2,29 +2,30 @@ import axios from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
 
-async function call(apiUrl, method, requestData = {}) {
-    try {
-        const response = await axios({
-            url: apiUrl,
-            method,
-            headers: { 'Authorization': localStorage.getItem('refreshToken') },
-            ...requestData
-        });
-        return handleResponse(response);
-    } catch (error) {
-        return Promise.reject(handleError(error));
+const instance = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+    timeout: 2000,
+});
+
+instance.interceptors.request.use((config) =>{
+    if(!config.headers) return config;
+    const accesstoken = localStorage.getItem('accessToken')
+
+    if(accesstoken && config.headers) {
+        config.headers["Authorization"] = `Bearer ${accesstoken}`;
     }
-}
+    return config;
+})
 
 //리프레시토큰 요청 api
-function postRefreshToken() {
+const postRefreshToken = async () => {
     const refreshToken = localStorage.getItem('refreshToken');
-    const response = createRef(`/api/user/refresh?refreshToken=${refreshToken}`);
+    const response = await axios.post(`/api/user/refresh?refreshToken=${refreshToken}`);
     return response;
 }
 
 //리프레시 토큰 구현
-axios.interceptors.response.use(
+instance.interceptors.response.use(
     (response) => {
         return response;
     },
@@ -34,8 +35,8 @@ axios.interceptors.response.use(
             response: { status },
         } = error;
 
-        if ((status === 403)||(status === 400)) {
-            if ((error.response.data.message === 'Forbidden')||(error.response.data.message === '잘못된 토큰 정보입니다.')) {
+        if ((status === 403) || (status === 400)) {
+            if ((error.response.data.message === 'Forbidden') || (error.response.data.message === '잘못된 토큰 정보입니다.')) {
                 const originRequest = config;
                 try {
                     const tokenResponse = await postRefreshToken();
@@ -46,7 +47,7 @@ axios.interceptors.response.use(
                             'refreshToken',
                             tokenResponse.data.refreshToken,
                         );
-                        console.log("newAccessToken",newAccessToken);
+                        console.log("newAccessToken", newAccessToken);
                         axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
                         originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
                         return axios(originRequest);
@@ -72,6 +73,7 @@ axios.interceptors.response.use(
         return Promise.reject(error);
     },
 );
+
 
 function handleResponse(response) {
     const { status, data } = response;
@@ -124,39 +126,4 @@ function handleError(error) {
     }
 }
 
-async function create(apiUrl, data) {
-    return call(apiUrl, 'POST', { data });
-}
-
-async function createRef(apiUrl) {
-    return call(apiUrl, 'POST');
-}
-
-async function read(apiUrl) {
-    return call(apiUrl, 'GET');
-}
-
-async function update(apiUrl, data) {
-    return call(apiUrl, 'PUT', { data });
-}
-
-async function del(apiUrl) {
-    return call(apiUrl, 'DELETE');
-}
-
-async function patch(apiUrl) {
-    return call(apiUrl, 'PATCH');
-}
-
-async function patchComment(apiUrl,data) {
-    return call(apiUrl, 'PATCH', { data });
-}
-
-async function selectDel(apiUrl, data) {
-    return call(apiUrl, 'DELETE', { data });
-}
-
-
-
-
-export default { call, handleResponse, handleError, create, read, update, del, selectDel, patch, patchComment };
+export default instance;
