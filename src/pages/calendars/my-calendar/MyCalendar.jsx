@@ -67,7 +67,7 @@ const MyCalendar = () => {
   const handleDelete = async () => {
     try {
       const response = await calendarService.deleteSelecCalendar(selectedItems);
-      if (response.success) {
+      if (response.status === 200) {
         alert("일정 삭제되었습니다.");
         console.log("response", response);
         //상세일정 페이지로 이동해야함.a

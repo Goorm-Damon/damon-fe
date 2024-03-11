@@ -65,11 +65,14 @@ const RegisterCalendar = () => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     setPlaces([]); // places 초기화
     setSearchPlace("");
     console.log(places);
   }, [clickedDate, placeLatLon]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div

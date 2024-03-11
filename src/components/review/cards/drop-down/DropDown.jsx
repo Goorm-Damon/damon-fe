@@ -31,7 +31,7 @@ const DropDown = ({setClick}) => {
   const handleDelete = async () => {
     try {
       const response = await reviewService.deleteReview(reviewInfo.id);
-      if (response.success) {
+      if (response.status === 200) {
         console.log("response", response);
         //상세일정 페이지로 이동해야함.
         navigate('/review', { replace: true });

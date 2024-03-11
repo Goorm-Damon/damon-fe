@@ -101,7 +101,7 @@ const Header = () => {
   const handleSubmit = async () => {
     try {
       const response = await calendarService.createCalendar(calendarInfo);
-      if (response.success) {
+      if (response.status === 200) {
         alert("일정 등록되었습니다.");
         console.log(response);
         //상세일정 페이지로 이동해야함.
@@ -123,7 +123,7 @@ const Header = () => {
   const handleModify = async () => {
     try {
       const response = await calendarService.editCalendar(calendarId, calendarInfo);
-      if (response.success) {
+      if (response.status === 200) {
         alert("일정 수정되었습니다.");
         console.log("response", response);
         //상세일정 페이지로 이동해야함.
@@ -147,7 +147,7 @@ const Header = () => {
   const handledele = async () => {
     try {
       const response = await calendarService.deleteCalendar(calendarId);
-      if (response.success) {
+      if (response.status === 200) {
         alert("일정 삭제되었습니다.");
         console.log("response", response);
         //상세일정 페이지로 이동해야함.
