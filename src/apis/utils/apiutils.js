@@ -7,7 +7,6 @@ const instance = axios.create({
     headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
     },
-    timeout: 2000,
 });
 
 instance.interceptors.request.use((config) => {
@@ -24,6 +23,11 @@ instance.interceptors.request.use((config) => {
 const postRefreshToken = async () => {
     const refreshToken = localStorage.getItem('refreshToken');
     const response = await axios.post(`/api/user/refresh?refreshToken=${refreshToken}`);
+    console.log("refereshToken", response);
+    if(response.status === 200) {
+        localStorage.setItem("accessToken",response.data.data.accessToken);
+        localStorage.setItem("refreshToken",response.data.data.refreshToken);
+    }
     return response;
 }
 
@@ -33,44 +37,34 @@ instance.interceptors.response.use(
         return response;
     },
     async (error) => {
-        const {
-            config,
-            response: { status },
-        } = error;
-
-        if ((status === 403) || (status === 400)) {
-            if ((error.response.data.message === 'Forbidden') || (error.response.data.message === '잘못된 토큰 정보입니다.')) {
-                const originRequest = config;
-                try {
-                    const tokenResponse = await postRefreshToken();
-                    if (tokenResponse.status === 200) {
-                        const newAccessToken = tokenResponse.data.accessToken;
-                        localStorage.setItem('accessToken', tokenResponse.data.accessToken);
-                        localStorage.setItem(
-                            'refreshToken',
-                            tokenResponse.data.refreshToken,
-                        );
-                        console.log("newAccessToken", newAccessToken);
-                        axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-                        originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                        return axios(originRequest);
-                    }
-                    else {
-                        alert(tokenResponse.status);
-                    }
-                } catch (error) {
-                    if (axios.isAxiosError(error)) {
-                        if (
-                            error.response?.status === 404 ||
-                            error.response?.status === 422
-                        ) {
-                            alert(error.response);
-                            window.location.replace('/login');
-                        } else {
-                            alert(error.response);
-                        }
+        if (error.response?.status === 403) {
+            try {
+                const tokenResponse = await postRefreshToken();
+                if (tokenResponse.status === 200) {
+                    error.config.headers = {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    };
+                    const response = await axios.request(error.config);
+                    return response;
+                }
+                else {
+                    alert(tokenResponse.status);
+                }
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    if (
+                        error.response?.status === 404 ||
+                        error.response?.status === 422
+                    ) {
+                        alert(error.response);
+                        window.location.replace('/login');
+                    } else {
+                        alert(error.response);
                     }
                 }
+
+
             }
         }
         return Promise.reject(error);
