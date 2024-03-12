@@ -15,9 +15,9 @@ const ReviewBanner = () => {
       <div className={styles.banner__item}>
         <div className={styles.titles}>
           <p className={styles.title}>
-            다양한 리뷰로
+            멘트
             <br />
-            당신의 여정을 떠나보세요
+            뭐하지..
           </p>
           <button className={styles.review__btn} onClick={navigateTo('/register/review')}>
             리뷰 작성하기
