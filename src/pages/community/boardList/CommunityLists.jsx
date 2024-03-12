@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import CommunityList from './CommunityList';
-
-import classes from './CommunityLists.module.scss'; // Make sure the file name is correct
+import classes from './CommunityLists.module.scss';
 
 const DUMMY_COMMUNITYLISTS = [
   { id: 'u1', name: 'Max' },
@@ -18,8 +17,8 @@ const CommunityLists = () => {
 
   const CommunityListsList = (
     <ul>
-      {DUMMY_COMMUNITYLISTS.map((user) => (
-        <CommunityList key={user.id} name={user.name} />
+      {DUMMY_COMMUNITYLISTS.map((data) => (
+        <CommunityList key={data.communityId} data={data} />
       ))}
     </ul>
   );
