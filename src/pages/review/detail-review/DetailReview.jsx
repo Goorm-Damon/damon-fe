@@ -18,11 +18,12 @@ import Comment from '../../../components/comment/Comment';
 
 const DetailReview = () => {
   const reviewId = useLocation().state.reviewId;
+  const heart_state = useLocation().state.heart_state;
   const [reviewInfo, setReviewInfo] = useRecoilState(reviewInfoState);
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
 
   const [click, setClick] = useState(false);
-  const [heart, setHeart] = useState(false);
+  const [heart, setHeart] = useState(heart_state);
   const [likedReviews, setLikedReviews] = useRecoilState(likedReviewState);
   const dropdownRef = useRef(null);
 
@@ -74,73 +75,70 @@ const DetailReview = () => {
   return (
     <div>
       <div className={styles.page}>
-        <div className={styles.user__info}>
-          <div className={styles.user__profile}>
-            <div className={styles.profile__img}>
-              <img />
+        <div>
+          <div className={styles.user__info}>
+            <div className={styles.user__profile}>
+              <div className={styles.profile__img}>
+                <img />
+              </div>
+              <p>{reviewInfo.name}</p>
             </div>
-            <p>{reviewInfo.name}</p>
+            {(userInfo.data.nickname === reviewInfo.name) &&
+              <div ref={dropdownRef} className={styles.menu__Btn} onClick={handleMenu}>
+                <CiMenuKebab />
+              </div>
+            }
           </div>
-          {(userInfo.data.nickname === reviewInfo.name) &&
-            <div ref={dropdownRef} className={styles.menu__Btn} onClick={handleMenu}>
-              <CiMenuKebab />
+          <div className={styles.dropdown__menu}>
+            {click && <DropDown setClick={setClick} reviewId={reviewId} />}
+          </div>
+          <section>
+            <div className={styles.image__box}>
+              {reviewInfo.imageUrls && <img className={styles.images} src={reviewInfo.imageUrls[0]} />}
             </div>
-          }
+            <div className={styles.icons}>
+              {heart ? (
+                <FaHeart color='#F05D67' size={25} className={styles.icon} onClick={fetchLikeReview} />
+              ) : (
+                <FaRegHeart size={25} className={styles.icon} onClick={fetchLikeReview} />
+              )}
+              <FaRegComment className={styles.icon} size={25} onClick={moveComment} />
+              <IoMdShare className={styles.icon} size={25} />
+            </div>
+          </section>
+          <section className={styles.page__contents}>
+            <div className={styles.Title}>
+              <p className={styles.category__name}>제목</p>
+              <p>{reviewInfo.title}</p>
+            </div>
+            <div className={styles.dates}>
+              <p className={styles.category__name}>여행 기간</p>
+              <p>
+                {reviewInfo.startDate} ~ {reviewInfo.endDate}
+              </p>
+            </div>
+            <div className={styles.cost}>
+              <p className={styles.category__name}>총 경비</p>
+              <p>{reviewInfo.cost}</p>
+            </div>
+            <div className={styles.suggest__places}>
+              <p className={styles.category__name}>추천 장소</p>
+              {reviewInfo.suggests.map((suggest, idx) => (
+                <p key={idx}>{idx + 1}. {suggest}</p>
+              ))}
+            </div>
+            <div className={styles.contents}>
+              <p className={styles.category__name}>리뷰 내용</p>
+              <div>{HTMLReactParser(reviewInfo.content)}</div>
+            </div>
+            <div className={styles.free__tags}>
+              {reviewInfo.tags && reviewInfo.tags.map((tag, idx) => (
+                <p key={idx}>#{tag} </p>
+              ))}
+            </div>
+          </section>
         </div>
-        <div className={styles.dropdown__menu}>
-          {click && <DropDown setClick={setClick} reviewId={reviewId} />}
-        </div>
-        <section>
-          <div className={styles.image__box}>
-            {reviewInfo.imageUrls && <img className={styles.images} src={reviewInfo.imageUrls[0]} />}
-          </div>
-          <div className={styles.icons}>
-            {heart ? (
-              <FaHeart color='#F05D67' size={25} className={styles.icon} onClick={fetchLikeReview} />
-            ) : (
-              <FaRegHeart size={25} className={styles.icon} onClick={fetchLikeReview} />
-            )}
-            <FaRegComment className={styles.icon} size={25} onClick={moveComment}/>
-            <IoMdShare className={styles.icon} size={25} />
-          </div>
-        </section>
-        <section className={styles.page__contents}>
-          <div className={styles.Title}>
-            <p className={styles.category__name}>제목</p>
-            <p>{reviewInfo.title}</p>
-          </div>
-          <div className={styles.dates}>
-            <p className={styles.category__name}>여행 기간</p>
-            <p>
-              {reviewInfo.startDate} ~ {reviewInfo.endDate}
-            </p>
-          </div>
-          <div className={styles.cost}>
-            <p className={styles.category__name}>총 경비</p>
-            <p>{reviewInfo.cost}</p>
-          </div>
-          <div className={styles.suggest__places}>
-            <p className={styles.category__name}>추천 장소</p>
-            {reviewInfo.suggests.map((suggest, idx) => (
-              <p key={idx}>{idx + 1}. {suggest}</p>
-            ))}
-          </div>
-          <div className={styles.contents}>
-            <p className={styles.category__name}>리뷰 내용</p>
-            <div>{HTMLReactParser(reviewInfo.content)}</div>
-          </div>
-          <div className={styles.free__tags}>
-            {reviewInfo.tags && reviewInfo.tags.map((tag, idx) => (
-              <p key={idx}>#{tag} </p>
-            ))}
-          </div>
-        </section>
-        <section>
-          <div>
-            <h2>댓글</h2>
-            <Comment reviewId={reviewId} />
-          </div>
-        </section>
+        <Comment reviewId={reviewId} comments={reviewInfo.reviewComments} />
       </div>
     </div>
   );

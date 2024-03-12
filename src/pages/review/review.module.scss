@@ -31,23 +31,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-
-  button {
-    border: none;
-    cursor: pointer;
-    padding: 0px 10px;
-    height: 30px;
-    border-radius: 5px;
-    background-color: #7298C2;
-    color: white;
-  }
-
 }
 
 .review__cards {
-  gap: 18px;
-  display: flex;
-  flex-direction: column;
+  // gap: 18px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
 }
 
 .none__review {

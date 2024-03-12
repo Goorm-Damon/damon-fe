@@ -17,6 +17,7 @@
 .banner__item {
   position: relative;
   display: flex;
+  flex-direction: column;
   overflow: hidden;
   justify-content: center;
   height: 100%;
@@ -32,4 +33,33 @@
     background-color: #ffffff73;
     border: none;
   }
+}
+
+.titles {
+  display: flex;
+  flex-direction: row;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.5;
+  word-break: keep-all;
+  color: white;
+
+  @media (max-width:991px) {
+    font-size: 22px;
+  }
+}
+
+.review__btn {
+  background-color: #ffffff00;
+  padding: 10px;
+  border-radius: 25px;
+  color: #7298ce;
+  border: solid 2px #7298ce;
+  font-weight: 600;
+  height: fit-content;
+  cursor: pointer;
 }

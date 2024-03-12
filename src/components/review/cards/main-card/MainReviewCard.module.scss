@@ -1,17 +1,13 @@
 .review__card {
-  width: 100%;
-  border: 1px solid lightgray;
   border-radius: 8px;
   display: flex;
-  flex-direction: row;
-  // padding: 20px;
-  align-items: center;
+  flex-direction: column;
 }
 
 .card__top {
   img {
-    width: 230px;
-    height: 230px;
+    width: 200px;
+    height: 180px;
     border-radius: 10px;
     display: flex;
     position: absolute;
@@ -21,10 +17,10 @@
 .card__img {
   display: flex;
   flex-direction: column;
-  width: 230px;
-  height: 230px;
+  width: 200px;
+  height: 180px;
   justify-content: space-between;
-  padding: 14px;
+  padding: 10px;
   position: relative; /* 이 부분을 추가하여 img 태그가 이를 기준으로 절대 위치하게 함 */
 }
 
@@ -38,7 +34,6 @@
 
 .card__tag {
   background-color: white;
-  border: 1px solid lightgray;
   display: flex;
   width: fit-content;
   padding: 5px 10px;
@@ -51,29 +46,29 @@
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
+  color: white;
 }
 
 .card__bottom {
-  padding: 0px 20px;
-  width: 100%;
+  padding: 5px 10px;
+  width: 200px;
   cursor: pointer;
 }
 
 .content {
-  border: 1px solid lightgray;
-  border-radius: 8px;
-  padding: 10px;
+  // border-radius: 8px;
+  // padding: 10px;
 }
 
 .title {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
+  margin-top: 5px;
   p {
     margin: 0;
     padding: 4px 0px;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 600;
     color: #424242;
   }
@@ -127,7 +122,8 @@
   p {
     margin: 5px 0px 0px 0px;
     font-weight: 600;
-    color: #424242;
+    color: #b7b7b7;
+    font-size: 12px;
   }
 }
 
@@ -138,9 +134,23 @@
   gap: 10px;
 }
 
-.user__info {
+.user__profile {
+  font-weight: 600;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+
   p {
     margin: 0;
+    font-size: 13px;
 
   }
+}
+
+.profile__img {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background-color: #f5f5f5;
 }

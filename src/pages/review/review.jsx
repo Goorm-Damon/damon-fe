@@ -62,7 +62,6 @@ const Review = () => {
             <AreaSidebar setArea={setArea} area={area} />
             <div className={styles.editLine}>
               <p>Total {reviews.length}</p>
-              <button onClick={navigateTo('/register/review')} >+리뷰 작성</button>
             </div>
           </section>
           {reviews.length>0 ?
@@ -77,7 +76,7 @@ const Review = () => {
             </section>
             :
             <div className={styles.none__review}>
-              첫 리뷰를 등록해보세요
+              리뷰를 등록해보세요
             </div>
           }
 

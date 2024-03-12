@@ -127,9 +127,9 @@ const RegisterReview = () => {
         .then((response) => {
           // 이미지 업로드 성공 시 처리 // 여러 이미지를 보내야하는 경우 지금처럼 체인 형식으로 진행하면 리뷰가 이미지 만큼 생성되는 오류 발생함.
           console.log("이미지 업로드 성공:", response.data);
-  
+
           setReviewInfo(prev => ({ ...prev, image: response.data }));
-  
+
           // 리뷰 등록 // 비동기 이슈로 다음과 같이 수정
           const reviewDataWithImage = { ...reviewInfo, image: response.data };
           console.log("리뷰 정보:", reviewDataWithImage);
@@ -281,7 +281,9 @@ const RegisterReview = () => {
               className={styles.tag__input}
               placeholder='태그 입력'
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === ' ' || e.key === 'Spacebar') {
+                  e.preventDefault(); // 공백 입력 시 기본 이벤트 차단
+                } else if (e.key === 'Enter') {
                   const trimmedValue = e.target.value.trim();
                   if (trimmedValue) {
                     setReviewInfo(prev => ({

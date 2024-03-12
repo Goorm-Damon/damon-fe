@@ -11,6 +11,7 @@ import ReviewCard from '../../components/review/cards/best-card/ReviewCard';
 import CommunityCard from '../../components/community/cards/CommunityCard';
 import { useRecoilState } from 'recoil';
 import { userInfostate } from '../../states/user/userInfoState';
+import MainReviewCard from '../../components/review/cards/main-card/MainReviewCard';
 
 
 
@@ -48,7 +49,7 @@ const Main = () => {
 
   const fetchBestReviews = async () => {
     try {
-      const response = await reviewService.getReview(0, 10);
+      const response = await reviewService.getBestReview();
       setBestReviews(response.data);
     } catch (error) {
       console.log(error);
@@ -108,14 +109,12 @@ const Main = () => {
         }
         <section className={styles.preview__container}>
           <div className={styles.preview__title}>
-            <h2>최근 리뷰</h2>
+            <h2>베스트 리뷰</h2>
             <a onClick={navigateTo('/review')}>더 보기 {'>'}</a>
           </div>
           <div className={styles.calendars__container}>
             {bestReviews && bestReviews.slice(0, 4).map((bestReview, i) => (
-              <div className={styles.calendar__card} key={i}>
-                <ReviewCard bestReview={bestReview} />
-              </div>
+              <MainReviewCard key={i} review={bestReview} />
             ))}
           </div>
         </section>

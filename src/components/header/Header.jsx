@@ -63,8 +63,6 @@ const Header = () => {
       } catch (error) {
         console.error("Error:", error);
       }
-    } else {
-      console.log("로그인 필요");
     }
   }
 
@@ -210,6 +208,8 @@ const Header = () => {
   const handleLogout = () => {
     setUserInfo('');
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('recoil-persist');
     navigate('/');
   };
 

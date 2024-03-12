@@ -1,10 +1,28 @@
 import React from 'react'
 import styles from './ReviewBanner.module.scss'
+import { useNavigate } from 'react-router-dom';
 
 const ReviewBanner = () => {
+
+  const navigate = useNavigate();
+
+  // 페이지 이동을 위한 함수
+  const navigateTo = (path) => () => {
+    navigate(path);
+  };
   return (
     <div className={styles.banner}>
       <div className={styles.banner__item}>
+        <div className={styles.titles}>
+          <p className={styles.title}>
+            다양한 리뷰로
+            <br />
+            당신의 여정을 떠나보세요
+          </p>
+          <button className={styles.review__btn} onClick={navigateTo('/register/review')}>
+            리뷰 작성하기
+          </button>
+        </div>
         <input
           placeholder='어떤 여행을 찾으시나요?'
         />
