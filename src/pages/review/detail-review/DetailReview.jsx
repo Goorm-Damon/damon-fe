@@ -26,6 +26,16 @@ const DetailReview = () => {
     }
   }
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const showNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % reviewInfo.imageUrls.length);
+  };
+  
+  const showPrevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + reviewInfo.imageUrls.length) % reviewInfo.imageUrls.length);
+  };
+  
   useEffect(() => {
     fetchDetailReview();
   }, []);
@@ -45,12 +55,15 @@ const DetailReview = () => {
           </div>
         </div>
         <section>
-          <div className={styles.image__box}>
-            {reviewInfo.imageUrls &&
-              <img className={styles.images} src={reviewInfo.imageUrls[0]} />
-            }
+        <div className={styles.image__box}>
+  {reviewInfo.imageUrls && reviewInfo.imageUrls.length > 0 && (
+    <img src={reviewInfo.imageUrls[currentImageIndex]} alt="Review" className={styles.images} />
+  )}
+  <button onClick={showPrevImage} className={styles.prevButton}>이전</button>
+  <button onClick={showNextImage} className={styles.nextButton}>다음</button>
+</div>
 
-          </div>
+
         </section>
         <section className={styles.page__contents}>
           <div className={styles.Title}>
