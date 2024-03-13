@@ -120,10 +120,10 @@ const RegisterReview = () => {
   const handleSubmit = () => {
     const formData = new FormData();
     if (postImg) {
-      postImg.forEach((file, index) => {
+      postImg.forEach((file) => {
         formData.append(`images`, file);
       });
-      axios.post('/api/upload', formData, {
+      axios.post('/api/review/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -132,10 +132,11 @@ const RegisterReview = () => {
           // 이미지 업로드 성공 시 처리 // 여러 이미지를 보내야하는 경우 지금처럼 체인 형식으로 진행하면 리뷰가 이미지 만큼 생성되는 오류 발생함.
           console.log("이미지 업로드 성공:", response.data);
 
-          setReviewInfo(prev => ({ ...prev, images: response.data }));
+          // setReviewInfo(prev => ({ ...prev, images: response.data }));
 
           // 리뷰 등록 // 비동기 이슈로 다음과 같이 수정
-          const reviewDataWithImage = { ...reviewInfo, images: response.data };
+          const images = response.data.data; 
+          const reviewDataWithImage = { ...reviewInfo, images: images };
           console.log("리뷰 정보:", reviewDataWithImage);
           return reviewService.createReview(reviewDataWithImage);
         })
@@ -143,7 +144,7 @@ const RegisterReview = () => {
           if (response.status === 200) {
             alert("리뷰 등록되었습니다.");
             //상세 리뷰 페이지로 이동해야함.
-            navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
+            navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
           } else {
             console.error(response.error);
           }
@@ -159,7 +160,7 @@ const RegisterReview = () => {
         if (response.status === 200) {
           alert("리뷰 등록되었습니다.");
           //상세일정 페이지로 이동해야함.
-          navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
+          navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
         } else {
           console.error(response.error);
         }
