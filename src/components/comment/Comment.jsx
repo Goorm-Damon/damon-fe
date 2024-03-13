@@ -5,9 +5,11 @@ import { useRecoilState } from 'recoil';
 import { reviewInfoState } from '../../states/review/reviewState';
 import { userInfostate } from '../../states/user/userInfoState';
 import { useNavigate } from 'react-router-dom';
+import ReplyComment from './reply/ReplyComment';
 
 const Comment = ({ reviewId }) => {
   const navigate = useNavigate();
+  const [local, setLocal] = useState([])
   const [content, setContent] = useState('');
   const [parentId, setParentId] = useState(0);
   const [comment, setComment] = useState({
@@ -19,12 +21,13 @@ const Comment = ({ reviewId }) => {
 
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
 
-  const handleComment = async () => {
+  const handleComment = async (e) => {
     try {
+      e.preventDefault();
       const response = await reviewService.createComment(reviewId, comment);
       if (response.status === 200) {
         setCommentList(response.data.reviewComments);
-        console.log('댓글등록', response);
+        setContent("");
       } else {
         console.error(response.error);
       }
@@ -40,7 +43,13 @@ const Comment = ({ reviewId }) => {
 
   useEffect(() => {
     setCommentList(reviewInfo.reviewComments);
+    setLocal(commentList.filter(comment => comment.parentId === null))
   }, [reviewInfo.reviewComments]);
+
+//   useEffect(() => {
+//     setLocal(commentList.filter(comment => comment.parentId === null))
+//     // parentId 구조 확인 후 0이나 root 처리 해야함. 일단 null 값
+// }, [commentList])
 
   return (
     <div>
@@ -52,23 +61,22 @@ const Comment = ({ reviewId }) => {
         <textarea
           className="comments-header-textarea"
           maxRows={3}
-          onChange={(e) => {
-            setContent(e.target.value);
-          }}
+          onChange={(e) => {setContent(e.target.value);}}
           multiline
-          placeholder="댓글을 입력해주세요✏️"
+          placeholder="댓글을 입력해주세요"
         />
         <button onClick={handleComment}>등록</button>
       </div>
       <div className={styles.comment__body}>
-        {commentList &&
-          commentList.map((item, index) => (
+        {local &&
+          local.map((item, index) => (
             <div key={index} className="comments-comment">
+              <div className="comment-username">{item.name}</div>
               <div className="comment-username-date">
                 <div className="comment-date">{item.createdDate}</div>
               </div>
               <div className="comment-content">{item.content}</div>
-              <div className="comment-username">{item.name}</div>
+              <ReplyComment reviewId={reviewId} responseTo={item.parentId} />
               <hr />
             </div>
           ))}

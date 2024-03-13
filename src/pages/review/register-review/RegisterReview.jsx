@@ -139,7 +139,8 @@ const RegisterReview = () => {
           if (response.status === 200) {
             alert("리뷰 등록되었습니다.");
             //상세 리뷰 페이지로 이동해야함.
-            navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
+            navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
+            console.log(response.data);
           } else {
             console.error(response.error);
           }
