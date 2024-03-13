@@ -72,7 +72,7 @@ const DetailReview = () => {
   const moveComment = () => {
     window.scrollTo(0, 1200);
   }
-
+  
   useEffect(() => {
     window.scrollTo(0, 0);
     // document.addEventListener('click', handleClickOutside);

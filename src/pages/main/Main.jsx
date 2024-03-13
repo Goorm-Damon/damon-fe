@@ -113,7 +113,7 @@ const Main = () => {
             <a onClick={navigateTo('/review')}>더 보기 {'>'}</a>
           </div>
           <div className={styles.calendars__container}>
-            {bestReviews.length>0 && bestReviews.slice(0, 4).map((bestReview, i) => (
+            {bestReviews.length>0 && bestReviews.map((bestReview, i) => (
               <MainReviewCard key={i} review={bestReview} />
             ))}
           </div>
