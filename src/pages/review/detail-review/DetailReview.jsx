@@ -63,6 +63,16 @@ const DetailReview = () => {
     window.scrollTo(0, 1200);
   }
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const showNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % reviewInfo.imageUrls.length);
+  };
+  
+  const showPrevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + reviewInfo.imageUrls.length) % reviewInfo.imageUrls.length);
+  };
+  
   useEffect(() => {
     window.scrollTo(0, 0);
     // document.addEventListener('click', handleClickOutside);
@@ -93,9 +103,14 @@ const DetailReview = () => {
             {click && <DropDown setClick={setClick} reviewId={reviewId} />}
           </div>
           <section>
-            <div className={styles.image__box}>
-              {reviewInfo.imageUrls && <img className={styles.images} src={reviewInfo.imageUrls[0]} />}
-            </div>
+          <div className={styles.image__box}>
+  {reviewInfo.imageUrls && reviewInfo.imageUrls.length > 0 && (
+    <img src={reviewInfo.imageUrls[currentImageIndex]} alt="Review" className={styles.images} />
+  )}
+  <button onClick={showPrevImage} className={styles.prevButton}>이전</button>
+  <button onClick={showNextImage} className={styles.nextButton}>다음</button>
+</div>
+
             <div className={styles.icons}>
               {heart ? (
                 <FaHeart color='#F05D67' size={25} className={styles.icon} onClick={fetchLikeReview} />
