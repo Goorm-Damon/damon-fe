@@ -67,7 +67,9 @@ const MainReviewCard = ({ review, likeReview }) => {
   const getLikeReviews = async () => {
     try {
       const response = await reviewService.getLikeReview(0, 5);
-      const ids = response.data.map(review => review.id); // "좋아요 한 게시물"의 id 값들을 추출
+      console.log("좋아요리스트response",response);
+
+      const ids = response.data.data.content.map(review => review.id); // "좋아요 한 게시물"의 id 값들을 추출
       setLikedReviews(ids); // 추출한 id 값들을 상태에 저장
       if (likedReviews.includes(review.id)) {
         setHeart(true);

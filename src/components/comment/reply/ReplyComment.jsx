@@ -28,7 +28,7 @@ const ReplyComment = ({reviewId,responseTo}) => {
       e.preventDefault();
       const response = await reviewService.createComment(reviewId, { parentId, content });
       if (response.status === 200) {
-        setCommentList(response.data.reviewComments);
+        setCommentList(response.data.data.reviewComments);
         setContent('');
       } else {
         console.error(response.error);

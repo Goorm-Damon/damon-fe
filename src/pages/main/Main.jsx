@@ -50,7 +50,7 @@ const Main = () => {
   const fetchBestReviews = async () => {
     try {
       const response = await reviewService.getBestReview();
-      setBestReviews(response.data);
+      setBestReviews(response.data.data);
     } catch (error) {
       console.log(error);
     }

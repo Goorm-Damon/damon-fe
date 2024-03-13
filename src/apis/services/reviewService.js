@@ -4,7 +4,7 @@ import axios from '../utils/apiutils'
 export const createReview = async (reviewData) => {
   try {
     const response = await axios.post('/api/review', reviewData);
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error creating review', error);
     return error;
@@ -16,7 +16,7 @@ export const createReview = async (reviewData) => {
 export const editReview = async (id,reviewData) => {
   try {
     const response = await axios.put(`/api/review/${id}`,{data:reviewData});
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error editing review', error);
     return error;
@@ -27,7 +27,7 @@ export const editReview = async (id,reviewData) => {
 export const deleteReview = async (id) => {
   try {
     const response = await axios.delete(`/api/review/${id}`);
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error deleting review', error);
     return error;
@@ -38,7 +38,7 @@ export const deleteReview = async (id) => {
 export const likeReview = async (id) => {
   try {
     const response = await axios.patch(`/api/review/${id}`);
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error deleting review', error);
     return error;
@@ -49,7 +49,7 @@ export const likeReview = async (id) => {
 export const getReview = async (page,pageSize) => {
   try {
     const response = await axios.get(`/api/review/list?page=${page}&pageSize=${pageSize}`);
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error getting review', error);
     return error;
@@ -60,7 +60,7 @@ export const getReview = async (page,pageSize) => {
 export const getAreaReview = async (page,pageSize,area) => {
   try {
     const response = await axios.get(`/api/review/list?page=${page}&pageSize=${pageSize}&area=${area}`,{page,pageSize,area});
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error getting review', error);
     return error;
@@ -71,7 +71,7 @@ export const getAreaReview = async (page,pageSize,area) => {
 export const getMyReview = async () => {
   try {
     const response = await axios.get(`/api/review/my/list`);
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error getting my review', error);
     return error;
@@ -82,7 +82,7 @@ export const getMyReview = async () => {
 export const getDetailReview = async (id) => {
   try {
     const response = await axios.get(`/api/review/${id}`);
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error getting review', error);
     return error;
@@ -93,7 +93,7 @@ export const getDetailReview = async (id) => {
 export const getLikeReview = async (page,pageSize) => {
   try {
     const response = await axios.get(`/api/review/likes?page=${page}&pageSize=${pageSize}`);
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error getting likes review', error);
     return error;
@@ -104,7 +104,7 @@ export const getLikeReview = async (page,pageSize) => {
 export const getBestReview = async () => {
   try {
     const response = await axios.get(`/api/review/best`);
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error getting best review', error);
     return error;
@@ -115,7 +115,7 @@ export const getBestReview = async () => {
 export const createComment = async (reviewId,commentData) => {
   try {
     const response = await axios.post(`/api/review/${reviewId}/comments`, {data:commentData});
-    return response.data;
+    return response;
   } catch (error) {
     console.log('Error creating comment', error);
     return error;

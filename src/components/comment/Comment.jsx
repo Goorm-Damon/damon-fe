@@ -26,7 +26,11 @@ const Comment = ({ reviewId }) => {
       e.preventDefault();
       const response = await reviewService.createComment(reviewId, comment);
       if (response.status === 200) {
-        setCommentList(response.data.reviewComments);
+        setReviewInfo(prev => ({
+          ...prev,
+          reviewComments: [...prev.reviewComments, response.data.data.reviewComments]
+        }));
+        setCommentList(response.data.data.reviewComments);
         setContent("");
       } else {
         console.error(response.error);
@@ -46,10 +50,10 @@ const Comment = ({ reviewId }) => {
     setLocal(commentList.filter(comment => comment.parentId === null))
   }, [reviewInfo.reviewComments]);
 
-//   useEffect(() => {
-//     setLocal(commentList.filter(comment => comment.parentId === null))
-//     // parentId 구조 확인 후 0이나 root 처리 해야함. 일단 null 값
-// }, [commentList])
+  useEffect(() => {
+    setLocal(commentList.filter(comment => comment.parentId === null))
+    // parentId 구조 확인 후 0이나 root 처리 해야함. 일단 null 값
+}, [commentList])
 
   return (
     <div>
