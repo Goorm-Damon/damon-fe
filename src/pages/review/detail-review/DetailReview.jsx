@@ -35,14 +35,32 @@ const DetailReview = () => {
   //   }
   // };
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const showNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % reviewInfo.imageUrls.length);
+  };
+
+  const showPrevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + reviewInfo.imageUrls.length) % reviewInfo.imageUrls.length);
+  };
+
   const fetchDetailReview = async () => {
     try {
       const response = await reviewService.getDetailReview(reviewId);
+<<<<<<< HEAD
     if (response && response.data && response.data.data) {
       setReviewInfo(response.data.data);
     } else {
       console.error('Invalid response structure:', response);
     }
+=======
+      if (response && response.data && response.data.data) {
+        setReviewInfo(response.data.data);
+      } else {
+        console.error('Invalid response structure:', response);
+      }
+>>>>>>> c24dc2b7621322c36ac3fa73544d07a4f7d59049
     } catch (error) {
       console.log(error);
     }
@@ -66,16 +84,6 @@ const DetailReview = () => {
   const moveComment = () => {
     window.scrollTo(0, 1200);
   }
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const showNextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % reviewInfo.imageUrls.length);
-  };
-  
-  const showPrevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + reviewInfo.imageUrls.length) % reviewInfo.imageUrls.length);
-  };
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -107,14 +115,13 @@ const DetailReview = () => {
             {click && <DropDown setClick={setClick} reviewId={reviewId} />}
           </div>
           <section>
-          <div className={styles.image__box}>
-  {reviewInfo.imageUrls && reviewInfo.imageUrls.length > 0 && (
-    <img src={reviewInfo.imageUrls[currentImageIndex]} alt="Review" className={styles.images} />
-  )}
-  <button onClick={showPrevImage} className={styles.prevButton}>이전</button>
-  <button onClick={showNextImage} className={styles.nextButton}>다음</button>
-</div>
-
+            <div className={styles.image__box}>
+              {reviewInfo.imageUrls && reviewInfo.imageUrls.length > 0 && (
+                <img src={reviewInfo.imageUrls[currentImageIndex]} alt="Review" className={styles.images} />
+              )}
+              <button onClick={showPrevImage} className={styles.prevButton}>이전</button>
+              <button onClick={showNextImage} className={styles.nextButton}>다음</button>
+            </div>
             <div className={styles.icons}>
               {heart ? (
                 <FaHeart color='#F05D67' size={25} className={styles.icon} onClick={fetchLikeReview} />
