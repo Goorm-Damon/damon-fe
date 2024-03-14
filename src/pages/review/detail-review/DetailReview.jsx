@@ -48,19 +48,13 @@ const DetailReview = () => {
   const fetchDetailReview = async () => {
     try {
       const response = await reviewService.getDetailReview(reviewId);
-<<<<<<< HEAD
+
     if (response && response.data && response.data.data) {
       setReviewInfo(response.data.data);
     } else {
       console.error('Invalid response structure:', response);
     }
-=======
-      if (response && response.data && response.data.data) {
-        setReviewInfo(response.data.data);
-      } else {
-        console.error('Invalid response structure:', response);
-      }
->>>>>>> c24dc2b7621322c36ac3fa73544d07a4f7d59049
+
     } catch (error) {
       console.log(error);
     }
