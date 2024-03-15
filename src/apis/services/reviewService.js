@@ -15,7 +15,7 @@ export const createReview = async (reviewData) => {
 //리뷰 수정
 export const editReview = async (id,reviewData) => {
   try {
-    const response = await axios.put(`/api/review/${id}`,{data:reviewData});
+    const response = await axios.put(`/api/review/${id}`,reviewData);
     return response;
   } catch (error) {
     console.log('Error editing review', error);

@@ -50,7 +50,8 @@ const Main = () => {
   const fetchBestReviews = async () => {
     try {
       const response = await reviewService.getBestReview();
-      setBestReviews(response.data);
+      console.log(response);
+      setBestReviews(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -113,7 +114,7 @@ const Main = () => {
             <a onClick={navigateTo('/review')}>더 보기 {'>'}</a>
           </div>
           <div className={styles.calendars__container}>
-            {bestReviews.length>0 && bestReviews.map((bestReview, i) => (
+            {bestReviews && bestReviews.map((bestReview, i) => (
               <MainReviewCard key={i} review={bestReview} />
             ))}
           </div>
