@@ -20,9 +20,9 @@ const LikeReview = () => {
   const fetchLikeReviews = async () => {
     try {
         const response = await reviewService.getLikeReview(0,5);
-        setReviews(response.data.data.content);
-        setLikedReviews(response.data.data.content);  
-        console.log(response.data.content);
+        setReviews(response.data);
+        setLikedReviews(response.data);  
+        console.log(response.data);
     } catch (error) {
       console.log(error);
     }

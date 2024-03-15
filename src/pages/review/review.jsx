@@ -34,10 +34,10 @@ const Review = () => {
     try {
       if (area == 'ALL') {
         const response = await reviewService.getReview(0, 10);
-        setReviews(response.data.data.content);
+        setReviews(response.data);
       } else {
         const response = await reviewService.getAreaReview(0, 10, area);
-        setReviews(response.data.data.content);
+        setReviews(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -51,8 +51,7 @@ const Review = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log("reviews",reviews)
-  }, [reviews]);
+  }, []);
 
   return (
     <div>

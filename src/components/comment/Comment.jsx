@@ -5,11 +5,9 @@ import { useRecoilState } from 'recoil';
 import { reviewInfoState } from '../../states/review/reviewState';
 import { userInfostate } from '../../states/user/userInfoState';
 import { useNavigate } from 'react-router-dom';
-import ReplyComment from './reply/ReplyComment';
 
 const Comment = ({ reviewId }) => {
   const navigate = useNavigate();
-  const [local, setLocal] = useState([])
   const [content, setContent] = useState('');
   const [parentId, setParentId] = useState(0);
   const [comment, setComment] = useState({
@@ -21,17 +19,12 @@ const Comment = ({ reviewId }) => {
 
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
 
-  const handleComment = async (e) => {
+  const handleComment = async () => {
     try {
-      e.preventDefault();
       const response = await reviewService.createComment(reviewId, comment);
       if (response.status === 200) {
-        setReviewInfo(prev => ({
-          ...prev,
-          reviewComments: [...prev.reviewComments, response.data.data.reviewComments]
-        }));
-        setCommentList(response.data.data.reviewComments);
-        setContent("");
+        setCommentList(response.data.reviewComments);
+        console.log('댓글등록', response);
       } else {
         console.error(response.error);
       }
@@ -45,15 +38,9 @@ const Comment = ({ reviewId }) => {
     console.log(comment.content);
   }, [content]);
 
-  // useEffect(() => {
-  //   setCommentList(reviewInfo.reviewComments);
-  //   setLocal(commentList.filter(comment => comment.parentId === null))
-  // }, [reviewInfo.reviewComments]);
-
-  // useEffect(() => {
-  //   setLocal(commentList.filter(comment => comment.parentId === null))
-  //   // parentId 구조 확인 후 0이나 root 처리 해야함. 일단 null 값
-  // }, [commentList])
+  useEffect(() => {
+    setCommentList(reviewInfo.reviewComments);
+  }, [reviewInfo.reviewComments]);
 
   return (
     <div>
@@ -70,20 +57,19 @@ const Comment = ({ reviewId }) => {
           />
           <button onClick={handleComment}>등록</button>
         </div>
-        <div className={styles.comment__body}>
-          {local &&
-            local.map((item, index) => (
-              <div key={index} className="comments-comment">
-                <div className="comment-username">{item.name}</div>
-                <div className="comment-username-date">
-                  <div className="comment-date">{item.createdDate}</div>
-                </div>
-                <div className="comment-content">{item.content}</div>
-                <ReplyComment reviewId={reviewId} responseTo={item.parentId} />
-                <hr />
+      </div>
+      <div className={styles.comment__body}>
+        {commentList &&
+          commentList.map((item, index) => (
+            <div key={index} className="comments-comment">
+              <div className="comment-username-date">
+                <div className="comment-date">{item.createdDate}</div>
               </div>
-            ))}
-        </div>
+              <div className="comment-content">{item.content}</div>
+              <div className="comment-username">{item.name}</div>
+              <hr />
+            </div>
+          ))}
       </div>
     </div>
   );

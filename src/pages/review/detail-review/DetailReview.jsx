@@ -48,11 +48,13 @@ const DetailReview = () => {
   const fetchDetailReview = async () => {
     try {
       const response = await reviewService.getDetailReview(reviewId);
-      if (response && response.data && response.data.data) {
-        setReviewInfo(response.data.data);
-      } else {
-        console.error('Invalid response structure:', response);
-      }
+
+    if (response && response.data && response.data.data) {
+      setReviewInfo(response.data.data);
+    } else {
+      console.error('Invalid response structure:', response);
+    }
+
     } catch (error) {
       console.log(error);
     }
@@ -95,7 +97,7 @@ const DetailReview = () => {
               <div className={styles.profile__img}>
                 <img />
               </div>
-              <p>{reviewInfo.name}</p>
+              <p>{reviewInfo &&reviewInfo.name}</p>
             </div>
             {(userInfo.data.nickname === reviewInfo.name) &&
               <div ref={dropdownRef} className={styles.menu__Btn} onClick={handleMenu}>

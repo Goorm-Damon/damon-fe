@@ -114,7 +114,7 @@ export const getBestReview = async () => {
 //리뷰 댓글 등록
 export const createComment = async (reviewId,commentData) => {
   try {
-    const response = await axios.post(`/api/review/${reviewId}/comments`, {data:commentData});
+    const response = await axios.post(`/api/review/${reviewId}/comments`, commentData);
     return response;
   } catch (error) {
     console.log('Error creating comment', error);
