@@ -34,8 +34,8 @@ const EditReview = () => {
   const [previewImg, setPreviewImg] = useState([]);
   const [reviewInfo, setReviewInfo] = useState({
     title: review.title,
-    startDate: new Date(review.startDate).getTime(),
-    endDate: new Date(review.endDate).getTime(),
+    startDate: new Date(review.startDate),
+    endDate: new Date(review.endDate),
     area: review.area,
     cost: review.cost,
     suggests: review.suggests,
