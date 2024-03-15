@@ -17,7 +17,7 @@ const DropDown = ({setClick}) => {
   const closeModal = () => setIsModalOpen(false);
 
   const handleEditClick = () => {
-    // 수정 메뉴 클릭 시 처리 로직 추가
+    handleEdit();
     setClick(false);
   };
 
@@ -43,6 +43,14 @@ const DropDown = ({setClick}) => {
       console.log(error);
     }
   };
+
+  const handleEdit = async () => {
+    try {
+      navigate(`/review/edit/${reviewInfo.id}`, { state: { review: reviewInfo } });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
   return (

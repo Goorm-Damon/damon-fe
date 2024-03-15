@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import styles from './RegisterReview.module.scss';
+import styles from './EditReview.module.scss';
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useRecoilState } from 'recoil';
 import { reviewInfoState } from '../../../states/review/reviewState';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as reviewService from '../../../apis/services/reviewService';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -26,20 +26,22 @@ const areas = [
   { value: 'JEJU', label: "제주" },
 ];
 
-const RegisterReview = () => {
+const EditReview = () => {
+
   const navigate = useNavigate();
+  const review = useLocation().state.review;
   const [postImg, setPostImg] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
   const [reviewInfo, setReviewInfo] = useState({
-    title: "",
-    startDate: null,
-    endDate: null,
-    area: "",
-    cost: '',
-    suggests: [],
-    tags: [],
-    content: "",
-    images: ""
+    title: review.title,
+    startDate: new Date(review.startDate).getTime(),
+    endDate: new Date(review.endDate).getTime(),
+    area: review.area,
+    cost: review.cost,
+    suggests: review.suggests,
+    tags: review.tags,
+    content: review.content,
+    images: review.images,
   });
 
   function uploadFile(e) {
@@ -108,15 +110,15 @@ const RegisterReview = () => {
           // 이미지 업로드 성공 시 처리 // 여러 이미지를 보내야하는 경우 지금처럼 체인 형식으로 진행하면 리뷰가 이미지 만큼 생성되는 오류 발생함.
           console.log("이미지 업로드 성공:", response.data);
 
-          const images = response.data.data; 
+          const images = response.data.data;
           const reviewDataWithImage = { ...reviewInfo, images: images };
 
           console.log("리뷰 정보:", reviewDataWithImage);
-          return reviewService.createReview(reviewDataWithImage);
+          return reviewService.editReview(review.id,reviewDataWithImage);
         })
         .then((response) => {
           if (response.status === 200) {
-            alert("리뷰 등록되었습니다.");
+            alert("리뷰 수정되었습니다.");
             //상세 리뷰 페이지로 이동해야함.
             navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
           } else {
@@ -145,14 +147,15 @@ const RegisterReview = () => {
     }
   };
   useEffect(() => {
-    // console.log(postImg);
-  }, [postImg])
+    // 이미지 URL을 미리보기 배열로 설정
+    setPreviewImg(review.images);
+  }, [review.images]);
 
 
   return (
     <div>
       <div className={styles.page}>
-        <h1 className={styles.page__title}>리뷰 등록</h1>
+        <h1 className={styles.page__title}>리뷰 수정</h1>
         <section className={styles.page__contents}>
           <div className={styles.review__title}>
             <p className={styles.category__name}>리뷰 제목<span> *</span></p>
@@ -174,6 +177,7 @@ const RegisterReview = () => {
             <div className={styles.review__area}>
               <p className={styles.category__name}>지역 카테고리<span> *</span></p>
               <Select
+                value={areas.find(option => option.value === review.area)}
                 onChange={handleAreaChange}
                 options={areas}
                 placeholder="지역을 선택해주세요"
@@ -221,7 +225,7 @@ const RegisterReview = () => {
                 onChange={uploadFile}
               />
               {
-                previewImg.map((imgSrc, i) =>
+                previewImg && previewImg.map((imgSrc, i) =>
                   <div key={i}>
                     {/* <button type="button">
                   <img alt="업로드 이미지 제거" src="src/assets/icon-close-button.svg" />
@@ -238,7 +242,7 @@ const RegisterReview = () => {
             <CKEditor
               className={styles.editor}
               editor={ClassicEditor}
-              name="content"
+              data={reviewInfo.content}
               onChange={(event, editor) => {
                 const data = editor.getData();
                 setReviewInfo(prev => ({ ...prev, content: data }));
@@ -282,11 +286,10 @@ const RegisterReview = () => {
           onClick={handleSubmit}
           disabled={!reviewInfo.title || !reviewInfo.area || !reviewInfo.startDate || !reviewInfo.endDate || !reviewInfo.content}
         >
-          등록하기
+          수정하기
         </button>
       </div>
     </div>
   );
 };
-
-export default RegisterReview;
+export default EditReview

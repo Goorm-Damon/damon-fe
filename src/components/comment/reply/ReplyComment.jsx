@@ -38,11 +38,11 @@ const ReplyComment = ({reviewId,responseTo}) => {
     }
   };
 
-  useEffect(() => {
-    // 대댓글만 불러오기
-    const filteredComments = reviewInfo.reviewComments.filter(comment => comment.parentId === responseTo);
-    setCommentList(filteredComments);
-  }, [reviewInfo.reviewComments, responseTo]);
+  // useEffect(() => {
+  //   // 대댓글만 불러오기
+  //   const filteredComments = reviewInfo.reviewComments.filter(comment => comment.parentId === responseTo);
+  //   setCommentList(filteredComments);
+  // }, [reviewInfo.reviewComments, responseTo]);
 
   return (
     <div>
