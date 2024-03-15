@@ -54,4 +54,3 @@ export const getDetailCommunity = async (id) => {
     return error;
   }
 };
-
