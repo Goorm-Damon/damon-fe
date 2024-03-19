@@ -111,6 +111,20 @@ export const getBestReview = async () => {
   }
 }
 
+//리뷰 검색 조회
+export const searchReviews = async (mode, keyword, page, pageSize) => {
+  // API 엔드포인트와 파라미터를 조정하여 검색 API 호출을 구현합니다.
+  const response = await axios.get(`/api/review/list/search`, {
+    params: {
+      mode,
+      keyword,
+      page,
+      pageSize,
+    },
+  });
+  return response;
+};
+
 //리뷰 댓글 등록
 export const createComment = async (reviewId,commentData) => {
   try {
