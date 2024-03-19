@@ -95,7 +95,12 @@ const DetailReview = () => {
           <div className={styles.user__info}>
             <div className={styles.user__profile}>
               <div className={styles.profile__img}>
-                <img />
+               {/* 프로필 이미지 URL을 img 태그의 src 속성에 할당 */}
+    {reviewInfo.profileImage ? (
+      <img src={reviewInfo.profileImage} alt="User Profile" />
+    ) : (
+      <img src="/path/to/default/image" alt="Default Profile" />
+    )}
               </div>
               <p>{reviewInfo&&reviewInfo.name}</p>
             </div>
