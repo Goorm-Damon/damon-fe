@@ -9,7 +9,11 @@ import ReplyComment from './reply/ReplyComment';
 
 const Comment = ({ reviewId }) => {
   const navigate = useNavigate();
+  const [edit, setEdit] = useState(false);
+  const [editReply, setEditReply] = useState(false);
   const [content, setContent] = useState('');
+  const [editContent, setEditContent] = useState('');
+  const [editReplyContent, setEditReplyContent] = useState('');
   const [parentId, setParentId] = useState(0);
   const [comment, setComment] = useState({
     parentId: 0,
@@ -36,16 +40,29 @@ const Comment = ({ reviewId }) => {
     }
   };
 
-  const handleEdit = async (commentId) => {
-    // 수정 기능 구현
+  const handleEdit = async (commentId, parentId , content) => {
+    try {
+      const response = await reviewService.editComment(reviewId, commentId, { parentId: parentId, content: content });
+      if (response.status === 200) {
+        setReviewInfo(response.data.data);
+        setCommentList(response.data.data.reviewComments);
+        setEdit(false);
+        setEditReply(false);
+      } else {
+        console.error(response.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleDelete = async (commentId) => {
-    // 삭제 기능 구현
     try {
       const response = await reviewService.deleteComment(reviewId, commentId);
       if (response.status === 200) {
-        setContent('');
+        // reviewInfo에서 삭제된 댓글을 필터링하여 업데이트합니다.
+        const updatedCommentList = commentList.filter(comment => comment.id !== commentId);
+        setCommentList(updatedCommentList);
       } else {
         console.error(response.error);
       }
@@ -74,6 +91,7 @@ const Comment = ({ reviewId }) => {
       console.error(error);
     }
   };
+
   useEffect(() => {
     setComment({ parentId: parentId, content: content });
   }, [content]);
@@ -104,19 +122,36 @@ const Comment = ({ reviewId }) => {
                 <div>
                   <div>{item.createdDate}</div>
                 </div>
-                <div>{item.content}</div>
+                <div>
+                  {edit && item.id === editContent.id ? (
+                    <input
+                      type="text"
+                      value={editContent.content}
+                      onChange={(e) => setEditContent({ ...editContent, content: e.target.value })}
+                    />
+                  ) : (
+                    <div>{item.content}</div>
+                  )}
+                </div>
                 <div>{item.name}</div>
-                {userInfo.data.nickname === item.name ?
+                {userInfo.data.nickname === item.name ? (
                   <div className={styles.edit__btn}>
-                    <button onClick={() => handleEdit(item.id)}>수정</button>
+                    {edit && item.id === editContent.id ? (
+                      <button onClick={() => handleEdit(item.id, item.parentId , editContent.content)}>저장</button>
+                    ) : (
+                      <button onClick={() => {
+                        setEdit(true);
+                        setEditContent(item);
+                      }}>수정</button>
+                    )}
                     <button onClick={() => handleDelete(item.id)}>삭제</button>
                     <ReplyComment reviewId={reviewId} parent={item.id} setCommentList={setCommentList} />
                   </div>
-                  :
+                ) : (
                   <div className={styles.edit__btn}>
                     <ReplyComment reviewId={reviewId} parent={item.id} setCommentList={setCommentList} />
                   </div>
-                }
+                )}
                 <hr />
                 {item.replies &&
                   item.replies.map((reply, i) => (
@@ -124,12 +159,31 @@ const Comment = ({ reviewId }) => {
                       <div>
                         <div>{reply.createdDate}</div>
                       </div>
-                      <div>{reply.content}</div>
+                      <div>
+                        {editReply && reply.id === editReplyContent.id
+                          ? (
+                            <input
+                              type="text"
+                              value={editReplyContent.content}
+                              onChange={(e) => setEditReplyContent({ ...editReplyContent, content: e.target.value })}
+                            />
+                          ) : (
+                            <div>{reply.content}</div>
+                          )}
+                      </div>
                       <div>{reply.name}</div>
                       {userInfo.data.nickname === reply.name &&
                         <div className={styles.edit__btn}>
-                          <button onClick={() => handleEdit(reply.id)}>수정</button>
-                    <button onClick={() => handleDeleteReply(reply.parentId,reply.id)}>삭제</button>
+                          {editReply && reply.id === editReplyContent.id
+                            ? (
+                              <button onClick={() => handleEdit(reply.id, reply.parentId , editReplyContent.content)}>저장</button>
+                            ) : (
+                              <button onClick={() => {
+                                setEditReply(true);
+                                setEditReplyContent(reply);
+                              }}>수정</button>
+                            )}
+                          <button onClick={() => handleDeleteReply(reply.parentId, reply.id)}>삭제</button>
                         </div>
                       }
                     </div>
