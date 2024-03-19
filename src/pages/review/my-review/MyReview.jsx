@@ -16,7 +16,7 @@ const MyReview = () => {
   const fetchCalendars = async () => {
     try {
       const response = await reviewService.getMyReview();
-      setReviews(response.data);
+      setReviews(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -30,12 +30,10 @@ const MyReview = () => {
     <div>
       <div className={styles.page}>
         <div className={styles.review}>
+        <p className={styles.main__title}>내 리뷰</p>
           {reviews ?
             <div>
               <section className={styles.review__top}>
-                <input
-                  placeholder='검색어를 입력하세요'
-                />
                 <div className={styles.editLine}>
                   <p>Total {reviews.length}</p>
                   <button onClick={navigateTo('/register/review')} >+리뷰 작성</button>

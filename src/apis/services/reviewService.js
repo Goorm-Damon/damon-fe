@@ -143,3 +143,14 @@ export const editComment = async (reviewId, commentId, commentData) => {
     return error;
   }
 }
+
+//리뷰 상세 조회
+export const getSearchReview = async (mode,keyword,page,pageSize) => {
+  try {
+    const response = await axios.get(`/api/review/list/search?mode=${mode}&keyword=${keyword}&page=${page}&pageSize=${pageSize}`);
+    return response;
+  } catch (error) {
+    console.log('Error search review', error);
+    return error;
+  }
+}

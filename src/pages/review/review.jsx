@@ -56,7 +56,7 @@ const Review = () => {
 
   return (
     <div>
-      <ReviewBanner />
+      <ReviewBanner reviews={reviews} setReviews={setReviews}/>
       <div className={styles.page}>
         <div className={styles.review}>
           <section className={styles.review__top}>

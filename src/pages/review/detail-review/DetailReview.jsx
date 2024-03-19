@@ -97,7 +97,7 @@ const DetailReview = () => {
               <div className={styles.profile__img}>
                 <img />
               </div>
-              <p>{reviewInfo &&reviewInfo.name}</p>
+              <p>{reviewInfo&&reviewInfo.name}</p>
             </div>
             {(userInfo.data.nickname === reviewInfo.name) &&
               <div ref={dropdownRef} className={styles.menu__Btn} onClick={handleMenu}>
