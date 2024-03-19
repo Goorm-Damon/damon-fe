@@ -1,4 +1,22 @@
+/* CommunityList.module.scss */
+
 .CommunityList {
-  margin: 1rem 0;
-  font-weight: bold;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #d7d7d7;
+  border-radius: 10px;
+}
+
+.title {
+  color: #444444;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reaction {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
 }

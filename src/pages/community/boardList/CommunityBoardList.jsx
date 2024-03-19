@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styles from '../boardList/CommunityBoardList.module.scss';
-import CommunityList from '../boardList/CommunityList';
+import CommunityLists from './CommunityLists';
+import CommunityList from './CommunityList';
 import { useNavigate } from 'react-router-dom';
-import { getCommunity } from "../../../apis/services/communityService";
+import { createCommunity } from '../../../apis/services/communityService'; // Updated import
 
-const CommunityBoardList = () => {
+const CommunityBoardList = ({ post }) => {
   const [comment, setComment] = useState('');
-  // const [communityData, setCommunityData] = useState([]);
-
+  const [newCommunityName, setNewCommunityName] = useState('');
   const navigate = useNavigate();
 
   const handleCommentChange = (e) => {
@@ -15,19 +15,21 @@ const CommunityBoardList = () => {
   };
 
   const handleCommentSubmit = () => {
-    // Handle comment submission logic
     console.log('Comment submitted:', comment);
   };
 
-  useEffect(() => {
-    fetchCommunityData('번개');
-  }, []);
-
-  const fetchCommunityData = (type) => {
-    getCommunity(type, 1)
-      .then(data => console.log(data)) // Just logging the data for now
-      .catch(error => console.error(`Error fetching ${type} community data:`, error));
+  const handleCreateCommunity = async () => {
+    try {
+      const response = await createCommunity({ name: newCommunityName });
+      console.log('Community created successfully:', response);
+    } catch (error) {
+      console.error('Error creating community:', error);
+    }
   };
+
+  if (!post) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.postContainer}>
@@ -42,8 +44,17 @@ const CommunityBoardList = () => {
         />
         <button onClick={handleCommentSubmit}>Submit Comment</button>
       </div>
+      <div className={styles.createCommunityContainer}>
+        <input
+          type="text"
+          placeholder="New Community Name"
+          value={newCommunityName}
+          onChange={(e) => setNewCommunityName(e.target.value)}
+        />
+        <button onClick={handleCreateCommunity}>Create Community</button>
+      </div>
+      <CommunityLists />
       <CommunityList name="Example Community" />
-      {/* Add more CommunityList components or use dynamic data as needed */}
     </div>
   );
 };

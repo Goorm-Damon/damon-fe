@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Outlet} from 'react-router-dom'; // Added Link for navigation
+import { Routes, Route, Outlet } from 'react-router-dom';
 import style from './CommunityLayout.module.scss';
 import CommunityBoard from './board/CommunityBoard';
 import CommunityBoardList from './boardList/CommunityBoardList';
@@ -13,8 +13,8 @@ const CommunityLayout = () => {
           <Route path="/" element={<Outlet />}>
             <Route index element={<CommunityBoard />} />
             <Route path="board" element={<CommunityBoard />} />
+            <Route path="community" element={<CommunityLists />} />
             <Route path="boardList" element={<CommunityBoardList />} />
-            <Route path="boardList" element={<CommunityLists />} />
           </Route>
         </Routes>
       </main>
