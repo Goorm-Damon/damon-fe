@@ -1,0 +1,234 @@
+.page {
+    max-width: 1200px;
+    padding: 0 10%;
+    padding-bottom: 100px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    margin-top: 30px;
+}
+
+
+.back__button {
+    position: absolute;
+    left: 19.86%;
+    
+    top: 8.96%;
+    bottom: 89.51%;
+
+    
+
+    p {
+        
+        left: 21.94%;
+        right: 72.85%;
+        top: 8.96%;
+        bottom: 89.51%;
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 150%;
+        /* or 30px */
+        display: flex;
+        align-items: center;
+        text-align: center;
+        letter-spacing: -0.02em;
+
+        color: #7298C2;
+
+        cursor: pointer;
+    }
+
+}
+
+.img__section {
+    position: absolute;
+    left: 19.98%;
+    top: 263px;
+}
+
+
+.img__container {
+    position: absolute;
+    width: 38.79px;
+    height: 40px;
+
+
+    
+}
+
+.id__container {
+    position: absolute;
+    width: 76px;
+    height: 30px;
+    left: 50px;
+ 
+
+    font-family: 'NanumGothic';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 150%;
+    /* identical to box height, or 30px */
+    letter-spacing: -0.02em;
+
+    color: #000000;
+}
+
+
+.sub__span {
+    position: absolute;
+    width: 29px;
+    height: 15px;
+    left: 53px;
+    top: 29px;
+
+    font-family: 'NanumGothic';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 150%;
+    /* identical to box height, or 15px */
+    letter-spacing: -0.02em;
+
+    color: #000000;
+
+    span{
+        position: absolute;
+        width: 50px;
+        height: 15px;
+
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 150%;
+        /* identical to box height, or 15px */
+        letter-spacing: -0.02em;
+
+        color: #000000;
+    }
+    
+}
+
+
+.title__container {
+    position: absolute;
+    width: 415px;
+    height: 35px;
+    left: 19.98%;
+    top: 353px;
+
+    font-family: 'NanumGothic';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 150%;
+    /* or 30px */
+    letter-spacing: -0.02em;
+
+    color: #000000;
+
+    
+}
+
+.content__container {
+    position: absolute;
+    width: 856px;
+    height: 432px;
+    left: 19.98%;
+    top: 403px;
+}
+
+.like__container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 4px 0px;
+    gap: 10px;
+    isolation: isolate;
+
+    position: absolute;
+    width: 61px;
+    height: 28px;
+    left: 1109px;
+    top: 353px;
+
+    span {
+        position: absolute;
+        width: 36px;
+        height: 30px;
+        left: 25px;
+        top: calc(50% - 36px/2);
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 150%;
+        /* identical to box height, or 30px */
+        display: flex;
+        align-items: center;
+        text-align: center;
+        letter-spacing: -0.02em;
+
+        color: #000000;
+    }
+
+    
+
+}
+
+.comment__container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 4px 0px;
+    gap: 10px;
+    isolation: isolate;
+
+    position: absolute;
+    width: 61px;
+    height: 28px;
+    left: 1209px;
+    top: 353px;
+
+    span {
+        position: absolute;
+        width: 36px;
+        height: 30px;
+        left: 25px;
+        top: calc(50% - 36px/2);
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 150%;
+        /* identical to box height, or 30px */
+        display: flex;
+        align-items: center;
+        text-align: center;
+        letter-spacing: -0.02em;
+
+        color: #000000;
+    }
+}
+
+.like__container2 {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    left: 626px;
+    top: 911px;
+
+    icon {
+        position: absolute;
+        left: 28.58%;
+        right: 6.77%;
+        top: 7.91%;
+        bottom: 7.92%;
+    }
+}

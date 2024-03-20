@@ -18,6 +18,8 @@ import NaverRed from './components/social-login/naver/NaverRed';
 import MyReview from './pages/review/my-review/MyReview';
 import LikeReview from './pages/mypage/like-review/LikeReview';
 
+import RegisterCommunity from './pages/community/register-community/Register';
+import DetailCommunity from './pages/community/detail-community/DetailCommunity'
 
 
 function App() {
@@ -40,6 +42,8 @@ function App() {
         <Route path='my/calendar/:id' element={<DetailCalendar />} />
         <Route path='mypage' element={<MyPage />} />
         <Route path='my/like/review' element={<LikeReview />} />
+        <Route path='register/community' element={<RegisterCommunity />} />
+        <Route path='community/:id' element={<DetailCommunity />} />
 
       </Route>
     </Routes>
