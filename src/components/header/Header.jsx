@@ -227,6 +227,11 @@ const Header = () => {
                 onMouseLeave={() => setIsHovered(false)}>
                 <li className={styles.header__menu} onClick={navigateTo('/review')}>전체 리뷰</li>
                 <li className={styles.header__menu} onClick={navigateTo('/community')}>커뮤니티</li>
+                <ul className={isHovered ? styles.subVisible : styles.sub}>
+                  <li onClick={navigateTo2('/register/community')}>게시글 등록</li>
+                </ul>
+                
+                
                 <li className={styles.header__menu2}>등록
                   <ul className={isHovered ? styles.subVisible : styles.sub}>
                     <li onClick={navigateTo2('/register/review')}>리뷰 등록</li>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useNavigate} from 'react';
 import styles from './Register.module.scss'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,7 @@ import axios from 'axios';
 import * as communityService from '../../../apis/services/communityService'
 
 const Register = () => {
+    const navigate = useNavigate();
     const [postImg, setPostImg] = useState([]);
     const [previewImg, setPreviewImg] = useState([]);
     const [communityInfo, setCommunityInfo] = useState({
@@ -53,6 +54,7 @@ const Register = () => {
       const response = communityService.createCommunity(communityInfo);
       if (response.success) {
         alert("커뮤니티 등록되었습니다.");
+        navigate('/');
       }
     }
 
@@ -125,7 +127,7 @@ const Register = () => {
             />
             </div>
 
-            <div className={styles.apply__container} onClick={imgcheck}>
+            <div className={styles.apply__container} onClick={handleSubmit}>
               <div><span>등록하기</span></div>
             </div>
         
