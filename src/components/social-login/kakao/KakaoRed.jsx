@@ -42,7 +42,7 @@ const KakaoRed = () => {
       try {
         const res = await axios({
           method: "GET",
-          url: `/api/user/login?code=${KAKAO_CODE}`,
+          url: `/api/user/login/kakao?code=${KAKAO_CODE}`,
         });
         const { data } = res.data; // 응답에서 데이터만 추출
         localStorage.setItem('accessToken', data.accessToken);

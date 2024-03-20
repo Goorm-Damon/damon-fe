@@ -18,6 +18,7 @@ const Header = () => {
   const resetCalender = useResetRecoilState(calendarInfoState);
   const resetClicked = useResetRecoilState(clickedDateState);
   const calendarInfo = useRecoilValue(calendarInfoState);
+  const [calenderInfo, setCalenderInfo] = useRecoilState(calendarInfoState);
   const calendarId = useRecoilValue(getCalendarIdState);
   const [calendar, setCalendar] = useRecoilState(calendarInfoState);
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태를 관리하는 변수
@@ -124,7 +125,8 @@ const Header = () => {
 
   const handleCancelModify = () => {
     setHeaderSettings({ showDefalut: false, showFeatures: false, showDetail: true, showModify: false });
-    navigate(`/my/calendar/${calendarId}`, { state: { calendarId: { calendarId } } });
+    // navigate(`/my/calendar/${calendarId}`, { state: { calendarId: { calendarId } } });
+    fetchCalendars();
   }
 
   const handledele = async () => {
@@ -146,7 +148,36 @@ const Header = () => {
     }
   }
 
+  const fetchCalendars = async () => {
+    try {
+      const response = await calendarService.getDetailCalendar(calendarId);
 
+      // travels 배열 각 요소에 deleted: false 추가
+      const updatedTravels = response.data.travels.map(travel => ({
+        ...travel,
+        deleted: false,
+      }));
+
+      const sortedTravels = [...updatedTravels].sort((a, b) => {
+        if (a.day !== b.day) {
+          return a.day - b.day;
+        }
+        return a.order - b.order;
+      });
+
+      setCalenderInfo(prevPlaceInfo => ({
+        ...prevPlaceInfo,
+        title: response.data.title,
+        startDate: response.data.startDate,
+        endDate: response.data.endDate,
+        area: response.data.area,
+        travels: sortedTravels, // 수정된 travels 배열 설정
+      }));
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
   const userVerification = (path) => {
     if (!userInfo.accessToken) {
@@ -176,7 +207,7 @@ const Header = () => {
         <div>
           {calendar.title && (
             <div>
-              {showModify ? (
+              {(showModify && showDetail) ? (
                 <input
                   type="text"
                   value={calendar.title}
