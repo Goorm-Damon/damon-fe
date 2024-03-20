@@ -1,22 +1,45 @@
-/* CommunityList.module.scss */
-
 .CommunityList {
   margin-bottom: 20px;
   padding: 10px;
   border: 1px solid #d7d7d7;
   border-radius: 10px;
+  display: flex;
+  background-color: #ffffff; /* 배경색 */
 }
 
 .title {
   color: #444444;
   font-weight: 600;
+  flex: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.reaction {
-  margin-top: 10px;
+.details {
+  flex: 1;
   display: flex;
-  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.member {
+  display: flex;
+  align-items: center; /* member 아이템을 세로 중앙 정렬 */
+  margin-right: 20px; /* member 아이템과 다음 아이템 간 간격 조정 */
+}
+
+.memberImage {
+  width: 50px; /* 이미지 너비 */
+  height: 50px; /* 이미지 높이 */
+  border-radius: 50%; /* 이미지를 원형으로 */
+}
+
+.memberName {
+  font-weight: 600;
+  margin-right: 10px; /* 멤버 이름과 생성 날짜 간 간격 조정 */
+}
+
+.reaction {
+  display: flex;
+  align-items: center; /* reaction 아이템을 세로 중앙 정렬 */
 }
