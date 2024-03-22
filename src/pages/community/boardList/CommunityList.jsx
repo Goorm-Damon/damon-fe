@@ -14,12 +14,14 @@ const CommunityList = ({ data }) => {
           <img src={data.memberImage} alt={data.memberName} className={classes.memberImage} />
           <p className={classes.memberName}>{data.memberName}</p>
         </div>
+        <div className={classes.messagePreview}>{data.message.slice(0, 25)}</div>
         {/* Display created date */}
         <p className={classes.createdDate}>Created: {new Date(data.createdDate).toLocaleDateString()}</p>
         {/* Display community type */}
         <p className={classes.type}>Type: {data.type}</p>
         {/* Display views count */}
         <p className={classes.views}>Views: {data.views}</p>
+        {/* Display message preview */}
       </div>
       <div className={classes.reaction}>
         {/* Display like count */}
