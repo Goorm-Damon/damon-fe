@@ -10,6 +10,7 @@ import ReplyComment from './reply/ReplyComment';
 const Comment = ({ reviewId }) => {
   const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
+  const [replyStates, setReplyStates] = useState([]);
   const [editReply, setEditReply] = useState(false);
   const [content, setContent] = useState('');
   const [editContent, setEditContent] = useState('');
@@ -21,8 +22,13 @@ const Comment = ({ reviewId }) => {
   });
   const [reviewInfo, setReviewInfo] = useRecoilState(reviewInfoState);
   const [commentList, setCommentList] = useState([]);
-
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
+
+  const toggleReply = (index) => {
+    const newReplyStates = [...replyStates];
+    newReplyStates[index] = !newReplyStates[index];
+    setReplyStates(newReplyStates);
+  };
 
   const handleComment = async (e) => {
     try {
@@ -40,7 +46,7 @@ const Comment = ({ reviewId }) => {
     }
   };
 
-  const handleEdit = async (commentId, parentId , content) => {
+  const handleEdit = async (commentId, parentId, content) => {
     try {
       const response = await reviewService.editComment(reviewId, commentId, { parentId: parentId, content: content });
       if (response.status === 200) {
@@ -100,10 +106,18 @@ const Comment = ({ reviewId }) => {
     setCommentList(reviewInfo.reviewComments);
   }, [reviewInfo]);
 
+  useEffect(() => {
+    if (commentList&& commentList.length > 0) {
+      setReplyStates(Array(commentList.length).fill(false));
+    } else {
+      setReplyStates([]);
+    }
+  }, [commentList]);
+
   return (
     <div>
       <h2 className={styles.comment__title}>댓글</h2>
-      <div className={styles.comment__container}>
+      <div className={styles.container}>
         <div className={styles.comment__header}>
           <div className={styles.profile__img}>
             <img src={userInfo.data.profile} alt="user profile" />
@@ -118,74 +132,119 @@ const Comment = ({ reviewId }) => {
         <div className={styles.comment__body}>
           {commentList &&
             commentList.map((item, index) => (
+              // <div className={styles.comment__body}>
               <div key={index}>
-                <div>
-                  <div>{item.createdDate}</div>
-                </div>
-                <div>
-                  {edit && item.id === editContent.id ? (
-                    <input
-                      type="text"
-                      value={editContent.content}
-                      onChange={(e) => setEditContent({ ...editContent, content: e.target.value })}
-                    />
-                  ) : (
-                    <div>{item.content}</div>
-                  )}
-                </div>
-                <div>{item.name}</div>
-                {userInfo.data.nickname === item.name ? (
-                  <div className={styles.edit__btn}>
-                    {edit && item.id === editContent.id ? (
-                      <button onClick={() => handleEdit(item.id, item.parentId , editContent.content)}>저장</button>
+                <div className={styles.comment__container}>
+                  <div className={styles.comment__left}>
+                    <div className={styles.profile__img}>
+                      <img src={item.profileImage} alt="user profile" />
+                    </div >
+                  </div >
+                  <div className={styles.comment__right}>
+                    <div className={styles.name__date}>
+                      <p className={styles.name}>{item.name}</p>
+                      <p className={styles.date}>{item.createdDate}</p>
+                    </div>
+                    <div>
+                      {edit && item.id === editContent.id ? (
+                        <input
+                          type="text"
+                          value={editContent.content}
+                          onChange={(e) => setEditContent({ ...editContent, content: e.target.value })}
+                        />
+                      ) : (
+                        <div>{item.content}</div>
+                      )}
+                    </div>
+                    {userInfo.data.identifier === item.identifier ? (
+                      <div>
+                        <div className={styles.edit__btn}>
+                          {edit && item.id === editContent.id ? (
+                            <button onClick={() => handleEdit(item.id, item.parentId, editContent.content)}>저장</button>
+                          ) : (
+                            <button onClick={() => {
+                              setEdit(true);
+                              setEditContent(item);
+                            }}>수정</button>
+                          )}
+                          <button onClick={() => handleDelete(item.id)}>삭제</button>
+                          <button onClick={() => toggleReply(index)}>댓글</button>
+
+                        </div>
+                        {replyStates[index] && (
+                          <ReplyComment
+                            reviewId={reviewId}
+                            parent={item.id}
+                            setCommentList={setCommentList}
+                          />
+                        )}
+                      </div>
+
                     ) : (
-                      <button onClick={() => {
-                        setEdit(true);
-                        setEditContent(item);
-                      }}>수정</button>
+                      <div>
+                        <div className={styles.edit__btn}>
+                          <button onClick={() => toggleReply(index)}>댓글</button>
+
+                        </div>
+                        {replyStates[index] && (
+                          <ReplyComment
+                            reviewId={reviewId}
+                            parent={item.id}
+                            setCommentList={setCommentList}
+                          />
+                        )}
+                      </div>
+
                     )}
-                    <button onClick={() => handleDelete(item.id)}>삭제</button>
-                    <ReplyComment reviewId={reviewId} parent={item.id} setCommentList={setCommentList} />
+                    <hr />
                   </div>
-                ) : (
-                  <div className={styles.edit__btn}>
-                    <ReplyComment reviewId={reviewId} parent={item.id} setCommentList={setCommentList} />
-                  </div>
-                )}
-                <hr />
+                  {/* </div> */}
+
+                </div>
                 {item.replies &&
                   item.replies.map((reply, i) => (
-                    <div className={styles.replies} key={i}>
-                      <div>
-                        <div>{reply.createdDate}</div>
-                      </div>
-                      <div>
-                        {editReply && reply.id === editReplyContent.id
-                          ? (
-                            <input
-                              type="text"
-                              value={editReplyContent.content}
-                              onChange={(e) => setEditReplyContent({ ...editReplyContent, content: e.target.value })}
-                            />
-                          ) : (
-                            <div>{reply.content}</div>
-                          )}
-                      </div>
-                      <div>{reply.name}</div>
-                      {userInfo.data.nickname === reply.name &&
-                        <div className={styles.edit__btn}>
-                          {editReply && reply.id === editReplyContent.id
-                            ? (
-                              <button onClick={() => handleEdit(reply.id, reply.parentId , editReplyContent.content)}>저장</button>
-                            ) : (
-                              <button onClick={() => {
-                                setEditReply(true);
-                                setEditReplyContent(reply);
-                              }}>수정</button>
-                            )}
-                          <button onClick={() => handleDeleteReply(reply.parentId, reply.id)}>삭제</button>
+                    <div key={index} className={styles.comment__container}>
+                      <div className={styles.replies} key={i}>
+
+                        <div className={styles.comment__left}>
+                          <div className={styles.profile__img}>
+                            <img src={reply.profileImage} alt="user profile" />
+                          </div >
+                        </div >
+                        <div className={styles.comment__right}>
+                          <div className={styles.name__date}>
+                            <p className={styles.name}>{reply.name}</p>
+                            <p className={styles.date}>{reply.createdDate}</p>
+                          </div>
+                          <div>
+                            {editReply && reply.id === editReplyContent.id
+                              ? (
+                                <input
+                                  type="text"
+                                  value={editReplyContent.content}
+                                  onChange={(e) => setEditReplyContent({ ...editReplyContent, content: e.target.value })}
+                                />
+                              ) : (
+                                <div>{reply.content}</div>
+                              )}
+                          </div>
+                          {userInfo.data.identifier === reply.identifier &&
+                            <div className={styles.edit__btn}>
+                              {editReply && reply.id === editReplyContent.id
+                                ? (
+                                  <button onClick={() => handleEdit(reply.id, reply.parentId, editReplyContent.content)}>저장</button>
+                                ) : (
+                                  <button onClick={() => {
+                                    setEditReply(true);
+                                    setEditReplyContent(reply);
+                                  }}>수정</button>
+                                )}
+                              <button onClick={() => handleDeleteReply(reply.parentId, reply.id)}>삭제</button>
+                            </div>
+                          }
+                          <hr />
                         </div>
-                      }
+                      </div>
                     </div>
                   ))}
               </div>

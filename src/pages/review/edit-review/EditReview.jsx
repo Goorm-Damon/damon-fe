@@ -9,7 +9,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as reviewService from '../../../apis/services/reviewService';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { FaMinus } from "react-icons/fa";
+import { FiMinus } from "react-icons/fi";
+import { MdOutlineCancel } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
 import { BsPlusCircleDotted } from "react-icons/bs";
 import axios from 'axios';
@@ -31,7 +32,8 @@ const EditReview = () => {
   const navigate = useNavigate();
   const review = useLocation().state.review;
   const [postImg, setPostImg] = useState([]);
-  const [previewImg, setPreviewImg] = useState([]);
+  const [deleteImages, setDeleteImages] = useState([]);
+  const [previewImg, setPreviewImg] = useState(review.imageUrls);
   const [reviewInfo, setReviewInfo] = useState({
     title: review.title,
     startDate: new Date(review.startDate),
@@ -41,25 +43,40 @@ const EditReview = () => {
     suggests: review.suggests,
     tags: review.tags,
     content: review.content,
-    images: review.images,
+    images: review.imageUrls,
   });
 
-  function uploadFile(e) {
-    const files = Array.from(e.target.files); // Convert FileList to array
-    setPostImg(files);
-    const fileUrls = [];
+  const handleDeleteImg = (i) => {
+    const filteredImg = previewImg.filter((_, idx) => idx !== i);
+    const filteredImg２ = postImg.filter((_, idx) => idx !== i);
+    const filteredCurrentImg = review.imageUrls.filter((_, idx) => idx !== i);
+    setPreviewImg(filteredImg);
+    setPostImg(filteredImg２);
+    setReviewInfo(prev => ({ ...prev, images: filteredCurrentImg }));
 
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        fileUrls.push(e.target.result); // Add the file URL to the array
-        if (fileUrls.length === files.length) { // Check if all files are read
-          setPreviewImg(fileUrls); // Update the state with all file URLs
-        }
-      };
-      reader.readAsDataURL(file); // Start reading the file
-    });
-  }
+    // 이미지 삭제 후 deleteImages 상태에 추가
+    if (review.imageUrls[i]) {
+      const deletedImage = review.imageUrls[i];
+      setDeleteImages(prev => ({ ...prev, [i]: deletedImage }));
+    } 
+  };
+
+  const uploadFile = async (e) => {
+    const files = Array.from(e.target.files);
+    setPostImg((prev) => [...prev, ...files]);
+
+    const fileUrls = await Promise.all(files.map(async (file) => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          resolve(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
+    }));
+
+    setPreviewImg((prev) => [...prev, ...fileUrls]);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -95,61 +112,51 @@ const EditReview = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    const formData = new FormData();
-    if (postImg) {
-      postImg.forEach((file) => {
-        formData.append("images", file);
-      });
-      axios.post('/api/review/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-        .then((response) => {
-          // 이미지 업로드 성공 시 처리 // 여러 이미지를 보내야하는 경우 지금처럼 체인 형식으로 진행하면 리뷰가 이미지 만큼 생성되는 오류 발생함.
-          console.log("이미지 업로드 성공:", response.data);
-
-          const images = response.data.data;
-          const reviewDataWithImage = { ...reviewInfo, images: images };
-
-          console.log("리뷰 정보:", reviewDataWithImage);
-          return reviewService.editReview(review.id,reviewDataWithImage);
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            alert("리뷰 수정되었습니다.");
-            //상세 리뷰 페이지로 이동해야함.
-            navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
-          } else {
-            console.error(response.error);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
+  const handleSubmit = async () => {
+    try {
+      if (postImg.length > 0) {
+        const formData = new FormData();
+        postImg.forEach((file) => {
+          formData.append("images", file);
         });
-    } else {
-      // 여기에서는 이미지 없을 시 처리하도록 처리
-      console.log("이미지 없음");
-      try {
-        const response = reviewService.createReview(reviewInfo);
+
+        const response = await axios.post('/api/review/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         if (response.status === 200) {
-          alert("리뷰 등록되었습니다.");
-          //상세일정 페이지로 이동해야함.
+          const images = response.data.data;
+          const reviewDataWithImage = { ...reviewInfo, images: [...reviewInfo.images, ...images] };
+          const res = await reviewService.editReview(review.id, reviewDataWithImage);
+          if (res.status === 200) {
+            alert("리뷰 수정되었습니다.");
+            navigate(`/review/${res.data.data.id}`, { state: { reviewId: res.data.data.id } });
+          } else {
+            console.error(res.error);
+          }
+
+        } else {
+          console.error(response.error);
+        }
+      } else {
+        console.log("기존 이미지 유지");
+        const response = await reviewService.editReview(review.id, deleteImages, reviewInfo);
+        if (response.status === 200) {
+          alert("리뷰 수정되었습니다.");
           navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
         } else {
           console.error(response.error);
         }
       }
-      catch (error) {
-        console.error(error);
-      }
+    } catch (error) {
+      console.error(error);
     }
   };
   useEffect(() => {
     // 이미지 URL을 미리보기 배열로 설정
-    setPreviewImg(review.images);
-  }, [review.images]);
+    setPreviewImg(review.imageUrls);
+  }, [review.imageUrls]);
 
 
   return (
@@ -205,7 +212,7 @@ const EditReview = () => {
                   placeholder='추천하고 싶은 장소를 입력해주세요'
                   className={styles.inputs}
                 />
-                <div className={styles.minus__btn} type="button" onClick={() => handleRemovePlace(index)}><FaMinus /></div>
+                <div className={styles.minus__btn} type="button" onClick={() => handleRemovePlace(index)}><FiMinus /></div>
               </div>
             ))}
 
@@ -219,23 +226,28 @@ const EditReview = () => {
                   <BsPlusCircleDotted />
                 </div>
               </label>
-              <input accept=".png, .svg, .jpeg, .jpg" type="file"
-                id='imgs'
+              <input
+                accept=".png, .svg, .jpeg, .jpg"
+                type="file"
+                id="imgs"
                 multiple
                 onChange={uploadFile}
               />
               {
                 previewImg && previewImg.map((imgSrc, i) =>
-                  <div key={i}>
-                    {/* <button type="button">
-                  <img alt="업로드 이미지 제거" src="src/assets/icon-close-button.svg" />
-                </button> */}
-                    <img alt={imgSrc} src={imgSrc} />
+                  <div key={i} className={styles.img__container}>
+                    <div
+                      type="button"
+                      className={styles.img__del}
+                      onClick={() => handleDeleteImg(i)}
+                    >
+                      <MdOutlineCancel size={20} />
+                    </div>
+                    <img alt={imgSrc} src={imgSrc} className={styles.imgs} />
                   </div>
                 )
               }
             </div>
-
           </div>
           <div className={styles.review__content}>
             <p className={styles.category__name}>리뷰 내용<span> *</span></p>

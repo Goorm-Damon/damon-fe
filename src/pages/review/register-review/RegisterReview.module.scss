@@ -143,6 +143,14 @@ textarea {
   }
 }
 
+.del__btn {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
 .review__images {
 
   label {
@@ -167,11 +175,46 @@ textarea {
     margin: 20px 0px;
     overflow: scroll;
   }
-  img {
-    width: 140px;
-    height: 140px;
-    border-radius: 5px;
+  
+}
+
+
+.img__container {
+  width: 140px;
+  height: 140px;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
+
+  &:hover .img__del {
+    display: block;
   }
+}
+
+.img__del {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.img__del svg {
+  color: white;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.imgs {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .category__name {

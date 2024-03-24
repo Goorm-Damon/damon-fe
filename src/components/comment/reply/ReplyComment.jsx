@@ -10,7 +10,6 @@ const ReplyComment = ({reviewId,parent,setCommentList}) => {
 
   const navigate = useNavigate();
   const [local, setLocal] = useState([]);
-  const [display, setDisplay] = useState(false);
   const [content, setContent] = useState(''); //댓글 내용
   const [comment, setComment] = useState({
     parentId: parent,
@@ -48,8 +47,6 @@ const ReplyComment = ({reviewId,parent,setCommentList}) => {
 
   return (
     <div>
-      <button onClick={() => setDisplay(!display)}>댓글</button>
-      {display &&
         <div>
           <div className={styles.comment__header}>
             <div className={styles.profile__img}>
@@ -57,13 +54,13 @@ const ReplyComment = ({reviewId,parent,setCommentList}) => {
             </div>
             <textarea
               value={content}
+              className={styles.comment__input}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="댓글을 입력해주세요"
+              placeholder="Reply..."
             />
             <button onClick={handleReply}>등록</button>
           </div>
         </div>
-      }
     </div>
   );
 };

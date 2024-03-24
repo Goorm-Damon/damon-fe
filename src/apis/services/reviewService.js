@@ -13,9 +13,11 @@ export const createReview = async (reviewData) => {
 
 
 //리뷰 수정
-export const editReview = async (id,reviewData) => {
+export const editReview = async (id, deleteImages, reviewData) => {
   try {
-    const response = await axios.put(`/api/review/${id}`,reviewData);
+    const response = await axios.put(`/api/review/${id}`, reviewData, {
+      params: { deleteImages: deleteImages }
+    });
     return response;
   } catch (error) {
     console.log('Error editing review', error);

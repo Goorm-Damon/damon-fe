@@ -10,6 +10,7 @@ import * as reviewService from '../../../apis/services/reviewService';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FaMinus } from "react-icons/fa";
+import { MdOutlineCancel } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
 import { BsPlusCircleDotted } from "react-icons/bs";
 import axios from 'axios';
@@ -41,6 +42,14 @@ const RegisterReview = () => {
     content: "",
     images: ""
   });
+
+  const handleDeleteImg = (i) => {
+    const filteredImg = previewImg.filter((_, idx) => idx !== i);
+    const filteredImg２ = postImg.filter((_, idx) => idx !== i);
+
+    setPreviewImg(filteredImg);
+    setPostImg(filteredImg２);
+  };
 
   function uploadFile(e) {
     const files = Array.from(e.target.files); // Convert FileList to array
@@ -115,7 +124,7 @@ const RegisterReview = () => {
           // setReviewInfo(prev => ({ ...prev, images: response.data }));
 
           // 리뷰 등록 // 비동기 이슈로 다음과 같이 수정
-          const images = response.data.data; 
+          const images = response.data.data;
           const reviewDataWithImage = { ...reviewInfo, images: images };
 
           console.log("리뷰 정보:", reviewDataWithImage);
@@ -229,16 +238,19 @@ const RegisterReview = () => {
               />
               {
                 previewImg.map((imgSrc, i) =>
-                  <div key={i}>
-                    {/* <button type="button">
-                  <img alt="업로드 이미지 제거" src="src/assets/icon-close-button.svg" />
-                </button> */}
-                    <img alt={imgSrc} src={imgSrc} />
+                  <div key={i} className={styles.img__container}>
+                    <div
+                      type="button"
+                      className={styles.img__del}
+                      onClick={() => handleDeleteImg(i)}
+                    >
+                      <MdOutlineCancel size={20} />
+                    </div>
+                    <img alt={imgSrc} src={imgSrc} className={styles.imgs} />
                   </div>
                 )
               }
             </div>
-
           </div>
           <div className={styles.review__content}>
             <p className={styles.category__name}>리뷰 내용<span> *</span></p>
