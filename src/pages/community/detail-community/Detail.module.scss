@@ -46,6 +46,7 @@
     position: absolute;
     left: 19.98%;
     top: 263px;
+    
 }
 
 
@@ -53,7 +54,7 @@
     position: absolute;
     width: 38.79px;
     height: 40px;
-
+    border-radius: 50%;
 
     
 }
@@ -230,5 +231,352 @@
         right: 6.77%;
         top: 7.91%;
         bottom: 7.92%;
+    }
+}
+
+
+.list__container {
+    position: absolute;
+    width: 181px;
+    height: 45px;
+    left: 516px;
+    top: 1058px;
+
+    cursor: pointer;
+
+    .box {
+        box-sizing: border-box;
+
+        position: absolute;
+        width: 181px;
+        height: 45px;
+        left: 0px;
+        top: 0px;
+
+        background: #FFFFFF;
+        border: 1px solid #ABA0A0;
+        border-radius: 8px;
+
+        span {
+            position: absolute;
+            width: 85px;
+            height: 30px;
+            left: calc(50% - 75px/2);
+            top: calc(50% - 30px/2 - 0.5px);
+
+            font-family: 'NanumGothic';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 150%;
+            /* identical to box height, or 30px */
+            letter-spacing: -0.02em;
+
+            color: #000000;
+        }
+    }
+}
+
+.list__container2 {
+    position: absolute;
+    width: 181px;
+    height: 45px;
+    left: 716px;
+    top: 1058px;
+
+    cursor: pointer;
+
+    .box {
+        box-sizing: border-box;
+
+        position: absolute;
+        width: 181px;
+        height: 45px;
+        left: 0px;
+        top: 0px;
+
+        background: #FFFFFF;
+        border: 1px solid #ABA0A0;
+        border-radius: 8px;
+
+        span {
+            position: absolute;
+            width: 85px;
+            height: 30px;
+            left: calc(50% - 75px/2);
+            top: calc(50% - 30px/2 - 0.5px);
+
+            font-family: 'NanumGothic';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 150%;
+            /* identical to box height, or 30px */
+            letter-spacing: -0.02em;
+
+            color: #000000;
+        }
+    }
+}
+
+
+
+
+
+.commnet__div {
+    position: absolute;
+    width: 415px;
+    height: 35px;
+    left: 19.98%;
+    top: 1162px;
+
+    .comment__span {
+    
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 150%;
+        /* or 30px */
+        letter-spacing: -0.02em;
+    
+        color: #000000;
+    
+    }
+
+    .comment__box {
+        box-sizing: border-box;
+        position: absolute;
+        top: 50px;
+        width: 842px;
+        height: 196px;
+        left: -10px;
+        
+    
+        border: 1px solid #7298C2;
+        border-radius: 8px;
+    
+    }
+
+    .comment__limit {
+        position: absolute;
+        width: 370px;
+        height: 21px;
+        top: 220px;
+        left: 5px;
+        // right: 746px;
+        
+
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 18px;
+
+        color: rgba(0, 0, 0, 0.58);
+    }
+}
+
+
+.comment__reg__container {
+    position: absolute;
+    width: 181px;
+    height: 45px;
+    top: 200px;
+    left: 700px;
+    cursor: pointer;
+
+
+    .box {
+        box-sizing: border-box;
+
+        position: absolute;
+        width: 101px;
+        height: 38px;
+        left: 0px;
+        top: 0px;
+
+        background: #74C0FC;
+
+        border-radius: 8px;
+
+        span {
+            position: absolute;
+            width: 85px;
+            height: 30px;
+            left: calc(50% - 63px/2);
+            top: calc(50% - 24px/2 - 0.5px);
+
+            font-family: 'NanumGothic';
+            font-style: normal;
+            font-weight: 540;
+            font-size: 15px;
+            line-height: 150%;
+            /* identical to box height, or 30px */
+            letter-spacing: -0.02em;
+
+            color: #000000;
+        }
+    }
+}
+
+
+
+.myComment__container {
+    position: absolute;
+    left: 19.98%;
+    top: 1470px;
+
+    .comment__div {
+        position: relative;
+        width: 1000px;
+        height: 100px;
+    }
+
+    img {
+        width: 19.39px;
+        height: 20px;   
+        left: 311px;
+    }
+
+    span {
+        position: absolute;
+        width: 70px;
+        height: 15px;
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 150%;
+        /* identical to box height, or 15px */
+        letter-spacing: -0.02em;
+
+        color: #000000;
+    }
+
+    .myComment__update {
+        width: 49px;
+        height: 12px;
+        bottom: 10px;
+        padding-left: 100px;
+        cursor: pointer;
+
+
+        span {
+
+        width: 30px;
+        height: 12px;
+
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 11px;
+        line-height: 150%;
+        /* identical to box height, or 12px */
+        text-align: center;
+        letter-spacing: -0.02em;
+
+        color: rgba(0, 0, 0, 0.5);
+        }
+    }
+
+
+    .myComment__delete {
+        width: 49px;
+        height: 12px;
+        bottom: 10px;
+        left: 723px;
+        cursor: pointer;
+
+
+        span {
+        width: 30px;
+        height: 12px;
+
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 11px;
+        line-height: 150%;
+        /* identical to box height, or 12px */
+        text-align: center;
+        letter-spacing: -0.02em;
+
+        color: rgba(0, 0, 0, 0.5);
+        }
+    }
+
+    .myComment__reply {
+        width: 49px;
+        height: 12px;
+        bottom: 10px;
+        left: 773px;
+        cursor: pointer;
+
+
+        span {
+
+        width: 30px;
+        height: 12px;
+
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 11px;
+        line-height: 150%;
+        /* identical to box height, or 12px */
+        text-align: center;
+        letter-spacing: -0.02em;
+
+        color: rgba(0, 0, 0, 0.5);
+        }
+    }
+
+    .myComment__comment {
+        width: 801px;
+        height: 26px;
+        top:30px;
+
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 18px;
+
+        color: rgba(0, 0, 0, 0.58);
+    }
+
+    .myComment__regdate {
+        position: absolute;
+        width: 57px;
+        height: 8px;
+        top: 60px;
+        left: 5px;
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 9px;
+        line-height: 150%;
+        /* identical to box height, or 8px */
+        letter-spacing: -0.02em;
+
+        color: rgba(0, 0, 0, 0.3);
+
+
+    }
+
+    .myComment__line {
+        position: absolute;
+        width: 842px;
+        height: 0px;
+        top: 80px;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+
     }
 }

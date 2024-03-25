@@ -1,4 +1,5 @@
-import React, {useState, useNavigate} from 'react';
+import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Register.module.scss'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -43,7 +44,7 @@ const Register = () => {
         });
       }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       
       if (postImg) {
         postImg.forEach((file) => {
@@ -51,10 +52,11 @@ const Register = () => {
         })
       } 
       communityInfo.image = postImg;
-      const response = communityService.createCommunity(communityInfo);
-      if (response.success) {
+      const response = await communityService.createCommunity(communityInfo);
+      if (response) {
         alert("커뮤니티 등록되었습니다.");
-        navigate('/');
+        console.log(response.data)
+        navigate(`/community/${response.data.data.communityId}`, {state : {communityId: response.data.data.communityId}})
       }
     }
 
