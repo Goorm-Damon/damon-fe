@@ -49,11 +49,11 @@ const DetailReview = () => {
     try {
       const response = await reviewService.getDetailReview(reviewId);
 
-    if (response && response.data && response.data.data) {
-      setReviewInfo(response.data.data);
-    } else {
-      console.error('Invalid response structure:', response);
-    }
+      if (response && response.data && response.data.data) {
+        setReviewInfo(response.data.data);
+      } else {
+        console.error('Invalid response structure:', response);
+      }
 
     } catch (error) {
       console.log(error);
@@ -78,7 +78,7 @@ const DetailReview = () => {
   const moveComment = () => {
     window.scrollTo(0, 1200);
   }
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
     // document.addEventListener('click', handleClickOutside);
@@ -95,16 +95,16 @@ const DetailReview = () => {
           <div className={styles.user__info}>
             <div className={styles.user__profile}>
               <div className={styles.profile__img}>
-               {/* 프로필 이미지 URL을 img 태그의 src 속성에 할당 */}
-    {reviewInfo.profileImage ? (
-      <img src={reviewInfo.profileImage} alt="User Profile" />
-    ) : (
-      <img src="/path/to/default/image" alt="Default Profile" />
-    )}
+                {/* 프로필 이미지 URL을 img 태그의 src 속성에 할당 */}
+                {reviewInfo.profileImage ? (
+                  <img src={reviewInfo.profileImage} alt="User Profile" />
+                ) : (
+                  <img src="/path/to/default/image" alt="Default Profile" />
+                )}
               </div>
-              <p>{reviewInfo&&reviewInfo.name}</p>
+              <p>{reviewInfo && reviewInfo.name}</p>
             </div>
-            {(userInfo.data.nickname === reviewInfo.name) &&
+            {(userInfo.data.identifier === reviewInfo.identifier) &&
               <div ref={dropdownRef} className={styles.menu__Btn} onClick={handleMenu}>
                 <CiMenuKebab />
               </div>

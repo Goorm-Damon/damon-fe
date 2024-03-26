@@ -115,7 +115,7 @@ const MainReviewCard = ({ review, likeReview }) => {
         <div className={styles.card__contents}>
           <div className={styles.user__profile}>
             <div className={styles.profile__img}>
-              <img />
+              <img src={review.profileImage} />
             </div>
             <p>{review.name}</p>
           </div>

@@ -32,7 +32,6 @@ const EditReview = () => {
   const navigate = useNavigate();
   const review = useLocation().state.review;
   const [postImg, setPostImg] = useState([]);
-  const [deleteImages, setDeleteImages] = useState([]);
   const [previewImg, setPreviewImg] = useState(review.imageUrls);
   const [reviewInfo, setReviewInfo] = useState({
     title: review.title,
@@ -44,6 +43,7 @@ const EditReview = () => {
     tags: review.tags,
     content: review.content,
     images: review.imageUrls,
+    deleteImages: [],
   });
 
   const handleDeleteImg = (i) => {
@@ -54,12 +54,17 @@ const EditReview = () => {
     setPostImg(filteredImg２);
     setReviewInfo(prev => ({ ...prev, images: filteredCurrentImg }));
 
-    // 이미지 삭제 후 deleteImages 상태에 추가
     if (review.imageUrls[i]) {
-      const deletedImage = review.imageUrls[i];
-      setDeleteImages(prev => ({ ...prev, [i]: deletedImage }));
-    } 
+      setReviewInfo(prev => ({
+        ...prev,
+        deleteImages: [...prev.deleteImages, review.imageUrls[i]],
+      }));
+    }
   };
+
+  useEffect(() => {
+    console.log(reviewInfo.deleteImages);
+  }, [reviewInfo.deleteImages]);
 
   const uploadFile = async (e) => {
     const files = Array.from(e.target.files);
@@ -94,9 +99,10 @@ const EditReview = () => {
   const handleAddPlace = () => {
     setReviewInfo(prev => ({ ...prev, suggests: [...prev.suggests, ''] }));
   };
-
+  
   const handlePlaceChange = (value, index) => {
-    const updatedPlaces = reviewInfo.suggests.map((item, idx) => idx === index ? value : item);
+    const updatedPlaces = [...reviewInfo.suggests];
+    updatedPlaces[index] = value;
     setReviewInfo(prev => ({ ...prev, suggests: updatedPlaces }));
   };
 
@@ -141,7 +147,7 @@ const EditReview = () => {
         }
       } else {
         console.log("기존 이미지 유지");
-        const response = await reviewService.editReview(review.id, deleteImages, reviewInfo);
+        const response = await reviewService.editReview(review.id, reviewInfo);
         if (response.status === 200) {
           alert("리뷰 수정되었습니다.");
           navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });

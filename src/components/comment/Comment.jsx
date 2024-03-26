@@ -29,10 +29,13 @@ const Comment = ({ reviewId }) => {
     newReplyStates[index] = !newReplyStates[index];
     setReplyStates(newReplyStates);
   };
-
   const handleComment = async (e) => {
     try {
       e.preventDefault();
+      if (!content.trim()) {
+        console.log("댓글 내용을 입력해주세요.");
+        return;
+      }
       const response = await reviewService.createComment(reviewId, comment);
       if (response.status === 200) {
         setReviewInfo(response.data.data);
@@ -45,7 +48,7 @@ const Comment = ({ reviewId }) => {
       console.error(error);
     }
   };
-
+  
   const handleEdit = async (commentId, parentId, content) => {
     try {
       const response = await reviewService.editComment(reviewId, commentId, { parentId: parentId, content: content });
@@ -117,7 +120,6 @@ const Comment = ({ reviewId }) => {
   return (
     <div>
       <h2 className={styles.comment__title}>댓글</h2>
-      <div className={styles.container}>
         <div className={styles.comment__header}>
           <div className={styles.profile__img}>
             <img src={userInfo.data.profile} alt="user profile" />
@@ -250,7 +252,6 @@ const Comment = ({ reviewId }) => {
               </div>
             ))}
         </div>
-      </div>
     </div>
   );
 };

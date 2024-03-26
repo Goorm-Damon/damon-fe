@@ -86,7 +86,8 @@ const RegisterReview = () => {
   };
 
   const handlePlaceChange = (value, index) => {
-    const updatedPlaces = reviewInfo.suggests.map((item, idx) => idx === index ? value : item);
+    const updatedPlaces = [...reviewInfo.suggests];
+    updatedPlaces[index] = value;
     setReviewInfo(prev => ({ ...prev, suggests: updatedPlaces }));
   };
 
@@ -160,9 +161,6 @@ const RegisterReview = () => {
       }
     }
   };
-  useEffect(() => {
-    // console.log(postImg);
-  }, [postImg])
 
 
   return (
@@ -207,7 +205,6 @@ const RegisterReview = () => {
               <p className={styles.category__name}>추천 장소</p>
               <button type="button" onClick={handleAddPlace}>+ 장소 추가</button>
             </div>
-
             {reviewInfo.suggests.map((place, index) => (
               <div key={index} className={styles.add_place}>
                 <input
@@ -220,11 +217,9 @@ const RegisterReview = () => {
                 <div className={styles.minus__btn} type="button" onClick={() => handleRemovePlace(index)}><FaMinus /></div>
               </div>
             ))}
-
           </div>
           <div className={styles.review__images}>
             <p className={styles.category__name}>이미지 추가하기</p>
-
             <div className={styles.preview__images}>
               <label htmlFor="imgs">
                 <div>
