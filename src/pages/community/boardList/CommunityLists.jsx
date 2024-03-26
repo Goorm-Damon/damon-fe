@@ -1,9 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState } from 'react';
 import classes from './CommunityLists.module.scss';
 import CommunityList from './CommunityList';
 
-const CommunityLists = ({ backendData }) => {
-  // Dummy data from the API specification
+const CommunityLists = ({ backendData, communityType, sortByLatest, currentPage, setCurrentPage }) => {
   const DUMMY_COMMUNITYLISTS = [
     {
       communityId: 0,
@@ -12,10 +11,10 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 1',
       memberImage: 'dummy_image_url_1.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-26T10:30:00.000Z', // Updated timestamp for sorting
       type: '번개',
       views: 10,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
     },
     {
       communityId: 1,
@@ -24,10 +23,10 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 2',
       memberImage: 'dummy_image_url_2.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-23T09:45:00.000Z', // Updated timestamp for sorting
       type: '자유',
       views: 20,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사',
     },
     {
       communityId: 2,
@@ -36,10 +35,10 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 3',
       memberImage: 'dummy_image_url_3.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-22T09:00:00.000Z', // Updated timestamp for sorting
       type: '번개',
       views: 15,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사',
     },
     {
       communityId: 3,
@@ -48,10 +47,10 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 4',
       memberImage: 'dummy_image_url_4.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-20T08:15:00.000Z', // Updated timestamp for sorting
       type: '자유',
       views: 25,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사',
     },
     {
       communityId: 4,
@@ -60,10 +59,10 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 5',
       memberImage: 'dummy_image_url_5.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-24T07:30:00.000Z', // Updated timestamp for sorting
       type: '번개',
       views: 18,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사',
     },
     {
       communityId: 5,
@@ -72,10 +71,10 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 5',
       memberImage: 'dummy_image_url_5.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-23T06:45:00.000Z', // Updated timestamp for sorting
       type: '번개',
       views: 18,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사',
     },
     {
       communityId: 6,
@@ -84,10 +83,10 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 5',
       memberImage: 'dummy_image_url_5.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-22T06:00:00.000Z', // Updated timestamp for sorting
       type: '번개',
       views: 18,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사',
     },
     {
       communityId: 7,
@@ -96,10 +95,10 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 5',
       memberImage: 'dummy_image_url_5.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-21T05:15:00.000Z', // Updated timestamp for sorting
       type: '번개',
       views: 18,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사',
     },
     {
       communityId: 8,
@@ -108,10 +107,10 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 5',
       memberImage: 'dummy_image_url_5.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-19T04:30:00.000Z', // Updated timestamp for sorting
       type: '번개',
       views: 18,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사',
     },
     {
       communityId: 9,
@@ -120,10 +119,10 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 5',
       memberImage: 'dummy_image_url_5.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-18T03:45:00.000Z', // Updated timestamp for sorting
       type: '번개',
       views: 18,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사',
     },
     {
       communityId: 10,
@@ -132,30 +131,81 @@ const CommunityLists = ({ backendData }) => {
       commentsCount: 0,
       memberName: 'Dummy Member 5',
       memberImage: 'dummy_image_url_5.jpg',
-      createdDate: '2024-03-19T04:07:46.629Z',
+      createdDate: '2024-03-16T03:00:00.000Z', // Updated timestamp for sorting
       type: '번개',
       views: 18,
-      message: '가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사가나다나라마바사',
+      message: '가나다나라마바사가나다나라마바사가나다나라마바사',
     },
   ];
+
+  const listsPerPage = 3;
+  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    // Filter community data based on communityType
+    if (communityType === '전체') {
+      setFilteredData(backendData?.data?.content || DUMMY_COMMUNITYLISTS);
+    } else {
+      setFilteredData(
+        (backendData?.data?.content || DUMMY_COMMUNITYLISTS).filter(
+          (item) => item.type === communityType
+        )
+      );
+    }
+  }, [backendData, communityType]);
+
+  useEffect(() => {
+    // Sort data by createdDate when sortByLatest changes
+    if (sortByLatest) {
+      const sortedData = [...filteredData];
+      sortedData.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+      setFilteredData(sortedData);
+    }
+  }, [sortByLatest, filteredData]); // Adding filteredData as dependency
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const renderCommunityLists = () => {
+    const startIndex = (currentPage - 1) * listsPerPage;
+    const endIndex = startIndex + listsPerPage;
+    const currentPageData = filteredData.slice(startIndex, endIndex);
+
+    return currentPageData.map((data) => (
+      <li key={data.communityId}>
+        <CommunityList data={data} />
+      </li>
+    ));
+  };
+
+  const renderPageNumbers = () => {
+    const totalPages = Math.ceil(filteredData.length / listsPerPage);
+    const pageNumbers = [];
+
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          className={`${classes.pageNumber} ${currentPage === i && classes.activePage}`}
+          onClick={() => handlePageChange(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return pageNumbers;
+  };
 
   return (
     <div className={classes.CommunityLists}>
       <ul className={classes.list}>
-        {backendData && backendData.content && backendData.content.length > 0 ? (
-          backendData.content.map((data) => (
-            <li key={data.communityId}>
-              <CommunityList data={data} />
-            </li>
-          ))
-        ) : (
-          DUMMY_COMMUNITYLISTS.map((data) => (
-            <li key={data.communityId}>
-              <CommunityList data={data} />
-            </li>
-          ))
-        )}
+        {renderCommunityLists()}
       </ul>
+      <div className={classes.pagination}>
+        {renderPageNumbers()}
+      </div>
     </div>
   );
 };

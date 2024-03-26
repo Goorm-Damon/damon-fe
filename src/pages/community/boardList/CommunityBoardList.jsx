@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../boardList/CommunityBoardList.module.scss';
+import styles from './CommunityBoardList.module.scss';
 import CommunityLists from './CommunityLists';
 import CommunityList from './CommunityList';
 import { useNavigate } from 'react-router-dom';

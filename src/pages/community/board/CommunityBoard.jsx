@@ -1,42 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import styles from './CommunityBoard.module.scss';
 import { getCommunity, createCommunity } from "../../../apis/services/communityService";
-import { useNavigate } from 'react-router-dom'; // useNavigate 추가
-import CommunityLists from '../../community/boardList/CommunityLists'; // Import the CommunityLists component
+import { useNavigate, useLocation } from 'react-router-dom';
+import CommunityLists from '../../community/boardList/CommunityLists';
 
 const CommunityBoard = () => {
   const [communityData, setCommunityData] = useState([]);
-  const [communityType, setCommunityType] = useState('번개');
-  const navigate = useNavigate(); // useNavigate 사용
+  const [communityType, setCommunityType] = useState('전체');
+  const [sortByLatest, setSortByLatest] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); // Added currentPage state
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const fetchAllCommunityData = () => {
+    getCommunity(communityType)
+      .then(data => {
+        if (location.pathname === '/community') {
+          setCommunityData(data);
+        } else {
+          let sortedData = [...data.content];
+          if (sortByLatest) {
+            sortedData.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+          }
+          setCommunityData({ ...data, content: sortedData });
+        }
+      })
+      .catch(error => console.error(`Error fetching community data:`, error));
+  };
 
   useEffect(() => {
-    fetchCommunityData(communityType);
-  }, [communityType]);
+    fetchAllCommunityData();
+  }, [communityType, sortByLatest]); // Adding communityType and sortByLatest as dependencies, and ignoring fetchAllCommunityData
 
-  const fetchCommunityData = (type) => {
-    getCommunity(type, 0)
-      .then(data => setCommunityData(data))
-      .catch(error => console.error(`Error fetching ${type} community data:`, error));
+  const handleLatestButtonClick = () => {
+    setSortByLatest(true);
+    setCurrentPage(1); // Reset currentPage when sorting by latest
+    fetchAllCommunityData(); // Fetch data again to apply sorting
   };
 
-  const handleLightningButtonClick = () => {
-    setCommunityType('번개');
-  };
-
-  const handleFreeButtonClick = () => {
-    setCommunityType('자유');
+  const handleTypeButtonClick = (type) => {
+    setCommunityType(type);
+    setSortByLatest(false);
   };
 
   const handleCreatePostButtonClick = () => {
     const newCommunityData = {
-      // 새로운 커뮤니티 데이터를 여기에 입력합니다.
+      // Add logic to create new community data
     };
 
     createCommunity(newCommunityData)
       .then(response => {
         console.log('Community created successfully:', response);
-        // 글 등록 후 페이지 이동
-        navigate('/boardList'); // 글 등록 후 페이지로 이동합니다.
+        navigate('/boardList');
       })
       .catch(error => {
         console.error('Error creating community:', error);
@@ -49,28 +64,22 @@ const CommunityBoard = () => {
         <div className={styles['community-card']}>
           <div className={styles['community-title']}>커뮤니티</div>
           <div className={styles['title']}>
-            <div className={styles['order-button-latest']}>최신순</div>
-            <div className={styles['order-button']} onClick={handleLightningButtonClick}>번개버튼</div>
-            <div className={styles['order-button-free']} onClick={handleFreeButtonClick}>자유기버튼</div>
+            <div className={styles['order-button-latest']} onClick={handleLatestButtonClick}>최신순</div>
+            <div className={styles['order-button']} onClick={() => handleTypeButtonClick('번개')}>번개버튼</div>
+            <div className={styles['order-button-free']} onClick={() => handleTypeButtonClick('자유')}>자유기버튼</div>
             <div className={styles['create-post-button']} onClick={handleCreatePostButtonClick}>글 등록하기</div>
+            {/* 최신화 버튼 추가 */}
+            <div className={styles['latest-button']} onClick={handleLatestButtonClick}>최신화</div>
           </div>
-          {/* 커뮤니티 데이터 렌더링 */}
-          {communityData.content && communityData.content.length > 0 &&
-            communityData.content.map((data) => (
-              <div key={data.communityId}>
-                <div className={styles['title']}>
-                  {data.title &&
-                    (data.title.length > 20 ? data.title.slice(0, 20) + '...' : data.title)}
-                </div>
-                <div className={styles['reaction']}>
-                  <p>Like Count: {data.likesCount}</p>
-                  <p>Comment Count: {data.commentsCount}</p>
-                </div>
-              </div>
-            ))}
         </div>
+        <CommunityLists
+          backendData={communityData}
+          communityType={communityType}
+          sortByLatest={sortByLatest}
+          currentPage={currentPage} // Pass currentPage to CommunityLists
+          setCurrentPage={setCurrentPage} // Pass setCurrentPage to CommunityLists
+        />
       </div>
-      <CommunityLists backendData={null} /> {/* Render CommunityLists component */}
     </div>
   );
 };
