@@ -160,7 +160,6 @@ const EditReview = () => {
     }
   };
   useEffect(() => {
-    // 이미지 URL을 미리보기 배열로 설정
     setPreviewImg(review.imageUrls);
   }, [review.imageUrls]);
 

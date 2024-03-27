@@ -14,27 +14,23 @@ import { IoMdShare } from "react-icons/io";
 import { likedReviewState } from '../../../states/review/likeReviewState';
 import { userInfostate } from '../../../states/user/userInfoState';
 import Comment from '../../../components/comment/Comment';
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/scss';
+import 'swiper/scss/navigation';
+import 'swiper/scss/pagination';
+import { Navigation, Pagination } from 'swiper/modules';
 
 const DetailReview = () => {
   const reviewId = useLocation().state.reviewId;
   const heart_state = useLocation().state.heart_state;
   const [reviewInfo, setReviewInfo] = useRecoilState(reviewInfoState);
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
-
   const [click, setClick] = useState(false);
   const [heart, setHeart] = useState(heart_state);
   const [likedReviews, setLikedReviews] = useRecoilState(likedReviewState);
   const dropdownRef = useRef(null);
 
   const handleMenu = () => setClick(!click);
-
-  // const handleClickOutside = (event) => {
-  //   if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //     setClick(false);
-  //   }
-  // };
-
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const showNextImage = () => {
@@ -115,11 +111,28 @@ const DetailReview = () => {
           </div>
           <section>
             <div className={styles.image__box}>
-              {reviewInfo.imageUrls && reviewInfo.imageUrls.length > 0 && (
-                <img src={reviewInfo.imageUrls[currentImageIndex]} alt="Review" className={styles.images} />
-              )}
-              <button onClick={showPrevImage} className={styles.prevButton}>이전</button>
-              <button onClick={showNextImage} className={styles.nextButton}>다음</button>
+
+              <Swiper
+                effect={"fade"}
+                pagination={{
+                  clickable: true,
+                }}
+                navigation={true}
+                slidesPerView={1}
+                modules={[Navigation, Pagination]}
+                className={styles.image__box}
+                loop={true}
+              >
+                {reviewInfo.imageUrls && reviewInfo.imageUrls.map((imgurl, idx) => (
+                  <SwiperSlide className={styles.image__box}>
+                    <img src={imgurl} alt="reviewImg" className={styles.images}></img>
+                  </SwiperSlide>
+                ))}
+
+              </Swiper>
+              {/* )} */}
+              {/* <button onClick={showPrevImage} className={styles.prevButton}>이전</button>
+              <button onClick={showNextImage} className={styles.nextButton}>다음</button> */}
             </div>
             <div className={styles.icons}>
               {heart ? (

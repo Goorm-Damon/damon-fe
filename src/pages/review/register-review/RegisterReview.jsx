@@ -52,19 +52,19 @@ const RegisterReview = () => {
   };
 
   function uploadFile(e) {
-    const files = Array.from(e.target.files); // Convert FileList to array
+    const files = Array.from(e.target.files);
     setPostImg(files);
     const fileUrls = [];
 
     files.forEach(file => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        fileUrls.push(e.target.result); // Add the file URL to the array
-        if (fileUrls.length === files.length) { // Check if all files are read
-          setPreviewImg(fileUrls); // Update the state with all file URLs
+        fileUrls.push(e.target.result);
+        if (fileUrls.length === files.length) {
+          setPreviewImg(fileUrls);
         }
       };
-      reader.readAsDataURL(file); // Start reading the file
+      reader.readAsDataURL(file);
     });
   }
 
@@ -118,13 +118,6 @@ const RegisterReview = () => {
         },
       })
         .then((response) => {
-          // 이미지 업로드 성공 시 처리 // 여러 이미지를 보내야하는 경우 지금처럼 체인 형식으로 진행하면 리뷰가 이미지 만큼 생성되는 오류 발생함.
-          console.log("이미지 업로드 성공:", response.data);
-
-
-          // setReviewInfo(prev => ({ ...prev, images: response.data }));
-
-          // 리뷰 등록 // 비동기 이슈로 다음과 같이 수정
           const images = response.data.data;
           const reviewDataWithImage = { ...reviewInfo, images: images };
 
@@ -134,7 +127,6 @@ const RegisterReview = () => {
         .then((response) => {
           if (response.status === 200) {
             alert("리뷰 등록되었습니다.");
-            //상세 리뷰 페이지로 이동해야함.
             navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
           } else {
             console.error(response.error);
@@ -144,13 +136,11 @@ const RegisterReview = () => {
           console.error(error);
         });
     } else {
-      // 여기에서는 이미지 없을 시 처리하도록 처리
       console.log("이미지 없음");
       try {
         const response = reviewService.createReview(reviewInfo);
         if (response.status === 200) {
           alert("리뷰 등록되었습니다.");
-          //상세일정 페이지로 이동해야함.
           navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
         } else {
           console.error(response.error);
@@ -274,7 +264,7 @@ const RegisterReview = () => {
               placeholder='태그 입력'
               onKeyDown={(e) => {
                 if (e.key === ' ' || e.key === 'Spacebar') {
-                  e.preventDefault(); // 공백 입력 시 기본 이벤트 차단
+                  e.preventDefault();
                 } else if (e.key === 'Enter') {
                   const trimmedValue = e.target.value.trim();
                   if (trimmedValue) {

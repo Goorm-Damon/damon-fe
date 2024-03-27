@@ -12,10 +12,12 @@
 .comment__header {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
+  margin: 30px 0 20px 0;
 
   textarea {
-    padding: 5px;
+    padding: 10px;
+    height: 70px;
   }
 }
 
@@ -73,4 +75,57 @@
     margin: 0;
     font-size: 13px;
   }
+}
+
+.content {
+  font-size: 15px;
+  margin: 5px 0;
+  word-wrap: break-word;
+
+  @media (min-width:830px) {
+    width: 1000px;
+
+  }
+
+  @media (max-width: 830px) {
+    width: 600px;
+    padding: 0 0 0 24px;
+  }
+}
+
+.cmt__btn {
+  padding: 5px;
+  background: none;
+  border: none;
+  color: #b9b9b9;
+  font-weight: 600;
+  &:hover {
+  color: #7298C2;
+  }
+}
+
+.comment__right {
+  display: flex;
+  flex-direction: column;
+
+  textarea {
+    padding: 10px;
+    height: 70px;
+    min-width: 600px;
+
+    @media (min-width:830px) {
+      width: 1000px;
+    }
+  
+    @media (max-width: 830px) {
+      width: 600px;
+      padding: 0 0 0 24px;
+    }
+  }
+}
+
+.enroll__btn {
+  background: none;
+    border: none;
+    cursor: pointer;
 }

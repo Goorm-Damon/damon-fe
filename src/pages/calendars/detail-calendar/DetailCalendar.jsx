@@ -48,18 +48,14 @@ const DetailCalendar = () => {
     deleted: false,
   })
 
-
-
   useEffect(() => {
     fetchCalendars();
   }, []);
 
-  // 모달창 노출
   const showModal = () => {
     setModalOpen(true);
   };
 
-  // 장소추가 사이드바
   const showAddSidebar = () => {
     setAddSidebarOpen(!addSidebarOpen);
   };
@@ -68,7 +64,6 @@ const DetailCalendar = () => {
     try {
       const response = await calendarService.getDetailCalendar(calendarId);
 
-      // travels 배열 각 요소에 deleted: false 추가
       const updatedTravels = response.data.travels.map(travel => ({
         ...travel,
         deleted: false,
@@ -87,7 +82,7 @@ const DetailCalendar = () => {
         startDate: response.data.startDate,
         endDate: response.data.endDate,
         area: response.data.area,
-        travels: sortedTravels, // 수정된 travels 배열 설정
+        travels: sortedTravels,
       }));
       console.log(response);
     } catch (error) {
@@ -96,19 +91,18 @@ const DetailCalendar = () => {
   }
 
   useEffect(() => {
-    setPlaces([]); // places 초기화
+    setPlaces([]);
     setSearchPlace("");
   }, [clickedDate, placeLatLon]);
 
 
   useEffect(() => {
-    const mapContainer = document.getElementById('map'); // 지도를 표시할 div
-    
+    const mapContainer = document.getElementById('map');
     const centerCoord = placeLatLon.length > 0
     ? new kakao.maps.LatLng(placeLatLon[0].latitude, placeLatLon[0].longitude)
     : (region_latlon[calendarInfo.area]
       ? new kakao.maps.LatLng(region_latlon[calendarInfo.area].latitude, region_latlon[calendarInfo.area].longitude)
-      : new kakao.maps.LatLng(37.5665, 126.9780)); // 기본 좌표 (예: 서울 시청)
+      : new kakao.maps.LatLng(37.5665, 126.9780)); 
 
     const mapOptions = {
       center: centerCoord,
@@ -120,7 +114,7 @@ const DetailCalendar = () => {
         let bounds = new kakao.maps.LatLngBounds();
 
         placeLatLon.forEach(latlon => {
-          displayMarker(latlon, true); // 기본 마커
+          displayMarker(latlon, true);
           bounds.extend(new kakao.maps.LatLng(latlon.latitude, latlon.longitude));
         });
         map.setBounds(bounds);
@@ -128,8 +122,6 @@ const DetailCalendar = () => {
     };
 
     const map = new kakao.maps.Map(mapContainer, mapOptions);
-
-    // 장소 검색 객체를 생성
     const ps = new kakao.maps.services.Places();
 
     const placesSearchCB = (data, status) => {
@@ -137,16 +129,15 @@ const DetailCalendar = () => {
         let bounds = new kakao.maps.LatLngBounds();
 
         data.forEach(place => {
-          displayMarker(place, false); // 기본 마커
+          displayMarker(place, false);
           bounds.extend(new kakao.maps.LatLng(place.y, place.x));
         });
 
         map.setBounds(bounds);
-        setPlaces(data); // 검색된 장소 상태 업데이트
+        setPlaces(data); 
       }
     };
 
-    // 마커를 생성하고 지도에 표시하는 함수
     const displayMarker = (place, isRegistered) => {
       const imageSrc = isRegistered
         ? 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png' // 등록된 일정 마커 이미지
@@ -176,27 +167,22 @@ const DetailCalendar = () => {
       mapLine();
     }
 
-    // 이미 등록된 일정에 대한 마커를 표시
     placeLatLon.forEach(travel => {
-      displayMarker(travel, true); // 등록된 일정 마커
+      displayMarker(travel, true);
     });
 
-    // 선을 구성하는 좌표 배열 생성
     const linePath = placeLatLon.map(latLon => new kakao.maps.LatLng(latLon.latitude, latLon.longitude));
 
-    // 지도에 표시할 선을 생성합니다
     const polyline = new kakao.maps.Polyline({
-      path: linePath, // 선을 구성하는 좌표 배열
-      strokeWeight: 5, // 선의 두께
-      strokeColor: '#FFAE00', // 선의 색깔
-      strokeOpacity: 0.7, // 선의 불투명도
-      strokeStyle: 'solid' // 선의 스타일
+      path: linePath,
+      strokeWeight: 5, 
+      strokeColor: '#FFAE00',
+      strokeOpacity: 0.7, 
+      strokeStyle: 'solid'
     });
 
-    // 지도에 선을 표시합니다
     polyline.setMap(map);
 
-    // 키워드로 장소를 검색
     if (searchPlace) {
       ps.keywordSearch(searchPlace, placesSearchCB);
     }

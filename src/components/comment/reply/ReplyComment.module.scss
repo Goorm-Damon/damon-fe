@@ -5,7 +5,18 @@
 .comment__header {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
+  padding: 10px;
+  margin-left: 50px;
+
+  textarea {
+    height: 70px;
+    padding: 10px;
+  }
+}
+
+.content {
+  font-size: 15px;
 }
 
 .profile__img {
@@ -27,4 +38,10 @@
 .comment__input {
   background-color: rgb(245, 245, 245);
   border: none;
+}
+
+.enroll__btn {
+  background: none;
+    border: none;
+    cursor: pointer;
 }

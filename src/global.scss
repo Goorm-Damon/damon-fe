@@ -34,3 +34,19 @@ a {
   height: 40px;
   align-content: center;
 }
+
+.swiper-slide {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-button-prev {
+  color: #cdcdcd;
+  font-weight: 600;
+}
+
+.swiper-button-next {
+  color: #cdcdcd;
+  font-weight: 600;
+}

@@ -5,6 +5,8 @@ import { useRecoilState } from 'recoil';
 import { userInfostate } from '../../../states/user/userInfoState';
 import { reviewInfoState } from '../../../states/review/reviewState';
 import * as reviewService from '../../../apis/services/reviewService';
+import { VscSend } from "react-icons/vsc";
+
 
 const ReplyComment = ({reviewId,parent,setCommentList}) => {
 
@@ -58,7 +60,7 @@ const ReplyComment = ({reviewId,parent,setCommentList}) => {
               onChange={(e) => setContent(e.target.value)}
               placeholder="Reply..."
             />
-            <button onClick={handleReply}>등록</button>
+            <button onClick={handleReply} className={styles.enroll__btn}><VscSend size={25}/></button>
           </div>
         </div>
     </div>
