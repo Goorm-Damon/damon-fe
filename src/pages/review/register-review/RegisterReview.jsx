@@ -160,7 +160,8 @@ const RegisterReview = () => {
         <section className={styles.page__contents}>
           <div className={styles.review__title}>
             <p className={styles.category__name}>리뷰 제목<span> *</span></p>
-            <input name="title" type="text" value={reviewInfo.title} onChange={handleInputChange} placeholder="제목을 입력해주세요" className={styles.inputs} />
+            <input name="title" type="text" value={reviewInfo.title} onChange={handleInputChange} placeholder="15자 이내로 입력해주세요" className={styles.inputs} 
+            maxLength={15}/>
           </div>
 
           <div className={styles.review__dates}>
