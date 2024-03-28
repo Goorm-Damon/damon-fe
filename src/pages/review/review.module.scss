@@ -9,10 +9,6 @@
   overflow-x: hidden;
 }
 
-.review__top {
-  margin-top: 45px;
-}
-
 .editLine {
   display: flex;
   flex-direction: row;
@@ -30,7 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20%;
+  margin-top: 180px;
   color: lightgray;
   font-weight: 600;
 }
@@ -40,7 +36,7 @@
   flex-direction: row;
   input {
     padding: 10px;
-    width: 40rem;
+    width: 300px;
     border-radius: 5px;
     outline: none;
     background-color: #ffffff73;
@@ -69,4 +65,22 @@
   justify-content: center;
   align-items: center;
   gap: 5px;
+  cursor: pointer;
+}
+
+.filterInput {
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1000px) {
+  .filterInput {
+    flex-direction: column;
+    gap: 10px;
+  }
 }

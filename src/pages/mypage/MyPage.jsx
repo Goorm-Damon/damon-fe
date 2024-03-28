@@ -47,7 +47,7 @@ const MyPage = () => {
               className={styles.profile__nickname}
               readOnly
               value={userInfo.data.nickname} />
-            {/* <p>편집</p> */}
+            <p>편집</p>
           </div>
         </div>
         {/* </section> */}

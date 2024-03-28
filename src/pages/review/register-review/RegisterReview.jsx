@@ -106,7 +106,6 @@ const RegisterReview = () => {
   const handleSubmit = () => {
     const formData = new FormData();
     if (postImg) {
-<<<<<<< HEAD
       postImg.forEach((file) => {
 
         formData.append(`images`, file);
@@ -114,30 +113,14 @@ const RegisterReview = () => {
 
       });
       axios.post('/api/review/upload', formData, {
-=======
-      postImg.forEach((file, index) => {
-        formData.append(`images`, file);
-      });
-      axios.post('/api/upload', formData, {
->>>>>>> ad73e6b5a8f95884c5e68c77bac94501506907f7
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
         .then((response) => {
-<<<<<<< HEAD
           const images = response.data.data;
           const reviewDataWithImage = { ...reviewInfo, images: images };
 
-=======
-          // 이미지 업로드 성공 시 처리 // 여러 이미지를 보내야하는 경우 지금처럼 체인 형식으로 진행하면 리뷰가 이미지 만큼 생성되는 오류 발생함.
-          console.log("이미지 업로드 성공:", response.data);
-  
-          setReviewInfo(prev => ({ ...prev, images: response.data }));
-  
-          // 리뷰 등록 // 비동기 이슈로 다음과 같이 수정
-          const reviewDataWithImage = { ...reviewInfo, images: response.data };
->>>>>>> ad73e6b5a8f95884c5e68c77bac94501506907f7
           console.log("리뷰 정보:", reviewDataWithImage);
           return reviewService.createReview(reviewDataWithImage);
         })

@@ -62,7 +62,7 @@ const Review = () => {
   };
 
   // 리뷰 작성 페이지로 이동하는 함수
-  const navigateToReviewCreation = () => {
+  const navigateToEditor = () => {
     navigate('/register/review');
   };
 
@@ -80,14 +80,9 @@ const Review = () => {
       {/* <ReviewBanner reviews={reviews} setReviews={setReviews} /> */}
       <div className={styles.page}>
           <section className={styles.review__top}>
+            <h1>전체리뷰</h1>
+            <div className={styles.filterInput}>
             <AreaSidebar setArea={setArea} area={area} />
-            <div className={styles.editLine}>
-              <p>Total {reviews.length}</p>
-              <div className={styles.review__btn}>
-              <FiEdit3 />
-              <span>리뷰작성</span>
-              </div>
-            </div>
             <div className={styles.input__container}>
               <Select
                 onChange={(selectedOption) => setOption(selectedOption)}
@@ -103,6 +98,15 @@ const Review = () => {
                 className={styles.searchInput}
               />
             </div>
+            </div>
+            <div className={styles.editLine}>
+              <p>Total {reviews.length}</p>
+              <div className={styles.review__btn} onClick={navigateToEditor}>
+              <FiEdit3 />
+              <span>리뷰작성</span>
+              </div>
+            </div>
+            
           </section>
           {reviews.length > 0 ?
             <section>

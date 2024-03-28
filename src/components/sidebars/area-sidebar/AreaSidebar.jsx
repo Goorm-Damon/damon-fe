@@ -36,18 +36,13 @@ const AreaSidebar = ({ setArea, area }) => {
   return (
     <div className={styles.area__sidebar}>
       {areas.map((item, i) => (
-        <div key={item.value}
-          className={`${styles.img__out} ${item.value === area ? styles.btnActive : ""}`}
-          onClick={(e) => handleClickedArea(item.value)}
+        <div key={item.value} 
+        className={`${styles.area__labels} ${item.value === area ? styles.btnActive : ""}`}
+        onClick={(e)=>handleClickedArea(item.value)}
         >
-          <div className={styles.img__container}>
-            <img src={img_url[item.value]} />
-            <div className={styles.labels}>
-            {item.label}
-          </div>
-          </div>
+          {item.label}
         </div>
-
+      
       ))}
     </div>
   )
