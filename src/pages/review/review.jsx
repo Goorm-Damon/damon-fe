@@ -5,6 +5,8 @@ import AreaSidebar from '../../components/sidebars/area-sidebar/AreaSidebar';
 import MainReviewCard from '../../components/review/cards/main-card/MainReviewCard';
 import { useNavigate } from 'react-router-dom';
 import ReviewBanner from '../../components/banner/ReviewBanner';
+import Select from "react-select";
+import { FiEdit3 } from "react-icons/fi";
 
 const areas = [
   { value: 'ALL', label: "전체" },
@@ -19,11 +21,19 @@ const areas = [
   { value: 'JEJU', label: "제주" },
 ];
 
+const options = [
+  { value: 'title', label: "제목" },
+  { value: 'tag', label: "태그" },
+  { value: 'nickname', label: "작성자" },
+];
+
 const Review = () => {
 
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
   const [area, setArea] = useState('ALL');
+  const [option, setOption] = useState(options[0]);
+  const [keyword, setKeyword] = useState("");
 
   // 페이지 이동을 위한 함수
   const navigateTo = (path) => () => {
@@ -45,6 +55,17 @@ const Review = () => {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      fetchReviews();
+    }
+  };
+
+  // 리뷰 작성 페이지로 이동하는 함수
+  const navigateToReviewCreation = () => {
+    navigate('/register/review');
+  };
+
   useEffect(() => {
     fetchReviews();
     // window.scrollTo(0, 1200);
@@ -56,16 +77,34 @@ const Review = () => {
 
   return (
     <div>
-      <ReviewBanner reviews={reviews} setReviews={setReviews}/>
+      {/* <ReviewBanner reviews={reviews} setReviews={setReviews} /> */}
       <div className={styles.page}>
-        <div className={styles.review}>
           <section className={styles.review__top}>
             <AreaSidebar setArea={setArea} area={area} />
             <div className={styles.editLine}>
               <p>Total {reviews.length}</p>
+              <div className={styles.review__btn}>
+              <FiEdit3 />
+              <span>리뷰작성</span>
+              </div>
+            </div>
+            <div className={styles.input__container}>
+              <Select
+                onChange={(selectedOption) => setOption(selectedOption)}
+                options={options}
+                defaultValue={options[0]}
+                className={styles.select}
+              />
+              <input
+                placeholder='어떤 여행을 찾으시나요?'
+                type='text'
+                onChange={(e) => setKeyword(e.target.value)}
+                onKeyDown={handleKeyPress}
+                className={styles.searchInput}
+              />
             </div>
           </section>
-          {reviews.length>0 ?
+          {reviews.length > 0 ?
             <section>
               <div className={styles.review__cards}>
                 {reviews && reviews.length > 0 && reviews.map((review, i) => (
@@ -82,7 +121,6 @@ const Review = () => {
           }
 
         </div>
-      </div>
     </div>
   );
 };

@@ -36,7 +36,7 @@
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: white;
 
   animation: modal-show 0.1s;
@@ -58,16 +58,17 @@
   position: relative;
     z-index: 10;
     max-width: 400px;
-    width: 100%;
+    width: 500px;
     background-color: #fff;
     padding: 1rem 2rem;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
     h3 {
       font-size: 1.5rem;
       font-weight: bold;
+      margin: 10px 0;
     }
 
     .msg {
@@ -83,8 +84,24 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      margin-top: 15px;
+      
       button {
         margin-left: 0.5rem;
       }
     }
+}
+
+.btn {
+  padding: 10px;
+  border-radius: 5px;
+  padding: 5px 15px;
+  border: none;
+  background-color: #b9b9b9;
+  color: white;
+}
+
+.func__btn {
+  @extend .btn;
+  background-color: #5376C6;
 }

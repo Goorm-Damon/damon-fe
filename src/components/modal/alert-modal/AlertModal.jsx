@@ -10,10 +10,16 @@ const AlertModal = ({ closeEvent, title, children, actionMsg, actionEvent }) => 
             <h3>{title}</h3>
             <div className={styles.msg}>{children}</div>
             <div className={styles.action_box}>
-              <button onClick={closeEvent} >
+              <button
+                onClick={closeEvent}
+                className={styles.btn}
+              >
                 닫기
               </button>
-              <button onClick={actionEvent}>
+              <button
+                onClick={actionEvent}
+                className={styles.func__btn}
+              >
                 {actionMsg}
               </button>
             </div>

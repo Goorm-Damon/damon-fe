@@ -34,15 +34,13 @@ const Main = () => {
   const fetchCalendars = async () => {
     try {
       const response = await calendarService.getCalendar();
-      setCalendars(response.data);
-      console.log(response.data);
+      setCalendars(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
       console.log(error);
-      // alert(error.details.message);
     }
   }
 
-  // 페이지 이동을 위한 함수
   const navigateTo = (path) => () => {
     navigate(path);
   };
@@ -50,7 +48,6 @@ const Main = () => {
   const fetchBestReviews = async () => {
     try {
       const response = await reviewService.getBestReview();
-      console.log(response);
       setBestReviews(response.data.data);
     } catch (error) {
       console.log(error);
@@ -61,7 +58,6 @@ const Main = () => {
     try {
       const response = await communityService.getCommunity('자유', 0);
       setFreeCommus(response.data.data);
-      // console.log("자유모임",freeCommus);
     } catch (error) {
       console.log(error);
     }

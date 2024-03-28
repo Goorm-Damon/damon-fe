@@ -9,19 +9,6 @@
   overflow-x: hidden;
 }
 
-.review {
-  width: 100%;
-
-  input {
-    height: 50px;
-    padding: 20px;
-    width: 40rem;
-    border-radius: 5px;
-    border: 1px solid lightgray;
-    outline: none;
-  }
-}
-
 .review__top {
   margin-top: 45px;
 }
@@ -46,4 +33,40 @@
   margin-top: 20%;
   color: lightgray;
   font-weight: 600;
+}
+
+.input__container {
+  display: flex;
+  flex-direction: row;
+  input {
+    padding: 10px;
+    width: 40rem;
+    border-radius: 5px;
+    outline: none;
+    background-color: #ffffff73;
+    border: solid 1px lightgray;
+  }
+}
+
+.select {
+  width: 100px;
+  height: 30px;
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  .css-1fdsijx-ValueContainer {
+    height: 50px;
+    align-content: center;
+  }
+  .css-13cymwt-control {
+    height: 30px;
+  }
+
+}
+
+.review__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 }
