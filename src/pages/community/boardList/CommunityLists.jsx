@@ -1,6 +1,7 @@
 import React, {useEffect, useState } from 'react';
 import classes from './CommunityLists.module.scss';
 import CommunityList from './CommunityList';
+import Listchat from '../Listchat/Listchat'; // Import Listchat component
 
 const CommunityLists = ({ backendData, communityType, sortByLatest, currentPage, setCurrentPage }) => {
   const DUMMY_COMMUNITYLISTS = [
@@ -140,6 +141,8 @@ const CommunityLists = ({ backendData, communityType, sortByLatest, currentPage,
 
   const listsPerPage = 3;
   const [filteredData, setFilteredData] = useState([]);
+  const [showListChat, setShowListChat] = useState(false); // State to manage Listchat visibility
+  const [selectedMemberName, setSelectedMemberName] = useState(''); // State to store selected member name
 
   useEffect(() => {
     // Filter community data based on communityType
@@ -167,6 +170,11 @@ const CommunityLists = ({ backendData, communityType, sortByLatest, currentPage,
     setCurrentPage(pageNumber);
   };
 
+  const handleMemberImageClick = (memberName) => {
+    setSelectedMemberName(memberName); // Set selected member name
+    setShowListChat(true); // Show Listchat component
+  };
+
   const renderCommunityLists = () => {
     const startIndex = (currentPage - 1) * listsPerPage;
     const endIndex = startIndex + listsPerPage;
@@ -174,7 +182,7 @@ const CommunityLists = ({ backendData, communityType, sortByLatest, currentPage,
 
     return currentPageData.map((data) => (
       <li key={data.communityId}>
-        <CommunityList data={data} />
+        <CommunityList data={data} onMemberImageClick={handleMemberImageClick} />
       </li>
     ));
   };
@@ -200,6 +208,11 @@ const CommunityLists = ({ backendData, communityType, sortByLatest, currentPage,
 
   return (
     <div className={classes.CommunityLists}>
+      {showListChat && (
+        <div className={classes.listChatWrapper}> {/* Wrapper to position Listchat */}
+          <Listchat userName={selectedMemberName} />
+        </div>
+      )}
       <ul className={classes.list}>
         {renderCommunityLists()}
       </ul>
@@ -211,3 +224,4 @@ const CommunityLists = ({ backendData, communityType, sortByLatest, currentPage,
 };
 
 export default CommunityLists;
+

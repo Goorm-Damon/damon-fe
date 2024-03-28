@@ -68,8 +68,7 @@ const CommunityBoard = () => {
             <div className={styles['order-button']} onClick={() => handleTypeButtonClick('번개')}>번개버튼</div>
             <div className={styles['order-button-free']} onClick={() => handleTypeButtonClick('자유')}>자유기버튼</div>
             <div className={styles['create-post-button']} onClick={handleCreatePostButtonClick}>글 등록하기</div>
-            {/* 최신화 버튼 추가 */}
-            <div className={styles['latest-button']} onClick={handleLatestButtonClick}>최신화</div>
+            
           </div>
         </div>
         <CommunityLists

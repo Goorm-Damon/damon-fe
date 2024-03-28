@@ -1,7 +1,13 @@
 import React from 'react';
 import classes from './CommunityList.module.scss';
 
-const CommunityList = ({ data }) => {
+const CommunityList = ({ data, onMemberImageClick }) => {
+  const handleClick = () => {
+    if (typeof onMemberImageClick === 'function') {
+      onMemberImageClick(data.memberName);
+    }
+  };
+
   return (
     <div className={classes.CommunityList} key={data.communityId}>
       <div className={classes.title}>
@@ -10,7 +16,7 @@ const CommunityList = ({ data }) => {
       </div>
       <div className={classes.details}>
         {/* Display member name and image */}
-        <div className={classes.member}>
+        <div className={classes.member} onClick={handleClick}> {/* Handle click event */}
           <img src={data.memberImage} alt={data.memberName} className={classes.memberImage} />
           <p className={classes.memberName}>{data.memberName}</p>
         </div>

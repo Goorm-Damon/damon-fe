@@ -1,0 +1,66 @@
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chatMessages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.message {
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 10px;
+  max-width: 70%;
+}
+
+.myMessage {
+  align-self: flex-end;
+  background-color: #DCF8C6; // 내 메시지 배경색
+  color: #333; // 내 메시지 글자색
+}
+
+.otherMessage {
+  align-self: flex-start;
+  background-color: #F2F2F2; // 상대방 메시지 배경색
+  color: #333; // 상대방 메시지 글자색
+}
+
+.messageInfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+.chatInput {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+#message-to-send {
+  flex: 1;
+  resize: none;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+#sendBtn {
+  padding: 8px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#sendBtn:hover {
+  background-color: #45a049;
+}

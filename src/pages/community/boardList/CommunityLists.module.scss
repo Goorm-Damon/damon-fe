@@ -11,3 +11,14 @@
   list-style: none;
   padding: 0;
 }
+.listChatWrapper {
+  position: fixed; /* Position Listchat above the list */
+  bottom: 20px; /* Adjust the distance from the bottom as needed */
+  right: 20px; /* Adjust the distance from the right as needed */
+  background-color: #fff; /* Adjust styling as needed */
+  z-index: 1; /* Ensure Listchat appears above the list */
+  border: 1px solid #ccc; /* Add border for better visibility */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  padding: 10px; /* Add padding for content spacing */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+}
