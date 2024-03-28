@@ -101,10 +101,8 @@ const Header = () => {
       const response = await calendarService.createCalendar(calendarInfo);
       if (response.status === 200) {
         alert("일정 등록되었습니다.");
-        console.log(response);
-        //상세일정 페이지로 이동해야함.
         resetClicked();
-        navigate(`/my/calendar/${response.data.calendarId}`, { state: { calendarId: response.data.calendarId } });
+        navigate(`/my/calendar/${response.data.data.calendarId}`, { state: { calendarId: response.data.data.calendarId } });
       } else {
         console.error(response.error);
       }
@@ -123,10 +121,8 @@ const Header = () => {
       const response = await calendarService.editCalendar(calendarId, calendarInfo);
       if (response.status === 200) {
         alert("일정 수정되었습니다.");
-        console.log("response", response);
-        //상세일정 페이지로 이동해야함.
         resetClicked();
-        navigate(`/my/calendar/${response.data.calendarId}`, { state: { calendarId: response.data.calendarId } });
+        navigate(`/my/calendar/${response.data.data.calendarId}`, { state: { calendarId: response.data.data.calendarId } });
       } else {
         console.error(response.error);
       }
@@ -147,11 +143,8 @@ const Header = () => {
       const response = await calendarService.deleteCalendar(calendarId);
       if (response.status === 200) {
         alert("일정 삭제되었습니다.");
-        console.log("response", response);
-        //상세일정 페이지로 이동해야함.
         resetClicked();
         navigate('/');
-
       } else {
         console.error(response.error);
       }
@@ -165,7 +158,6 @@ const Header = () => {
     try {
       const response = await calendarService.getDetailCalendar(calendarId);
 
-      // travels 배열 각 요소에 deleted: false 추가
       const updatedTravels = response.data.travels.map(travel => ({
         ...travel,
         deleted: false,

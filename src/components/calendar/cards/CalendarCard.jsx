@@ -50,7 +50,7 @@ const CalendarCard = ({ calendar }) => {
         <div className={styles.calendar__left}>
           <img src={img_url[calendar.area]} className={styles.area__img} />
           <div className={styles.title}>
-            <p>{calendar.title}</p>
+            <p>{calendar.title.length > 8 ? calendar.title.slice(0, 8) + "..." : calendar.title}</p>
           </div>
           <div className={styles.card__tag}>
             <div>#{areas[calendar.area]}</div>
