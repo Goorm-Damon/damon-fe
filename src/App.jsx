@@ -19,6 +19,8 @@ import MyReview from './pages/review/my-review/MyReview';
 import LikeReview from './pages/mypage/like-review/LikeReview';
 import EditReview from './pages/review/edit-review/EditReview';
 
+import RegisterCommunity from './pages/community/register-community/Register';
+import DetailCommunity from './pages/community/detail-community/DetailCommunity'
 
 
 function App() {
@@ -28,7 +30,7 @@ function App() {
     <Routes>
       <Route path='/login' element={<Login />} />
       <Route path='/login/kakao' element={<KakaoRed />} />
-      {/* <Route path='/login/oauth2/code/naver' element={<NaverRed />} /> */}
+      <Route path='/login/naver' element={<NaverRed />} />
 
       <Route path='/' element={<Layout />}>
         <Route index element={<Main />} />
@@ -42,6 +44,8 @@ function App() {
         <Route path='my/calendar/:id' element={<DetailCalendar />} />
         <Route path='mypage' element={<MyPage />} />
         <Route path='my/like/review' element={<LikeReview />} />
+        <Route path='register/community' element={<RegisterCommunity />} />
+        <Route path='community/:id' element={<DetailCommunity />} />
 
       </Route>
     </Routes>

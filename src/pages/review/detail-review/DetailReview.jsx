@@ -111,6 +111,7 @@ const DetailReview = () => {
           </div>
           <section>
             <div className={styles.image__box}>
+
               <Swiper
                 effect={"fade"}
                 pagination={{
@@ -127,7 +128,11 @@ const DetailReview = () => {
                     <img src={imgurl} alt="reviewImg" className={styles.images}></img>
                   </SwiperSlide>
                 ))}
+
               </Swiper>
+              {/* )} */}
+              {/* <button onClick={showPrevImage} className={styles.prevButton}>이전</button>
+              <button onClick={showNextImage} className={styles.nextButton}>다음</button> */}
             </div>
             <div className={styles.icons}>
               {heart ? (
