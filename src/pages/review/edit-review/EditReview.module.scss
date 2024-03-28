@@ -4,6 +4,8 @@
   padding-bottom: 100px;
   margin: 0 auto;
   overflow-x: hidden;
+  margin-top: 64px;
+
 
   span {
     color: rgb(215, 87, 87);
@@ -17,21 +19,17 @@
   border: 1px solid lightgray;
   padding: 10px;
   border-radius: 5px;
-  width: 100%;
+  width: 450px;
 }
 
 .page__title {
-  font-size: 25px;
+  margin-bottom: 30px;
 }
 
 .page__contents {
   gap: 20px;
   display: flex;
   flex-direction: column;
-}
-
-.review__title {
-  width: 50%;
 }
 
 .area__cost {
@@ -54,8 +52,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 50%;
     justify-content: space-between;
+    width: 450px;
   }
 
   .add_place {
@@ -65,7 +63,7 @@
     gap: 10px;
 
     input {
-      width: 50%;
+      width: 450px;
     }
   }
 
@@ -80,6 +78,8 @@
 
   .minus__btn {
     cursor: pointer;
+    position: absolute;
+    margin-left: 425px;
   }
 }
 
@@ -102,6 +102,7 @@ textarea {
   display: flex;
   float: right;
   margin-top: 10px;
+
   &:disabled {
     // disabled 상태일 때의 스타일
     background-color: lightgrey;
@@ -136,6 +137,7 @@ textarea {
   align-items: center;
   margin-left: 5px;
   gap: 5px;
+
   p {
     font-size: 14px;
   }
@@ -162,6 +164,7 @@ textarea {
     justify-content: center;
     padding: 70px;
   }
+
   input {
     display: none;
   }
@@ -173,9 +176,7 @@ textarea {
     margin: 20px 0px;
     overflow: scroll;
   }
-  
 }
-
 
 .img__container {
   width: 140px;
@@ -214,6 +215,7 @@ textarea {
   object-fit: contain;
   object-position: center;
 }
+
 
 .category__name {
   font-weight: 600;

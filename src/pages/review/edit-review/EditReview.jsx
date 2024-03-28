@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import styles from './RegisterReview.module.scss';
+import styles from './EditReview.module.scss';
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useRecoilState } from 'recoil';
 import { reviewInfoState } from '../../../states/review/reviewState';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as reviewService from '../../../apis/services/reviewService';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { FaMinus } from "react-icons/fa";
+import { FiMinus } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
 import { BsPlusCircleDotted } from "react-icons/bs";
@@ -27,46 +27,61 @@ const areas = [
   { value: 'JEJU', label: "제주" },
 ];
 
-const RegisterReview = () => {
+const EditReview = () => {
+
   const navigate = useNavigate();
+  const review = useLocation().state.review;
   const [postImg, setPostImg] = useState([]);
-  const [previewImg, setPreviewImg] = useState([]);
+  const [previewImg, setPreviewImg] = useState(review.imageUrls);
   const [reviewInfo, setReviewInfo] = useState({
-    title: "",
-    startDate: null,
-    endDate: null,
-    area: "",
-    cost: '',
-    suggests: [],
-    tags: [],
-    content: "",
-    images: ""
+    title: review.title,
+    startDate: new Date(review.startDate),
+    endDate: new Date(review.endDate),
+    area: review.area,
+    cost: review.cost,
+    suggests: review.suggests,
+    tags: review.tags,
+    content: review.content,
+    images: review.imageUrls,
+    deleteImages: [],
   });
 
   const handleDeleteImg = (i) => {
     const filteredImg = previewImg.filter((_, idx) => idx !== i);
     const filteredImg２ = postImg.filter((_, idx) => idx !== i);
-
+    const filteredCurrentImg = review.imageUrls.filter((_, idx) => idx !== i);
     setPreviewImg(filteredImg);
     setPostImg(filteredImg２);
+    setReviewInfo(prev => ({ ...prev, images: filteredCurrentImg }));
+
+    if (review.imageUrls[i]) {
+      setReviewInfo(prev => ({
+        ...prev,
+        deleteImages: [...prev.deleteImages, review.imageUrls[i]],
+      }));
+    }
   };
 
-  function uploadFile(e) {
-    const files = Array.from(e.target.files);
-    setPostImg(files);
-    const fileUrls = [];
+  useEffect(() => {
+    console.log(reviewInfo.deleteImages);
+  }, [reviewInfo.deleteImages]);
 
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        fileUrls.push(e.target.result);
-        if (fileUrls.length === files.length) {
-          setPreviewImg(fileUrls);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-  }
+  const uploadFile = async (e) => {
+    const files = Array.from(e.target.files);
+    setPostImg((prev) => [...prev, ...files]);
+
+    const fileUrls = await Promise.all(files.map(async (file) => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          resolve(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
+    }));
+
+    setPreviewImg((prev) => [...prev, ...fileUrls]);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -84,7 +99,7 @@ const RegisterReview = () => {
   const handleAddPlace = () => {
     setReviewInfo(prev => ({ ...prev, suggests: [...prev.suggests, ''] }));
   };
-
+  
   const handlePlaceChange = (value, index) => {
     const updatedPlaces = [...reviewInfo.suggests];
     updatedPlaces[index] = value;
@@ -103,60 +118,56 @@ const RegisterReview = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    const formData = new FormData();
-    if (postImg) {
-      postImg.forEach((file) => {
-
-        formData.append(`images`, file);
-
-
-      });
-      axios.post('/api/review/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-        .then((response) => {
-          const images = response.data.data;
-          const reviewDataWithImage = { ...reviewInfo, images: images };
-
-          console.log("리뷰 정보:", reviewDataWithImage);
-          return reviewService.createReview(reviewDataWithImage);
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            alert("리뷰 등록되었습니다.");
-            navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
-          } else {
-            console.error(response.error);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
+  const handleSubmit = async () => {
+    try {
+      if (postImg.length > 0) {
+        const formData = new FormData();
+        postImg.forEach((file) => {
+          formData.append("images", file);
         });
-    } else {
-      console.log("이미지 없음");
-      try {
-        const response = reviewService.createReview(reviewInfo);
+
+        const response = await axios.post('/api/review/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         if (response.status === 200) {
-          alert("리뷰 등록되었습니다.");
+          const images = response.data.data;
+          const reviewDataWithImage = { ...reviewInfo, images: [...reviewInfo.images, ...images] };
+          const res = await reviewService.editReview(review.id, reviewDataWithImage);
+          if (res.status === 200) {
+            alert("리뷰 수정되었습니다.");
+            navigate(`/review/${res.data.data.id}`, { state: { reviewId: res.data.data.id } });
+          } else {
+            console.error(res.error);
+          }
+
+        } else {
+          console.error(response.error);
+        }
+      } else {
+        console.log("기존 이미지 유지");
+        const response = await reviewService.editReview(review.id, reviewInfo);
+        if (response.status === 200) {
+          alert("리뷰 수정되었습니다.");
           navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
         } else {
           console.error(response.error);
         }
       }
-      catch (error) {
-        console.error(error);
-      }
+    } catch (error) {
+      console.error(error);
     }
   };
+  useEffect(() => {
+    setPreviewImg(review.imageUrls);
+  }, [review.imageUrls]);
 
 
   return (
     <div>
       <div className={styles.page}>
-        <h1 className={styles.page__title}>리뷰 등록</h1>
+        <h1 className={styles.page__title}>리뷰 수정</h1>
         <section className={styles.page__contents}>
           <div className={styles.review__title}>
             <p className={styles.category__name}>리뷰 제목<span> *</span></p>
@@ -178,6 +189,7 @@ const RegisterReview = () => {
             <div className={styles.review__area}>
               <p className={styles.category__name}>지역 카테고리<span> *</span></p>
               <Select
+                value={areas.find(option => option.value === review.area)}
                 onChange={handleAreaChange}
                 options={areas}
                 placeholder="지역을 선택해주세요"
@@ -195,6 +207,7 @@ const RegisterReview = () => {
               <p className={styles.category__name}>추천 장소</p>
               <button type="button" onClick={handleAddPlace}>+ 장소 추가</button>
             </div>
+
             {reviewInfo.suggests.map((place, index) => (
               <div key={index} className={styles.add_place}>
                 <input
@@ -204,25 +217,29 @@ const RegisterReview = () => {
                   placeholder='추천하고 싶은 장소를 입력해주세요'
                   className={styles.inputs}
                 />
-                <div className={styles.minus__btn} type="button" onClick={() => handleRemovePlace(index)}><FaMinus /></div>
+                <div className={styles.minus__btn} type="button" onClick={() => handleRemovePlace(index)}><FiMinus /></div>
               </div>
             ))}
+
           </div>
           <div className={styles.review__images}>
             <p className={styles.category__name}>이미지 추가하기</p>
+
             <div className={styles.preview__images}>
               <label htmlFor="imgs">
                 <div>
                   <BsPlusCircleDotted />
                 </div>
               </label>
-              <input accept=".png, .svg, .jpeg, .jpg" type="file"
-                id='imgs'
+              <input
+                accept=".png, .svg, .jpeg, .jpg"
+                type="file"
+                id="imgs"
                 multiple
                 onChange={uploadFile}
               />
               {
-                previewImg.map((imgSrc, i) =>
+                previewImg && previewImg.map((imgSrc, i) =>
                   <div key={i} className={styles.img__container}>
                     <div
                       type="button"
@@ -242,7 +259,7 @@ const RegisterReview = () => {
             <CKEditor
               className={styles.editor}
               editor={ClassicEditor}
-              name="content"
+              data={reviewInfo.content}
               onChange={(event, editor) => {
                 const data = editor.getData();
                 setReviewInfo(prev => ({ ...prev, content: data }));
@@ -264,7 +281,7 @@ const RegisterReview = () => {
               placeholder='태그 입력'
               onKeyDown={(e) => {
                 if (e.key === ' ' || e.key === 'Spacebar') {
-                  e.preventDefault();
+                  e.preventDefault(); // 공백 입력 시 기본 이벤트 차단
                 } else if (e.key === 'Enter') {
                   const trimmedValue = e.target.value.trim();
                   if (trimmedValue) {
@@ -286,11 +303,10 @@ const RegisterReview = () => {
           onClick={handleSubmit}
           disabled={!reviewInfo.title || !reviewInfo.area || !reviewInfo.startDate || !reviewInfo.endDate || !reviewInfo.content}
         >
-          등록하기
+          수정하기
         </button>
       </div>
     </div>
   );
 };
-
-export default RegisterReview;
+export default EditReview

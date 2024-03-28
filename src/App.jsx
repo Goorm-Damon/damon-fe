@@ -17,6 +17,7 @@ import KakaoRed from './components/social-login/kakao/KakaoRed';
 import NaverRed from './components/social-login/naver/NaverRed';
 import MyReview from './pages/review/my-review/MyReview';
 import LikeReview from './pages/mypage/like-review/LikeReview';
+import EditReview from './pages/review/edit-review/EditReview';
 
 import RegisterCommunity from './pages/community/register-community/Register';
 import DetailCommunity from './pages/community/detail-community/DetailCommunity'
@@ -36,6 +37,7 @@ function App() {
         <Route path='review' element={<Review />} />
         <Route path='review/:id' element={<DetailReview />} />
         <Route path='register/review' element={<RegisterReview />} />
+        <Route path='review/edit/:id' element={<EditReview />} />
         <Route path='my/review' element={<MyReview />} />
         <Route path='register/calendar' element={<RegisterCalendar />} />
         <Route path='my/calendar' element={<MyCalendar />} />

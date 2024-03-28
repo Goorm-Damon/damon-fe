@@ -67,7 +67,7 @@ const MyCalendar = () => {
   const handleDelete = async () => {
     try {
       const response = await calendarService.deleteSelecCalendar(selectedItems);
-      if (response.success) {
+      if (response.status === 200) {
         alert("일정 삭제되었습니다.");
         console.log("response", response);
         //상세일정 페이지로 이동해야함.a
@@ -86,7 +86,7 @@ const MyCalendar = () => {
   const fetchCalendars = async () => {
     try {
       const response = await calendarService.getMyCalendar(0, 10);
-      setCalendars(response.data);
+      setCalendars(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -120,7 +120,7 @@ const MyCalendar = () => {
             </div>
             <div className={styles.container}>
             {calendars.content && calendars.content.map((item, i) => (
-              <div>
+              <div key={i}>
                 {edit && (
                   <input
                     type="checkbox"
@@ -161,7 +161,7 @@ const MyCalendar = () => {
             
           </div>
           :
-          <div>
+          <div className={styles.none__calendar}>
             등록된 일정이 없습니다.
           </div>
         }

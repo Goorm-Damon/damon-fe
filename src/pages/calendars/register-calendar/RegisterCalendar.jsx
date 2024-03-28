@@ -71,6 +71,10 @@ const RegisterCalendar = () => {
   }, [clickedDate, placeLatLon]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const centerCoord = placeLatLon.length > 0
     ? new kakao.maps.LatLng(placeLatLon[0].latitude, placeLatLon[0].longitude)

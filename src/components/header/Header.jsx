@@ -23,6 +23,7 @@ const Header = () => {
   const [calendar, setCalendar] = useRecoilState(calendarInfoState);
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태를 관리하는 변수
   const [userInfo, setUserInfo] = useRecoilState(userInfostate);
+  const [show, setShow] = useState(false);
 
   // 수정 모드를 토글하는 함수
   const toggleEditing = () => {
@@ -62,14 +63,26 @@ const Header = () => {
       } catch (error) {
         console.error("Error:", error);
       }
-    } else {
-      console.log("로그인 필요");
     }
   }
 
   useEffect(() => {
     fetchUser();
   }, [])
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY < 70) {
+        setShow(true);
+      }
+      else {
+        setShow(false);
+      }
+    });
+    return () => {
+      window.removeEventListener("scroll", () => { });
+    };
+  }, []);
 
   // 현재 경로에 따라 헤더 상태 업데이트
   useEffect(() => {
@@ -86,7 +99,7 @@ const Header = () => {
   const handleSubmit = async () => {
     try {
       const response = await calendarService.createCalendar(calendarInfo);
-      if (response.success) {
+      if (response.status === 200) {
         alert("일정 등록되었습니다.");
         console.log(response);
         //상세일정 페이지로 이동해야함.
@@ -108,7 +121,7 @@ const Header = () => {
   const handleModify = async () => {
     try {
       const response = await calendarService.editCalendar(calendarId, calendarInfo);
-      if (response.success) {
+      if (response.status === 200) {
         alert("일정 수정되었습니다.");
         console.log("response", response);
         //상세일정 페이지로 이동해야함.
@@ -132,7 +145,7 @@ const Header = () => {
   const handledele = async () => {
     try {
       const response = await calendarService.deleteCalendar(calendarId);
-      if (response.success) {
+      if (response.status === 200) {
         alert("일정 삭제되었습니다.");
         console.log("response", response);
         //상세일정 페이지로 이동해야함.
@@ -178,7 +191,7 @@ const Header = () => {
       console.log(error);
     }
   }
-  
+
   const userVerification = (path) => {
     if (!userInfo.accessToken) {
       const userResponse = window.confirm("로그인이 필요한 창입니다. 로그인하시겠습니까?");
@@ -195,29 +208,29 @@ const Header = () => {
   const handleLogout = () => {
     setUserInfo('');
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('recoil-persist');
     navigate('/');
   };
 
   return (
-    <section className={styles.header}>
+    <section className={show ? styles.header : styles.header__white}>
       <div className={styles.header__container}>
         <div className={styles.header_logo} onClick={handleCancel}>
           DAMON
         </div>
         <div>
-          {calendar.title && (
-            <div>
-              {(showModify && showDetail) ? (
-                <input
-                  type="text"
-                  value={calendar.title}
-                  onChange={(e) => setCalendar({ ...calendar, title: e.target.value })}
-                />
-              ) : (
-                <div onMouseEnter={toggleEditing}>{calendar.title}</div>
-              )}
-            </div>
-          )}
+          <div>
+            {(showModify && showDetail && calendarInfo) ? (
+              <input
+                type="text"
+                value={calendar.title}
+                onChange={(e) => setCalendar({ ...calendar, title: e.target.value })}
+              />
+            ) : (
+              <div onMouseEnter={toggleEditing}>{calendar.title}</div>
+            )}
+          </div>
         </div>
         {showDefalut &&
           <div className={styles.header__content}>
@@ -226,17 +239,16 @@ const Header = () => {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}>
                 <li className={styles.header__menu} onClick={navigateTo('/review')}>전체 리뷰</li>
-                <li className={styles.header__menu} onClick={navigateTo('/community')}>커뮤니티</li>
-                <ul className={isHovered ? styles.subVisible : styles.sub}>
-                  <li onClick={navigateTo2('/register/community')}>게시글 등록</li>
-                </ul>
-                
-                
+                <li className={styles.header__menu2}>커뮤니티
+                  <ul className={isHovered ? styles.subVisible : styles.sub}>
+                    
+                  </ul>
+                </li>
                 <li className={styles.header__menu2}>등록
                   <ul className={isHovered ? styles.subVisible : styles.sub}>
                     <li onClick={navigateTo2('/register/review')}>리뷰 등록</li>
                     <li onClick={navigateTo2('/register/calendar')}>일정 등록</li>
-                    <li onClick={navigateTo2('/register/post')}>게시글 등록</li>
+                    <li onClick={navigateTo2('/register/community')}>게시글 등록</li>
                   </ul>
                 </li>
                 <li className={styles.header__menu} onClick={navigateTo2('/mypage')}>마이룸
@@ -251,7 +263,7 @@ const Header = () => {
             {userInfo.accessToken ?
               <div onClick={handleLogout} className={styles.header__logout}>로그아웃</div>
               :
-              <div onClick={navigateTo('/login')} className={styles.header__logout}>로그인</div>
+              <div onClick={navigateTo('/login')} className={styles.header__login}>로그인</div>
             }
           </div>
         }
@@ -261,14 +273,14 @@ const Header = () => {
             {showCreate && <button className={styles.confirm_btn} onClick={handleSubmit}>등록</button>}
           </div>
         }
-        {showDetail &&
+        {(userInfo && userInfo.data && calendarInfo && calendarInfo.user && calendarInfo.user.identifier === userInfo.data.identifier) && (
           <div className={styles.header__btns}>
             {showModify && <button className={styles.cancel_btn} onClick={handleCancelModify}>취소</button>}
             {!showModify && <button className={styles.confirm_btn} onClick={handledele}>삭제</button>}
             {!showModify && <button className={styles.confirm_btn} onClick={handleTrans}>수정</button>}
             {showModify && <button className={styles.confirm_btn} onClick={handleModify}>완료</button>}
           </div>
-        }
+        )}
       </div>
       {showDefalut && <div className={isHovered ? styles.nav__backgroundVisible : styles.nav__background}></div>}
     </section>

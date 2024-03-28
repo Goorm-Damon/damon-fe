@@ -32,3 +32,131 @@
   color: white;
   margin-top: 10px;
 }
+
+.calendar__card {
+  border-radius: 8px;
+  display: flex;
+  margin: 5px;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  // gap: 10px;
+  justify-content: center;
+}
+
+.date_title {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  p {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.mini__title {
+  font-weight: 600;
+  margin: 0;
+}
+
+.main__title {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.editLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.edit__btn {
+  color: rgb(137, 137, 137);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.defaultCursor {
+  cursor: default;
+}
+
+.calendar__left {
+  width: 200px;
+  height: 200px;
+
+  p {
+    margin-top: 85px;
+    font-weight: 600;
+    color: white;
+    z-index: 10;
+    padding: 0;
+  }
+}
+
+.calendar__right {
+  padding: 10px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.area__img {
+  width: 200px;
+  border-radius: 10px;
+  position: absolute;
+}
+
+.card__tag {
+  background-color: white;
+  display: flex;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+  margin-top: 33px;
+  margin-left: 10px;
+  position: relative;
+  z-index: 10;
+}
+
+.selec__input {
+  position: absolute;
+  margin-left: 20px;
+  margin-top: 20px;
+  z-index: 10;
+}
+
+.container {
+  display: flex;
+  justify-items: stretch;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.none__calendar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20%;
+  color: lightgray;
+  font-weight: 600;
+}

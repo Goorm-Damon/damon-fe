@@ -21,21 +21,33 @@ const areas = {
   'ALL': '전체'
 };
 
-const MainReviewCard = ({ review,likeReview }) => {
+const img_url = {
+  'GAPYEONG': 'regions-img/gapyeong.svg',
+  'GANGWON': 'regions-img/gangwon.svg',
+  'GEYONGGI': 'regions-img/geyonggi.svg',
+  'INCHEON': 'regions-img/incheon.svg',
+  'SEOUL': 'regions-img/seoul.svg',
+  'CHUNGCHEONG': 'regions-img/chungcheon.svg',
+  'GYEONGSANG': 'regions-img/gyeongsang.svg',
+  'JEOLLLA': 'regions-img/jeolla.svg',
+  'JEJU': 'regions-img/jeju.svg',
+};
+
+const MainReviewCard = ({ review, likeReview }) => {
 
   const navigate = useNavigate();
-  const [Heart, setHeart] = useState(false);
+  const [heart, setHeart] = useState(false);
   const [likedReviews, setLikedReviews] = useRecoilState(likedReviewState);
 
 
   const handleDatails = (reviewId) => () => {
-    navigate(`/review/${reviewId}`, { state: { reviewId: reviewId } });
+    navigate(`/review/${reviewId}`, { state: { reviewId: reviewId,heart_state:heart } });
   }
+
   const fetchLikeReview = async () => {
     try {
       const response = await reviewService.likeReview(review.id);
-      console.log(response);
-  
+
       const isLiked = likedReviews.includes(review.id);
       if (isLiked) {
         // 이미 좋아요한 경우, 해당 리뷰 id 제거
@@ -44,7 +56,7 @@ const MainReviewCard = ({ review,likeReview }) => {
         // 아직 좋아요하지 않은 경우, 해당 리뷰 id 추가
         setLikedReviews([...likedReviews, review.id]);
       }
-      setHeart(!Heart);
+      setHeart(!heart);
 
     } catch (error) {
       console.error('Error toggling like for review:', error);
@@ -54,12 +66,13 @@ const MainReviewCard = ({ review,likeReview }) => {
   // 내 좋아요 리스트 불러오기
   const getLikeReviews = async () => {
     try {
-        const response = await reviewService.getLikeReview(0,5);
-        const ids = response.data.map(review => review.id); // "좋아요 한 게시물"의 id 값들을 추출
-        setLikedReviews(ids); // 추출한 id 값들을 상태에 저장
-        if(likedReviews.includes(review.id)) {
-          setHeart(true);
-        }
+      const response = await reviewService.getLikeReview(0, 5);
+      console.log(response);
+      const ids = response.data.data.content.map(review => review.id); // "좋아요 한 게시물"의 id 값들을 추출
+      setLikedReviews(ids); // 추출한 id 값들을 상태에 저장
+      if (likedReviews.includes(review.id)) {
+        setHeart(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -67,23 +80,24 @@ const MainReviewCard = ({ review,likeReview }) => {
 
   useEffect(() => {
     getLikeReviews();
-    if(likeReview) {
+    if (likeReview) {
       setHeart(true);
     }
   }, [])
-  
+
 
   return (
     <div className={styles.review__card}>
-      <div className={styles.card__left}>
-        {review.mainImage &&
+      <div className={styles.card__top}>
+        {review.mainImage ?
           <img className={styles.imgs} src={review.mainImage} />
+          :
+          <img className={styles.imgs} src={img_url[review.area]}/>
         }
         <div className={styles.card__img}>
-
           <div className={styles.card__heart}>
-            {Heart ?
-              <FaHeart color='#F05D67' size={25} onClick={fetchLikeReview}/>
+            {heart ?
+              <FaHeart color='#F05D67' size={25} onClick={fetchLikeReview} />
               :
               <FaRegHeart size={25} onClick={fetchLikeReview} />
             }
@@ -94,45 +108,37 @@ const MainReviewCard = ({ review,likeReview }) => {
         </div>
       </div>
 
-      <div className={styles.card__right} onClick={handleDatails(review.id)}>
+      <div className={styles.card__bottom} onClick={handleDatails(review.id)}>
         <div className={styles.user}>
           {review.createTime && review.createTime.slice(0, 10)}
         </div>
         <div className={styles.card__contents}>
-          <div className={styles.user__info}>
+          <div className={styles.user__profile}>
+            <div className={styles.profile__img}>
+              <img src={review.profileImage} />
+            </div>
             <p>{review.name}</p>
           </div>
           <div className={styles.title}>
-            <p>{review.title}</p>
-            <div className={styles.card__reaction}>
-              <div>
-                <FaHeart color='#F05D67' />{review.likeCount}
-              </div>
+            <p>{review.title.length > 10 ? review.title.slice(0, 13) + "..." : review.title}</p>
+            {/* <div className={styles.card__reaction}>
+              <FaHeart color='#F05D67' />{review.likeCount}
               <FaComment color='#5996DD' />{review.commentCount}
               <p className={styles.view__count}>조회수 {review.viewCount}</p>
-            </div>
+            </div> */}
           </div>
           <div className={styles.content}>
-            <div className={styles.suggest__place}>
-              <p className={styles.places__title}>추천 장소</p>
-              <div className={styles.places}>
-                {review.suggests.slice(0, 5).map((suggest, idx) => (
-                  <p >{idx + 1}.{suggest}</p>
-                ))}
-              </div>
-            </div>
-            <div className={styles.review__cost}>
+            {/* <div className={styles.review__cost}>
               <p className={styles.cost__title}>총 경비</p>
               <p>{review.cost}</p>
-            </div>
-            <div className={styles.review__tags}>
-              {review.freeTags.slice(0, 8).map((freeTag, idx) => (
-                <p>#{freeTag}</p>
-              ))}
-            </div>
+            </div> */}
+          </div>
+          <div className={styles.review__tags}>
+            {review.tags && review.tags.slice(0, 3).map((tag, idx) => (
+              <p key={idx}>{tag.length > 5 ? "#" + tag.slice(0, 5) + "..." : "#" + tag}</p>
+            ))}
           </div>
         </div>
-
       </div>
     </div>
   )
