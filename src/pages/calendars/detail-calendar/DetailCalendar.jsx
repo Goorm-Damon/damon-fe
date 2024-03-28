@@ -64,7 +64,9 @@ const DetailCalendar = () => {
     try {
       const response = await calendarService.getDetailCalendar(calendarId);
 
-      const updatedTravels = response.data.travels.map(travel => ({
+      setCalendarInfo(response.data.data);
+
+      const updatedTravels = response.data.data.travels.map(travel => ({
         ...travel,
         deleted: false,
       }));
@@ -78,13 +80,13 @@ const DetailCalendar = () => {
 
       setCalendarInfo(prevPlaceInfo => ({
         ...prevPlaceInfo,
-        title: response.data.title,
-        startDate: response.data.startDate,
-        endDate: response.data.endDate,
-        area: response.data.area,
+        title: response.data.data.title,
+        user: response.data.data.user,
+        startDate: response.data.data.startDate,
+        endDate: response.data.data.endDate,
+        area: response.data.data.area,
         travels: sortedTravels,
       }));
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

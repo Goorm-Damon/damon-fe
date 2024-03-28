@@ -72,7 +72,7 @@ const Header = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      if(window.scrollY < 70) {
+      if (window.scrollY < 70) {
         setShow(true);
       }
       else {
@@ -80,7 +80,7 @@ const Header = () => {
       }
     });
     return () => {
-      window.removeEventListener("scroll", () => {});
+      window.removeEventListener("scroll", () => { });
     };
   }, []);
 
@@ -191,7 +191,7 @@ const Header = () => {
       console.log(error);
     }
   }
-  
+
   const userVerification = (path) => {
     if (!userInfo.accessToken) {
       const userResponse = window.confirm("로그인이 필요한 창입니다. 로그인하시겠습니까?");
@@ -214,23 +214,23 @@ const Header = () => {
   };
 
   return (
-    <section className={show  ? styles.header : styles.header__white}>
+    <section className={show ? styles.header : styles.header__white}>
       <div className={styles.header__container}>
         <div className={styles.header_logo} onClick={handleCancel}>
           DAMON
         </div>
         <div>
-            <div>
-              {(showModify && showDetail) ? (
-                <input
-                  type="text"
-                  value={calendar.title}
-                  onChange={(e) => setCalendar({ ...calendar, title: e.target.value })}
-                />
-              ) : (
-                <div onMouseEnter={toggleEditing}>{calendar.title}</div>
-              )}
-            </div>
+          <div>
+            {(showModify && showDetail && calendarInfo) ? (
+              <input
+                type="text"
+                value={calendar.title}
+                onChange={(e) => setCalendar({ ...calendar, title: e.target.value })}
+              />
+            ) : (
+              <div onMouseEnter={toggleEditing}>{calendar.title}</div>
+            )}
+          </div>
         </div>
         {showDefalut &&
           <div className={styles.header__content}>
@@ -239,17 +239,16 @@ const Header = () => {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}>
                 <li className={styles.header__menu} onClick={navigateTo('/review')}>전체 리뷰</li>
-                <li className={styles.header__menu} onClick={navigateTo('/community')}>커뮤니티</li>
-                <ul className={isHovered ? styles.subVisible : styles.sub}>
-                  <li onClick={navigateTo2('/register/community')}>게시글 등록</li>
-                </ul>
-                
-                
+                <li className={styles.header__menu2}>커뮤니티
+                  <ul className={isHovered ? styles.subVisible : styles.sub}>
+                    
+                  </ul>
+                </li>
                 <li className={styles.header__menu2}>등록
                   <ul className={isHovered ? styles.subVisible : styles.sub}>
                     <li onClick={navigateTo2('/register/review')}>리뷰 등록</li>
                     <li onClick={navigateTo2('/register/calendar')}>일정 등록</li>
-                    <li onClick={navigateTo2('/register/post')}>게시글 등록</li>
+                    <li onClick={navigateTo2('/register/community')}>게시글 등록</li>
                   </ul>
                 </li>
                 <li className={styles.header__menu} onClick={navigateTo2('/mypage')}>마이룸
@@ -274,14 +273,14 @@ const Header = () => {
             {showCreate && <button className={styles.confirm_btn} onClick={handleSubmit}>등록</button>}
           </div>
         }
-        {showDetail &&
+        {(userInfo && userInfo.data && calendarInfo && calendarInfo.user && calendarInfo.user.identifier === userInfo.data.identifier) && (
           <div className={styles.header__btns}>
             {showModify && <button className={styles.cancel_btn} onClick={handleCancelModify}>취소</button>}
             {!showModify && <button className={styles.confirm_btn} onClick={handledele}>삭제</button>}
             {!showModify && <button className={styles.confirm_btn} onClick={handleTrans}>수정</button>}
             {showModify && <button className={styles.confirm_btn} onClick={handleModify}>완료</button>}
           </div>
-        }
+        )}
       </div>
       {showDefalut && <div className={isHovered ? styles.nav__backgroundVisible : styles.nav__background}></div>}
     </section>
