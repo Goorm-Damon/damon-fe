@@ -1,39 +1,39 @@
 import React from 'react';
-import classes from './CommunityList.module.scss';
+import styles from './CommunityList.module.scss';
 
-const CommunityList = ({ data, onMemberImageClick }) => {
+const CommunityList = ({ communityData, onMemberImageClick }) => {
   const handleClick = () => {
     if (typeof onMemberImageClick === 'function') {
-      onMemberImageClick(data.memberName);
+      onMemberImageClick(communityData.memberName);
     }
   };
 
   return (
-    <div className={classes.CommunityList} key={data.communityId}>
-      <div className={classes.title}>
+    <div className={styles.communityList} key={communityData.communityId}>
+      <div className={styles.title}>
         {/* Display community title */}
-        {data.title}
+        {communityData.title}
       </div>
-      <div className={classes.details}>
+      <div className={styles.details}>
         {/* Display member name and image */}
-        <div className={classes.member} onClick={handleClick}> {/* Handle click event */}
-          <img src={data.memberImage} alt={data.memberName} className={classes.memberImage} />
-          <p className={classes.memberName}>{data.memberName}</p>
+        <div className={styles.member} onClick={handleClick}> {/* Handle click event */}
+          <img src={communityData.memberImage} alt={communityData.memberName} className={styles.memberImage} />
+          <p className={styles.memberName}>{communityData.memberName}</p>
         </div>
-        <div className={classes.messagePreview}>{data.message.slice(0, 25)}</div>
+        <div className={styles.messagePreview}>{communityData.message.slice(0, 25)}</div>
         {/* Display created date */}
-        <p className={classes.createdDate}>Created: {new Date(data.createdDate).toLocaleDateString()}</p>
+        <p className={styles.createdDate}>Created: {new Date(communityData.createdDate).toLocaleDateString()}</p>
         {/* Display community type */}
-        <p className={classes.type}>Type: {data.type}</p>
+        <p className={styles.type}>Type: {communityData.type}</p>
         {/* Display views count */}
-        <p className={classes.views}>Views: {data.views}</p>
+        <p className={styles.views}>Views: {communityData.views}</p>
         {/* Display message preview */}
       </div>
-      <div className={classes.reaction}>
+      <div className={styles.reaction}>
         {/* Display like count */}
-        <p>Like Count: {data.likesCount}</p>
+        <p>Like Count: {communityData.likesCount}</p>
         {/* Display comment count */}
-        <p>Comment Count: {data.commentsCount}</p>
+        <p>Comment Count: {communityData.commentsCount}</p>
       </div>
     </div>
   );
