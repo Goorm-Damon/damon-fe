@@ -97,7 +97,7 @@
 
     span{
         position: absolute;
-        width: 50px;
+        width: 60px;
         height: 15px;
 
 
@@ -435,6 +435,7 @@
     }
 
     img {
+        border-radius: 50%;
         width: 19.39px;
         height: 20px;   
         left: 311px;
@@ -457,16 +458,24 @@
     }
 
     .myComment__update {
-        width: 49px;
-        height: 12px;
-        bottom: 10px;
-        padding-left: 100px;
-        cursor: pointer;
+        
+        
+        bottom: 50px;
+        padding-left: 680px;
 
+        
+
+        li {
+            cursor: pointer;
+            width: 16px;
+            list-style-type: none;
+            display: inline-block;
+            margin-right: 40px;
+        }
 
         span {
-
-        width: 30px;
+            cursor: pointer;
+        width: 40px;
         height: 12px;
 
 
@@ -489,6 +498,7 @@
         height: 12px;
         bottom: 10px;
         left: 723px;
+        padding-left: 750px;
         cursor: pointer;
 
 
@@ -515,6 +525,7 @@
         height: 12px;
         bottom: 10px;
         left: 773px;
+        padding-left: 800px;
         cursor: pointer;
 
 
@@ -538,7 +549,7 @@
     }
 
     .myComment__comment {
-        width: 801px;
+        width: 680px;
         height: 26px;
         top:30px;
 
