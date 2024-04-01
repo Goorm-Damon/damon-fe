@@ -1,8 +1,8 @@
 import axios from '../utils/apiutils'
 
-export const updateNickName = async (newNickname) => {
+export const updateNickName = async (identifier,newNickname) => {
   try {
-    const response = await axios.patch(`/api/user/updateNickname?newNickname =${newNickname}`);
+    const response = await axios.patch(`/api/user/updateNickname?identifier=${identifier}&newNickname=${newNickname}`);
     return response;
   } catch (error) {
     console.log('Error update nickname', error);
@@ -10,9 +10,9 @@ export const updateNickName = async (newNickname) => {
   }
 }
 
-export const deleteUser = async (newNickname ) => {
+export const deleteUser = async (identifier) => {
   try {
-    const response = await axios.delete('/api/user/delete', );
+    const response = await axios.delete(`/api/user/delete?identifier=${identifier}`, );
     return response;
   } catch (error) {
     console.log('Error deleting user', error);

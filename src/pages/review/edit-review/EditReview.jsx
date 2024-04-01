@@ -33,6 +33,7 @@ const EditReview = () => {
   const review = useLocation().state.review;
   const [postImg, setPostImg] = useState([]);
   const [previewImg, setPreviewImg] = useState(review.imageUrls);
+  const [newImageUrls, setNewImageUrls] = useState([]);
   const [reviewInfo, setReviewInfo] = useState({
     title: review.title,
     startDate: new Date(review.startDate),
@@ -42,7 +43,7 @@ const EditReview = () => {
     suggests: review.suggests,
     tags: review.tags,
     content: review.content,
-    images: review.imageUrls,
+    images: review.imageUrls, // 기존 이미지 URL만 사용
     deleteImages: [],
   });
 
@@ -120,45 +121,50 @@ const EditReview = () => {
 
   const handleSubmit = async () => {
     try {
+      // 새로운 이미지 파일이 있는 경우 업로드 처리
+      let newImageUrls = [];
       if (postImg.length > 0) {
         const formData = new FormData();
         postImg.forEach((file) => {
           formData.append("images", file);
         });
-
-        const response = await axios.post('/api/review/upload', formData, {
+  
+        const uploadResponse = await axios.post('/api/review/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-        })
-        if (response.status === 200) {
-          const images = response.data.data;
-          const reviewDataWithImage = { ...reviewInfo, images: [...reviewInfo.images, ...images] };
-          const res = await reviewService.editReview(review.id, reviewDataWithImage);
-          if (res.status === 200) {
-            alert("리뷰 수정되었습니다.");
-            navigate(`/review/${res.data.data.id}`, { state: { reviewId: res.data.data.id } });
-          } else {
-            console.error(res.error);
-          }
-
+        });
+  
+        if (uploadResponse.status === 200) {
+          newImageUrls = uploadResponse.data.data;
+          console.log('새롭게 업로드된 이미지 URL:', newImageUrls);
         } else {
-          console.error(response.error);
-        }
-      } else {
-        console.log("기존 이미지 유지");
-        const response = await reviewService.editReview(review.id, reviewInfo);
-        if (response.status === 200) {
-          alert("리뷰 수정되었습니다.");
-          navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
-        } else {
-          console.error(response.error);
+          console.error('이미지 업로드 응답 오류:', uploadResponse.error);
+          return;
         }
       }
+  
+      const reviewDataWithImage = {
+        ...reviewInfo,
+        newImageUrls,
+        deleteImageUrls: reviewInfo.deleteImages,  // 삭제할 이미지 URL 포함
+      };
+      console.log('리뷰 업데이트를 위해 전송된 최종 데이터:', reviewDataWithImage);
+  
+      const updateResponse = await reviewService.editReview(review.id, reviewDataWithImage);  
+  
+      if (updateResponse.status === 200) {
+        alert("리뷰 수정되었습니다.");
+        navigate(`/review/${updateResponse.data.data.id}`, { state: { reviewId: updateResponse.data.data.id } });
+      } else {
+        console.error('리뷰 업데이트 응답 오류:', updateResponse.error);
+      }
     } catch (error) {
-      console.error(error);
+      console.error('리뷰 업데이트 제출 중 에러:', error);
     }
   };
+  
+  
   useEffect(() => {
     setPreviewImg(review.imageUrls);
   }, [review.imageUrls]);

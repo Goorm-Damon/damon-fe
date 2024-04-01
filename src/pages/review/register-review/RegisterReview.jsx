@@ -39,8 +39,7 @@ const RegisterReview = () => {
     cost: '',
     suggests: [],
     tags: [],
-    content: "",
-    images: ""
+    content: ""
   });
 
   const handleDeleteImg = (i) => {
@@ -104,26 +103,39 @@ const RegisterReview = () => {
   };
 
   const handleSubmit = () => {
-    const formData = new FormData();
-    if (postImg) {
-      postImg.forEach((file) => {
-
-        formData.append(`images`, file);
-
-
-      });
+    if (postImg.length > 0) {
+      const formData = new FormData();
+      postImg.forEach((file) => formData.append(`images`, file));
+  
       axios.post('/api/review/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
-        .then((response) => {
-          const images = response.data.data;
-          const reviewDataWithImage = { ...reviewInfo, images: images };
-
-          console.log("리뷰 정보:", reviewDataWithImage);
-          return reviewService.createReview(reviewDataWithImage);
-        })
+      .then((response) => {
+        const imageUrls = response.data.data; // 이미지 업로드 후 받은 URL 배열
+        const reviewDataWithImage = {
+          ...reviewInfo,
+          imageUrls: imageUrls, // 이미지 URL을 reviewInfo 객체에 추가
+        };
+  
+        return reviewService.createReview(reviewDataWithImage);
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          alert("리뷰 등록되었습니다.");
+          navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
+        } else {
+          console.error(response.error);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    } else {
+      // 이미지 없이 리뷰 정보만 등록하는 경우
+      console.log("이미지 없음");
+      reviewService.createReview(reviewInfo)
         .then((response) => {
           if (response.status === 200) {
             alert("리뷰 등록되었습니다.");
@@ -135,22 +147,9 @@ const RegisterReview = () => {
         .catch((error) => {
           console.error(error);
         });
-    } else {
-      console.log("이미지 없음");
-      try {
-        const response = reviewService.createReview(reviewInfo);
-        if (response.status === 200) {
-          alert("리뷰 등록되었습니다.");
-          navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
-        } else {
-          console.error(response.error);
-        }
-      }
-      catch (error) {
-        console.error(error);
-      }
     }
   };
+  
 
 
   return (
