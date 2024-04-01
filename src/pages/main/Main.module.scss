@@ -1,6 +1,5 @@
 .main {
   max-width: 1200px;
-  padding: 0 20px;
   padding-bottom: 100px;
   margin: 0 auto;
   overflow-x: hidden;
@@ -20,14 +19,14 @@
 
 .preview__title {
   display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  align-content: flex-end;
-  align-items: stretch;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   
   h2 {
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 22px;
+    margin: 5px;
+    font-weight: 600;
     letter-spacing: -0.01em;
     line-height: 1.5;
     word-break: keep-all;
@@ -35,8 +34,8 @@
 
   a {
     color: #667380;
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 600;
     letter-spacing: -0.01em;
     line-height: 1.5;
     display: inline-flex;
@@ -59,15 +58,14 @@
 }
 
 .calendars__container {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(5, 1fr);
+  // display: grid;
+  // grid-template-columns: repeat(5, 1fr);
+  // justify-items: stretch;
+  display: flex;
   justify-items: stretch;
-}
-
-.calendar__card {
-  width: 250px;
-  height: 250px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .commu__container {

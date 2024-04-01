@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Listchat.module.scss';
-// import { Client } from '@stomp/stompjs';
-// import SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 const Listchat = ({ userName }) => {
   const [messages, setMessages] = useState([]);
@@ -9,9 +9,9 @@ const Listchat = ({ userName }) => {
   const [stompClient, setStompClient] = useState(null);
 
   useEffect(() => {
-    // const socket = new SockJS('/stomp/chat'); // WebSocket 서버 URL
-    // const stompClient = new Client();
-    // stompClient.webSocketFactory = () => socket;
+    const socket = new SockJS('/stomp/chat'); // WebSocket 서버 URL
+    const stompClient = new Client();
+    stompClient.webSocketFactory = () => socket;
     stompClient.onConnect = () => {
       console.log('Connected to WebSocket');
       stompClient.subscribe('/sub/queue/test', message => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { userInfostate } from '../../../states/user/userInfoState';
-import axios from 'axios';
+import axios from '../../../apis/utils/apiutils'
 
 const KakaoRed = () => {
 

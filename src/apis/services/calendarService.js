@@ -1,9 +1,9 @@
-import apiutils from "../utils/apiutils"
+import axios from "../utils/apiutils"
 
 //일정 등록
 export const createCalendar = async (calendarData) => {
   try {
-    const response = await apiutils.create('/api/calendar', calendarData);
+    const response = await axios.post('/api/calendar',calendarData);
     return response;
   } catch (error) {
     console.log('Error creating Calendar', error);
@@ -15,7 +15,7 @@ export const createCalendar = async (calendarData) => {
 //일정 수정
 export const editCalendar = async (id,calendarData) => {
   try {
-    const response = await apiutils.update(`/api/calendar/${id}`,calendarData);
+    const response = await axios.put(`/api/calendar/${id}`,calendarData);
     return response;
   } catch (error) {
     console.log('Error editing Calendar', error);
@@ -26,7 +26,7 @@ export const editCalendar = async (id,calendarData) => {
 //일정 삭제
 export const deleteCalendar = async (id) => {
   try {
-    const response = await apiutils.del(`/api/calendar/${id}`);
+    const response = await axios.delete(`/api/calendar/${id}`);
     return response;
   } catch (error) {
     console.log('Error deleting Calendar', error);
@@ -37,7 +37,7 @@ export const deleteCalendar = async (id) => {
 //일정 선택 삭제
 export const deleteSelecCalendar = async (deleteIds) => {
   try {
-    const response = await apiutils.selectDel('/api/calendar',deleteIds);
+    const response = await axios.delete('/api/calendar',{data:deleteIds});
     return response;
   } catch (error) {
     console.log('Error deleting Calendar', error);
@@ -48,7 +48,7 @@ export const deleteSelecCalendar = async (deleteIds) => {
 //내 일정 리스트 조회
 export const getCalendar = async () => {
   try {
-    const response = await apiutils.read(`/api/top5/calendar`);
+    const response = await axios.get(`/api/top5/calendar`);
     return response;
   } catch (error) {
     console.log('Error getting Calendar', error);
@@ -59,7 +59,7 @@ export const getCalendar = async () => {
 //내 일정 리스트 조회
 export const getMyCalendar = async (page,size) => {
   try {
-    const response = await apiutils.read(`/api/my/calendar?page=${page}&size=${size}`);
+    const response = await axios.get(`/api/my/calendar?page=${page}&size=${size}`);
     return response;
   } catch (error) {
     console.log('Error getting Calendar', error);
@@ -70,7 +70,7 @@ export const getMyCalendar = async (page,size) => {
 //일정 상세 조회
 export const getDetailCalendar = async (id) => {
   try {
-    const response = await apiutils.read(`/api/my/calendar/${id}`);
+    const response = await axios.get(`/api/my/calendar/${id}`);
     return response;
   } catch (error) {
     console.log('Error getting Calendar ', error);

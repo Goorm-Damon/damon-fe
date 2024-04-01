@@ -1,0 +1,47 @@
+.comment__title {
+  margin-top: 50px;
+}
+
+.comment__header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 10px;
+  margin-left: 50px;
+
+  textarea {
+    height: 70px;
+    padding: 10px;
+  }
+}
+
+.content {
+  font-size: 15px;
+}
+
+.profile__img {
+  width:30px;
+  border-radius: 100%;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-right: 10px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.comment__input {
+  background-color: rgb(245, 245, 245);
+  border: none;
+}
+
+.enroll__btn {
+  background: none;
+    border: none;
+    cursor: pointer;
+}
