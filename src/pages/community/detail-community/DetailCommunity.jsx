@@ -12,30 +12,73 @@ import { userInfostate } from '../../../states/user/userInfoState';
 const DetailCommunity = () => {
     const navigate = useNavigate();
     const maxLength = 100; //댓글 최대 길이
-    const [comment, setComment] = useState('');
-    const communityId = useLocation().state.communityId;
+    const [comment, setComment] = useState(''); 
+    const communityId = useLocation().state.communityId; //게시글넘버
     const [communityInfo, setCommunityInfo] = useRecoilState(communityInfoState);
-    const [userInfo, setUserInfo] = useRecoilState(userInfostate);
+    const [commentInfo, setCommentInfo] = useState([])
 
+    
+
+    //게시글 정보 받아오기
     const fetchDetailCommunity = async () => {
         try {
             const response = await communityService.getDetailCommunity(communityId);
             setCommunityInfo(response.data.data);
-            console.log(communityInfo, communityId);
+            setCommentInfo(prev => ({...prev}, response.data.data.comments))
         } catch (error) {
             console.log(error);
         }
     }
+
+    const communityLikeToggle = async () => {
+        try {
+            const response = await communityService.communityLikeToggle(communityId);
+            alert("좋아요 클릭");
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    //댓글 등록하기
+    const handleCommentSubmit = async () => {
+        try {
+            const response = await communityService.createCommunityComment({communityId: communityId, content: comment});
+            if (response.success) {
+                alert("댓글이 등록되었습니다.")
+                setComment('');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    //댓글 삭제하기
+    const handleCommentDelete = async (commentId) => {
+        
+        try {
+            const result = window.confirm('댓글을 삭제하시겠습니까?');
+
+            if (result) { 
+                await communityService.deleteCommunityComment(commentId);
+                alert("댓글이 삭제되었습니다.");
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     //입력 댓글 data setComment 
     const handleComment = (e) => {
         const { value } = e.target;
         setComment(value);
     }
-    
-    console.log(userInfo);
+
+    //새로운 댓글 작성시 Rerendering
     useEffect(() => {
         fetchDetailCommunity();
-    }, []);
+    }, [commentInfo]);
     return(
         <div className={styles.page}>
             <div className={styles.back__button}>
@@ -48,8 +91,7 @@ const DetailCommunity = () => {
                     {communityInfo.memberName}
                 </span>
                 <span className={styles.sub__span}>
-                    N일전 
-                    <span> 조회수 {communityInfo.views}회</span>
+                    N일전<span>&nbsp; 조회수 {communityInfo.views}회</span>
                 </span>
             </div>
 
@@ -69,7 +111,7 @@ const DetailCommunity = () => {
                 {HTMLReactParser(communityInfo.content)}
             </div>
 
-            <div className={styles.like__container2}>
+            <div className={styles.like__container2} onClick={communityLikeToggle}>
                  <icon><FontAwesomeIcon icon={faThumbsUp}/></icon>
             </div>
 
@@ -100,7 +142,7 @@ const DetailCommunity = () => {
 
                 <span className={styles.comment__limit}>{comment.length}/100</span>
 
-                <div className={styles.comment__reg__container}>
+                <div className={styles.comment__reg__container} onClick={handleCommentSubmit}>
                     <div className={styles.box}>
                         <span>등록하기</span>
                     </div>
@@ -109,51 +151,37 @@ const DetailCommunity = () => {
             
 
             <div className={styles.myComment__container}>
-                <section className={styles.comment__div}>
-                    <img src=''/>
-                    <span>아이디</span>
-                    <div className={styles.myComment__update}>
-                        <FontAwesomeIcon icon={faPen} style={{color: "#adbad2",}} />
-                        <span>수정</span>
-                    </div>
+                {commentInfo.map((item)=> {
+                    
+                    return(
+                        <section className={styles.comment__div}>
+                    <img src={item.userImage}/>
+                    &nbsp;<span>{item.memberName}</span>
+                    <ul className={styles.myComment__update}>
+                        <li>
+                            <FontAwesomeIcon icon={faPen} style={{color: "#adbad2",}} />
+                            <span>수정</span>
+                        </li>
 
-                    <div className={styles.myComment__delete}><FontAwesomeIcon icon={faTrash} style={{color: "#adbad2",}} />
-                        <span>삭제</span>
-                    </div>
+                        <li onClick={()=>handleCommentDelete(item.commentId)}>
+                            <FontAwesomeIcon icon={faTrash} style={{color: "#adbad2",}} />
+                            <span>삭제</span>
+                        </li>
 
-                    <div className={styles.myComment__reply}><FontAwesomeIcon icon={faReply} style={{color: "#adbad2",}} />
+                        <li>
+                        <FontAwesomeIcon icon={faReply} style={{color: "#adbad2",}} />
                         <span>답글</span>
-                    </div>
+                        </li>
+                    </ul>
 
-                    <span className={styles.myComment__comment}>asfadsfadsfadf</span>
+                    <span className={styles.myComment__comment}>{item.content}</span>
 
-                    <span className={styles.myComment__regdate}>2024-03-25</span>
+                    <span className={styles.myComment__regdate}>{`${item?.createdDate[0]}-${item.createdDate[1]}-${item.createdDate[2]}`}</span>
 
                     <div className={styles.myComment__line}/>
                 </section>
-
-                {/* <section className={styles.comment__div}>
-                    <img src=''/>
-                    <span>아이디</span>
-                    <div className={styles.myComment__update}><FontAwesomeIcon icon={faPen} style={{color: "#adbad2",}} />
-                        <span>수정</span>
-                    </div>
-
-                    <div className={styles.myComment__delete}><FontAwesomeIcon icon={faTrash} style={{color: "#adbad2",}} />
-                        <span>삭제</span>
-                    </div>
-
-                    <div className={styles.myComment__reply}><FontAwesomeIcon icon={faReply} style={{color: "#adbad2",}} />
-                        <span>답글</span>
-                    </div>
-
-                    <span className={styles.myComment__comment}>asfadsfadsfadf</span>
-
-                    <span className={styles.myComment__regdate}>2024-03-25</span>
-
-                    <div className={styles.myComment__line}/>
-                </section> */}
-
+                    )
+                })}
                 
 
                 

@@ -56,3 +56,37 @@ export const getDetailCommunity = async (id) => {
     return error;
   }
 }
+
+
+//커뮤니티 댓글 추가
+export const createCommunityComment = async (communityData) => {
+  try {
+    const response = await apiutils.create('/api/community/comment', communityData);
+    return response;
+  } catch (error) {
+    console.log('Error creating community', error);
+    return error;
+  }
+}
+
+//커뮤니티 좋아요 토글
+export const communityLikeToggle = async (communityData) => {
+  try {
+    const response = await apiutils.create(`/api/community/like/${communityData}`, communityData);
+    return response;
+  } catch (error) {
+    console.log('Error creating community', error);
+    return error;
+  }
+}
+
+//커뮤니티 댓글 삭제
+export const deleteCommunityComment = async (id) => {
+  try {
+    const response = await apiutils.del(`/api/community/comment/${id}`);
+    return response;
+  } catch (error) {
+    console.log('Error deleting community', error);
+    return error;
+  }
+}

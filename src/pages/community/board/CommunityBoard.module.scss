@@ -1,0 +1,71 @@
+.community-list {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 10%;
+}
+
+.community-card {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #d7d7d7;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.title {
+  color: #444444;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.community-title {
+  padding: 20px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  max-width: 100%;
+  margin-bottom: 0.01%;
+}
+
+.order-button-latest {
+  background-color: #d7d7d7;
+  color: #444444;
+  padding: 5px 10px;
+  border-radius: 20px; /* 둥근 버튼을 위해 큰 값을 사용 */
+  cursor: pointer;
+  margin-left: 0; /* 최신순 버튼을 맨 왼쪽으로 위치 */
+}
+
+.order-button {
+  background-color: #d7d7d7;
+  color: #444444;
+  border-radius: 20px; /* 둥근 버튼을 위해 큰 값을 사용 */
+  cursor: pointer;
+  margin-left: 350px;
+}
+
+.order-button-free {
+  background-color: #d7d7d7;
+  color: #444444;
+  border-radius: 20px; /* 둥근 버튼을 위해 큰 값을 사용 */
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.create-post-button {
+  width: auto; /* Adjusted width for create post button */
+  padding: 5px;
+  box-sizing: border-box;
+  background-color: #007bff;
+  color: #fff;
+  margin-top: 5px;
+  
+  cursor: pointer;
+  margin-left: auto; /* 글등록하기 버튼을 맨 오른쪽으로 위치 */
+}
