@@ -66,6 +66,7 @@ const DropDown = ({setClick}) => {
           삭제한 리뷰는 복구 할 수 없습니다.
         </AlertModal>
       }
+
     </>
   );
 }

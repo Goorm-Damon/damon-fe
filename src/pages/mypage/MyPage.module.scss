@@ -91,13 +91,6 @@
   font-weight: 600;
 }
 
-.profile__nickname__activate {
-  @extend .profile__nickname;
-  border: solid 1px lightgray;
-  border-radius: 10px;
-  padding: 10px;
-}
-
 .menu__container {
   border: 1px solid gray;
   border-radius: 10px;
