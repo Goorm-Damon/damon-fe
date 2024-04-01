@@ -20,6 +20,7 @@ import LikeReview from './pages/mypage/like-review/LikeReview';
 
 import RegisterCommunity from './pages/community/register-community/Register';
 import DetailCommunity from './pages/community/detail-community/DetailCommunity'
+import CommunityLayout from './pages/community/CommunityLayout';
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Route path='my/like/review' element={<LikeReview />} />
         <Route path='register/community' element={<RegisterCommunity />} />
         <Route path='community/:id' element={<DetailCommunity />} />
+        <Route path='community' element={<CommunityLayout />} />
 
       </Route>
     </Routes>
