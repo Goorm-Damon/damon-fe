@@ -48,19 +48,26 @@ const EditReview = () => {
   });
 
   const handleDeleteImg = (i) => {
-    const filteredImg = previewImg.filter((_, idx) => idx !== i);
-    const filteredImg２ = postImg.filter((_, idx) => idx !== i);
-    const filteredCurrentImg = review.imageUrls.filter((_, idx) => idx !== i);
-    setPreviewImg(filteredImg);
-    setPostImg(filteredImg２);
-    setReviewInfo(prev => ({ ...prev, images: filteredCurrentImg }));
+    const newPreviewImg = previewImg.filter((_, idx) => idx !== i);
+    const newPostImg = postImg.filter((_, idx) => idx !== i);
+    let newImages = [...reviewInfo.images];
 
-    if (review.imageUrls[i]) {
-      setReviewInfo(prev => ({
-        ...prev,
-        deleteImages: [...prev.deleteImages, review.imageUrls[i]],
-      }));
+    // 삭제된 이미지 URL 확인 및 images 배열에서 제거
+    const deletedImageUrl = review.imageUrls[i];
+    if (deletedImageUrl) {
+        newImages = newImages.filter(url => url !== deletedImageUrl);
+        setReviewInfo(prev => ({
+            ...prev,
+            deleteImages: [...prev.deleteImages, deletedImageUrl],
+            images: newImages, // images 배열 업데이트
+        }));
+    } else {
+        // 아직 업로드되지 않은 이미지 삭제 시
+        setReviewInfo(prev => ({ ...prev, images: newImages }));
     }
+
+    setPreviewImg(newPreviewImg);
+    setPostImg(newPostImg);
   };
 
   useEffect(() => {
@@ -120,6 +127,7 @@ const EditReview = () => {
   };
 
   const handleSubmit = async () => {
+    console.log('삭제할 이미지 URL:', reviewInfo.deleteImages);
     try {
       // 새로운 이미지 파일이 있는 경우 업로드 처리
       let newImageUrls = [];
