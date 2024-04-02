@@ -9,7 +9,7 @@ const Listchat = ({ userName }) => {
   const [stompClient, setStompClient] = useState(null);
 
   useEffect(() => {
-    const socket = new SockJS('/stomp/chat'); // WebSocket 서버 URL
+    const socket = new SockJS('/stomp/chat'); // WebSocket server URL
     const stompClient = new Client();
     stompClient.webSocketFactory = () => socket;
     stompClient.onConnect = () => {
@@ -21,15 +21,15 @@ const Listchat = ({ userName }) => {
     };
     setStompClient(stompClient);
 
-    // 더미 데이터 생성 (3명의 더미 사용자)
+    // Dummy data generation (3 dummy users)
     const dummyMessages = [
-      { sender: 'Dummy Member 1', content: '가나다라', timestamp: '2024-03-28T12:00:00' },
-      { sender: 'Dummy Member 2', content: '가나다라마', timestamp: '2024-03-28T12:05:00' },
-      { sender: 'Dummy Member 3', content: '가나다라마바사', timestamp: '2024-03-28T12:10:00' }
-      // 더 많은 더미 데이터 추가 가능
+      { sender: 'Dummy Member 1', receiver: userName, content: '가나다라', timestamp: '2024-03-28T12:00:00' },
+      { sender: 'Dummy Member 2', receiver: userName, content: '가나다라마', timestamp: '2024-03-28T12:05:00' },
+      { sender: userName, receiver: 'Dummy Member 3', content: '가나다라마바사', timestamp: '2024-03-28T12:10:00' }
+      // More dummy data can be added
     ];
 
-    // 더미 데이터 설정
+    // Setting dummy data
     setMessages(dummyMessages);
 
     return () => {
@@ -37,7 +37,7 @@ const Listchat = ({ userName }) => {
         stompClient.deactivate();
       }
     };
-  }, []);
+  }, [userName]); // userName added to useEffect dependency array
 
   const handleInputChange = (e) => {
     setInputMessage(e.target.value);
@@ -50,9 +50,19 @@ const Listchat = ({ userName }) => {
         destination: '/pub/queue/test',
         body: JSON.stringify({
           sender: userName,
+          receiver: 'ReceiverUserName', // Here you need to add the name of the receiver
           content: inputMessage
         })
       });
+
+      // Adding the message immediately to sender's screen
+      const newMessage = {
+        sender: userName,
+        receiver: 'ReceiverUserName', // Here you need to add the name of the receiver
+        content: inputMessage,
+        timestamp: new Date().toISOString()
+      };
+      setMessages(prevMessages => [...prevMessages, newMessage]);
     }
     setInputMessage('');
   };
@@ -75,7 +85,7 @@ const Listchat = ({ userName }) => {
           id="message-to-send"
           value={inputMessage}
           onChange={handleInputChange}
-          placeholder="메세지 입력 중..."
+          placeholder="메세지 입력 중..."
           className={styles.input}
         ></textarea>
         <button id="sendBtn" onClick={sendMessage} className={styles.sendButton}>Send</button>

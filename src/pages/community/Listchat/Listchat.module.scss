@@ -19,14 +19,14 @@
 
 .myMessage {
   align-self: flex-end;
-  background-color: #DCF8C6; // 내 메시지 배경색
-  color: #333; // 내 메시지 글자색
+  background-color: #DCF8C6; /* Background color for sender's message */
+  color: #333; /* Text color for sender's message */
 }
 
 .otherMessage {
   align-self: flex-start;
-  background-color: #F2F2F2; // 상대방 메시지 배경색
-  color: #333; // 상대방 메시지 글자색
+  background-color: #FFCCCB; /* Background color for receiver's message */
+  color: #333; /* Text color for receiver's message */
 }
 
 .messageInfo {
