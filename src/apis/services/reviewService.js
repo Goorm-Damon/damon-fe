@@ -68,9 +68,9 @@ export const getAreaReview = async (page,pageSize,area) => {
 }
 
 //내 리뷰 전체 조회
-export const getMyReview = async () => {
+export const getMyReview = async (page,pageSize) => {
   try {
-    const response = await axios.get(`/api/review/my/list`);
+    const response = await axios.get(`/api/review/my/list?page=${page}&pageSize=${pageSize}`);
     return response;
   } catch (error) {
     console.log('Error getting my review', error);

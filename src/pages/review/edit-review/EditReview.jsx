@@ -157,9 +157,12 @@ const EditReview = () => {
         newImageUrls,
         deleteImageUrls: reviewInfo.deleteImages,  // 삭제할 이미지 URL 포함
       };
-      console.log('리뷰 업데이트를 위해 전송된 최종 데이터:', reviewDataWithImage);
+
+      const { deleteImages, ...rest } = reviewDataWithImage;
+    const updatedReviewData = rest;
+      console.log('리뷰 업데이트를 위해 전송된 최종 데이터:', updatedReviewData);
   
-      const updateResponse = await reviewService.editReview(review.id, reviewDataWithImage);  
+      const updateResponse = await reviewService.editReview(review.id, updatedReviewData);  
   
       if (updateResponse.status === 200) {
         alert("리뷰 수정되었습니다.");
