@@ -8,14 +8,28 @@ import { getCalendarIdState } from '../../../states/calendar/calendarInfoState';
 const img_url = {
   'GAPYEONG': 'regions-img/gapyeong.svg',
   'GANGWON': 'regions-img/gangwon.svg',
-  'GEYONGGI': 'regions-img/incheon.svg',
+  'GEYONGGI': 'regions-img/geyonggi.svg',
   'INCHEON': 'regions-img/incheon.svg',
   'SEOUL': 'regions-img/seoul.svg',
-  'CHUNGCHEONG': 'regions-img/chungcheong.svg',
+  'CHUNGCHEONG': 'regions-img/chungcheon.svg',
   'GYEONGSANG': 'regions-img/gyeongsang.svg',
   'JEOLLLA': 'regions-img/jeolla.svg',
   'JEJU': 'regions-img/jeju.svg',
 };
+
+const areas = {
+  'GAPYEONG': '가평',
+  'GANGWON': '강원',
+  'GEYONGGI': '경기',
+  'INCHEON': '인천',
+  'SEOUL': '서울',
+  'CHUNGCHEONG': '충청',
+  'GYEONGSANG': '경상',
+  'JEOLLLA': '전라',
+  'JEJU': '제주',
+  'ALL': '전체'
+};
+
 
 const CalendarCard = ({ calendar }) => {
 
@@ -25,24 +39,32 @@ const CalendarCard = ({ calendar }) => {
 
   const handleDatails = (calendarId) => () => {
     setCalenderId(calendarId);
-    navigate(`/my/calendar/${calendarId}`, {state: {calendarId:calendarId}});
+    navigate(`/my/calendar/${calendarId}`, { state: { calendarId: calendarId } });
   }
 
 
 
   return (
-    <div className={styles.card} onClick={handleDatails(calendar.calendarId)}>
-      <img src={img_url[calendar.area]} />
-      <div className={styles.card__content}>
-        <div className={styles.title}>
-          {calendar.title.length > 10 ? calendar.title.slice(0, 10) + "..." : calendar.title}
+    <div className={styles.container} onClick={handleDatails(calendar.calendarId)}>
+      <div className={styles.calendar__card}>
+        <div className={styles.calendar__left}>
+          <img src={img_url[calendar.area]} className={styles.area__img} />
+          <div className={styles.title}>
+            <p>{calendar.title.length > 8 ? calendar.title.slice(0, 8) + "..." : calendar.title}</p>
+          </div>
+          <div className={styles.card__tag}>
+            <div>#{areas[calendar.area]}</div>
+          </div>
         </div>
-        <div className={styles.dates}>
-          {calendar.startDate}
-          ~
-          {calendar.endDate}
-        </div>
-        <div>
+        <div className={styles.calendar__right}>
+          <div className={styles.date_title}>
+            <p className={styles.mini__title}>여행 시작 : </p>
+            <p>{calendar.startDate}</p>
+          </div>
+          <div className={styles.date_title}>
+            <p className={styles.mini__title}>여행 끝: </p>
+            <p>{calendar.startDate}</p>
+          </div>
         </div>
       </div>
     </div>

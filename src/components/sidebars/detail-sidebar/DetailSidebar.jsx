@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import styles from './DetailSidebar.module.scss'
 import CreateDays from '../../calendar/create-days/CreateDays'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { clickedDateState, computeDateState, filteredTravelsSelector } from '../../../states/calendar/calendarInfoState';
+import { calendarInfoState, clickedDateState, computeDateState, filteredTravelsSelector } from '../../../states/calendar/calendarInfoState';
 import ShowCalendar from '../../calendar/show-calendar/ShowCalendar';
 import { headerState } from '../../../states/header/headerState';
 import * as calendarService from '../../../apis/services/calendarService';
+
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 
 const DetailSidebar = ({ showModal, places, setSearchPlace, setPlaceInfo, placeInfo }) => {
@@ -13,19 +15,11 @@ const DetailSidebar = ({ showModal, places, setSearchPlace, setPlaceInfo, placeI
   const clickedDate = useRecoilValue(clickedDateState);
   const computeDate = useRecoilValue(computeDateState);
   const [inputText, setInputText] = useState("");
-
-
-  // 일정 추가,일정보기 상태 변수
-  const [isAddButtonClicked, setIsAddButtonClicked] = useState(false);
-  const [isViewButtonClicked, setIsViewButtonClicked] = useState(true);
   const filteredTravels = useRecoilValue(filteredTravelsSelector);
+  const [calendarInfo, setCalendarInfo] = useRecoilState(calendarInfoState);
   const setFilteredTravels = useSetRecoilState(filteredTravelsSelector);
   const [headerSettings, setHeaderSettings] = useRecoilState(headerState);
   const { showDefalut, showFeatures, showDetail, showModify } = headerSettings;
-
-  // 버튼 스타일을 결정하는 함수
-  const addButtonStyle = isAddButtonClicked ? { color: '#5376C6' } : {};
-  const viewButtonStyle = isViewButtonClicked ? { color: '#5376C6' } : {};
 
   const onChange = (e) => {
     setInputText(e.target.value);
@@ -35,18 +29,6 @@ const DetailSidebar = ({ showModal, places, setSearchPlace, setPlaceInfo, placeI
     e.preventDefault();
     setSearchPlace(inputText);
     setInputText("");
-  };
-
-  const handleAddButtonClick = () => {
-    setIsAddButtonClicked(true);
-    setIsViewButtonClicked(false); // "일정 보기" 버튼 상태 초기화
-    // 기타 필요한 로직 추가
-  };
-
-  const handleViewButtonClick = () => {
-    setIsViewButtonClicked(true);
-    setIsAddButtonClicked(false); // "일정 추가" 버튼 상태 초기화
-    // 기타 필요한 로직 추가
   };
 
   const handleModal = (item) => {
@@ -60,9 +42,51 @@ const DetailSidebar = ({ showModal, places, setSearchPlace, setPlaceInfo, placeI
     showModal();
   }
 
-  useEffect(()=> {
-    console.log(filteredTravels);
-  },[clickedDate])
+  const handleEnd = (result) => {
+    if (!result.destination) return; // 목적지가 없으면 함수 종료
+  
+    // 드래그 앤 드롭으로 순서 변경
+    const newFilteredTravels = Array.from(filteredTravels);
+    const [reorderedItem] = newFilteredTravels.splice(result.source.index, 1);
+    newFilteredTravels.splice(result.destination.index, 0, reorderedItem);
+  
+    // 변경된 순서로 order 업데이트
+    const updatedFilteredTravels = newFilteredTravels.map((travel, index) => ({
+      ...travel,
+      order: index
+    }));
+  
+    // 기존 travels에서 해당 day의 항목을 제거
+    const remainingTravels = calendarInfo.travels.filter(travel => travel.day !== clickedDate);
+  
+    // updatedFilteredTravels를 remainingTravels에 삽입
+    const updatedTravels = [...remainingTravels, ...updatedFilteredTravels].sort((a, b) => {
+      if (a.day === b.day) {
+        return a.order - b.order; // 같은 day 내에서는 order 순으로 정렬
+      }
+      return a.day - b.day; // 다른 day는 day 순으로 정렬
+    });
+  
+    // 변경된 travels 배열로 calendarInfoState 업데이트
+    setCalendarInfo(prev => ({
+      ...prev,
+      travels: updatedTravels
+    }));
+  };
+
+  useEffect(() => {
+    const sortedTravels = [...calendarInfo.travels].sort((a, b) => {
+      if (a.day !== b.day) {
+        return a.day - b.day;
+      }
+      return a.order - b.order;
+    });
+
+    setCalendarInfo({
+      ...calendarInfo,
+      travels: sortedTravels
+    });
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -75,69 +99,62 @@ const DetailSidebar = ({ showModal, places, setSearchPlace, setPlaceInfo, placeI
       </section>
       <section className={styles.funcSide}>
         <div className={styles.addShow__btn}>
-          {showModify &&
-            <div style={{ display: 'flex' }}>
-              <button style={addButtonStyle} onClick={handleAddButtonClick}>
-                일정 추가
-              </button>
-              <p>/</p>
+          일정 보기
+        </div>
+        {!(showModify && showDetail) ?
+        <div className={styles.Calendar__Container}>
+          {filteredTravels && filteredTravels.map((calendar, index) => {
+            return <ShowCalendar key={index} calendar={calendar} index={index+1} showModal={showModal} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
+          })}
+          {filteredTravels && filteredTravels.length === 0 &&
+            <div className={styles.no_calendar}>
+              <p>일정이 없습니다. 추가해 보세요.</p>
             </div>
           }
-          <div div style={{ display: 'flex' }}>
-            <button style={viewButtonStyle} className={styles.viewBtn} onClick={handleViewButtonClick}>
-              일정 보기
-            </button>
-            <p style={{visibility: 'hidden'}}>/</p>
-          </div>
-
         </div>
-        {isAddButtonClicked ?
-          <div>
-            <div>
-              <form className="inputForm" onSubmit={handleSubmit}>
-                <input
-                  placeholder="장소 검색"
-                  onChange={onChange}
-                  value={inputText}
-                  name='inputText'
-                />
-                {/* <button type="submit">검색</button> */}
-              </form>
-            </div>
-            <div id="result-list" className={styles.result_list}
+        :
+        <DragDropContext onDragEnd={handleEnd}>
+          <Droppable droppableId="calendars">
+          {(provided) => (
+            <div 
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className={styles.Calendar__Container}
             >
-              {places.map((item, i) => (
-                <div key={i}
-                  onClick={(e) => handleModal(item, e)}
-                  className={styles.place__container}
-                >
-                  <div>
-                    <p>{item.place_name}</p>
-                    {item.road_address_name ? (
-                      <div>
-                        <p>{item.road_address_name}</p>
-                        <p>{item.address_name}</p>
-                      </div>
-                    ) : (
-                      <p>{item.address_name}</p>
-                    )}
-                    <p>{item.phone}</p>
-                  </div>
-                </div>
+              {filteredTravels.map((calendar, index) => (
+                <Draggable key={index} draggableId={index.toString()} index={index}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={{
+                        ...provided.draggableProps.style,
+                        // 적용할 커스텀 스타일
+                      }}
+                    >
+                      <ShowCalendar
+                        calendar={calendar}
+                        index={index + 1}
+                        showModal={showModal}
+                        setPlaceInfo={setPlaceInfo}
+                        placeInfo={placeInfo}
+                      />
+                    </div>
+                  )}
+                </Draggable>
               ))}
+              {provided.placeholder}
+              {filteredTravels && filteredTravels.length === 0 &&
+            <div className={styles.no_calendar}>
+              <p>일정이 없습니다. 추가해 보세요.</p>
             </div>
-          </div> :
-          <div className={styles.Calendar__Container}>
-            {filteredTravels && filteredTravels.map((calendar, index) => {
-              return <ShowCalendar key={index} calendar={calendar} index={index} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
-            })}
-            {filteredTravels && filteredTravels.length === 0 &&
-              <div className={styles.no_calendar}>
-                <p>일정이 없습니다. 추가해 보세요.</p>
-              </div>
-            }
-          </div>
-        }
+          }
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      }
       </section>
     </div>
   )

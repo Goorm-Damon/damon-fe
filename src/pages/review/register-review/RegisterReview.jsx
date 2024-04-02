@@ -10,6 +10,7 @@ import * as reviewService from '../../../apis/services/reviewService';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FaMinus } from "react-icons/fa";
+import { MdOutlineCancel } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
 import { BsPlusCircleDotted } from "react-icons/bs";
 import axios from 'axios';
@@ -37,49 +38,32 @@ const RegisterReview = () => {
     area: "",
     cost: '',
     suggests: [],
-    freeTags: [],
-    content: "",
-    image: ""
+    tags: [],
+    content: ""
   });
 
-  // const onUploadImage = async (e) => { 
-  //   const formData = new FormData();
-  //   if(postImg) {
-  //     postImg.forEach((file) => {
-  //       formData.append("image", file);
-  //     });
+  const handleDeleteImg = (i) => {
+    const filteredImg = previewImg.filter((_, idx) => idx !== i);
+    const filteredImg２ = postImg.filter((_, idx) => idx !== i);
 
-  //     axios.post('/api/upload', formData)
-  //     .then(response => {
-  //       // 이미지 업로드 성공 시 처리
-  //       console.log("이미지 업로드 성공");
-  //       console.log("이미지 업로드 결과:", response.data);
-
-  //       setReviewInfo(prev => ({ ...prev, image: response.data }));
-
-  //       console.log("리뷰 정보:", reviewInfo);
-  //     })
-  //     .catch(error => {
-  //       console.log("이미지 업로드 실패");
-  //       console.error(error);
-  //     });
-  //   }
-  // };
+    setPreviewImg(filteredImg);
+    setPostImg(filteredImg２);
+  };
 
   function uploadFile(e) {
-    const files = Array.from(e.target.files); // Convert FileList to array
+    const files = Array.from(e.target.files);
     setPostImg(files);
     const fileUrls = [];
 
     files.forEach(file => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        fileUrls.push(e.target.result); // Add the file URL to the array
-        if (fileUrls.length === files.length) { // Check if all files are read
-          setPreviewImg(fileUrls); // Update the state with all file URLs
+        fileUrls.push(e.target.result);
+        if (fileUrls.length === files.length) {
+          setPreviewImg(fileUrls);
         }
       };
-      reader.readAsDataURL(file); // Start reading the file
+      reader.readAsDataURL(file);
     });
   }
 
@@ -101,7 +85,8 @@ const RegisterReview = () => {
   };
 
   const handlePlaceChange = (value, index) => {
-    const updatedPlaces = reviewInfo.suggests.map((item, idx) => idx === index ? value : item);
+    const updatedPlaces = [...reviewInfo.suggests];
+    updatedPlaces[index] = value;
     setReviewInfo(prev => ({ ...prev, suggests: updatedPlaces }));
   };
 
@@ -113,33 +98,48 @@ const RegisterReview = () => {
   const handleRemoveTag = (index) => {
     setReviewInfo(prev => ({
       ...prev,
-      freeTags: prev.freeTags.filter((_, i) => i !== index)
+      tags: prev.tags.filter((_, i) => i !== index)
     }));
   };
 
   const handleSubmit = () => {
-    const formData = new FormData();
-    if (postImg) {
-      postImg.forEach((file) => {
-        formData.append("image", file);
+    if (postImg.length > 0) {
+      const formData = new FormData();
+      postImg.forEach((file) => formData.append(`images`, file));
+  
+      axios.post('/api/review/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        const imageUrls = response.data.data; // 이미지 업로드 후 받은 URL 배열
+        const reviewDataWithImage = {
+          ...reviewInfo,
+          imageUrls: imageUrls, // 이미지 URL을 reviewInfo 객체에 추가
+        };
+  
+        return reviewService.createReview(reviewDataWithImage);
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          alert("리뷰 등록되었습니다.");
+          navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
+        } else {
+          console.error(response.error);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
       });
-      axios.post('/api/upload', formData)
+    } else {
+      // 이미지 없이 리뷰 정보만 등록하는 경우
+      console.log("이미지 없음");
+      reviewService.createReview(reviewInfo)
         .then((response) => {
-          // 이미지 업로드 성공 시 처리 // 여러 이미지를 보내야하는 경우 지금처럼 체인 형식으로 진행하면 리뷰가 이미지 만큼 생성되는 오류 발생함.
-          console.log("이미지 업로드 성공:", response.data);
-  
-          setReviewInfo(prev => ({ ...prev, image: response.data }));
-  
-          // 리뷰 등록 // 비동기 이슈로 다음과 같이 수정
-          const reviewDataWithImage = { ...reviewInfo, image: response.data };
-          console.log("리뷰 정보:", reviewDataWithImage);
-          return reviewService.createReview(reviewDataWithImage);
-        })
-        .then((response) => {
-          if (response.success) {
+          if (response.status === 200) {
             alert("리뷰 등록되었습니다.");
-            //상세 리뷰 페이지로 이동해야함.
-            navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
+            navigate(`/review/${response.data.data.id}`, { state: { reviewId: response.data.data.id } });
           } else {
             console.error(response.error);
           }
@@ -147,38 +147,20 @@ const RegisterReview = () => {
         .catch((error) => {
           console.error(error);
         });
-    } else {
-      // 여기에서는 이미지 없을 시 처리하도록 처리
-      console.log("이미지 없음");
-      try {
-        const response = reviewService.createReview(reviewInfo);
-        if (response.success) {
-          alert("리뷰 등록되었습니다.");
-          //상세일정 페이지로 이동해야함.
-          navigate(`/review/${response.data.id}`, { state: { reviewId: response.data.id } });
-        } else {
-          console.error(response.error);
-        }
-      }
-      catch (error) {
-        console.error(error);
-      }
     }
   };
-
-  useEffect(() => {
-    // console.log(postImg);
-  }, [postImg])
+  
 
 
   return (
     <div>
       <div className={styles.page}>
-        <h1 className={styles.page__title}>리뷰 작성하기</h1>
+        <h1 className={styles.page__title}>리뷰 등록</h1>
         <section className={styles.page__contents}>
           <div className={styles.review__title}>
             <p className={styles.category__name}>리뷰 제목<span> *</span></p>
-            <input name="title" type="text" value={reviewInfo.title} onChange={handleInputChange} placeholder="제목을 입력해주세요" className={styles.inputs} />
+            <input name="title" type="text" value={reviewInfo.title} onChange={handleInputChange} placeholder="15자 이내로 입력해주세요" className={styles.inputs} 
+            maxLength={15}/>
           </div>
 
           <div className={styles.review__dates}>
@@ -213,7 +195,6 @@ const RegisterReview = () => {
               <p className={styles.category__name}>추천 장소</p>
               <button type="button" onClick={handleAddPlace}>+ 장소 추가</button>
             </div>
-
             {reviewInfo.suggests.map((place, index) => (
               <div key={index} className={styles.add_place}>
                 <input
@@ -226,11 +207,9 @@ const RegisterReview = () => {
                 <div className={styles.minus__btn} type="button" onClick={() => handleRemovePlace(index)}><FaMinus /></div>
               </div>
             ))}
-
           </div>
           <div className={styles.review__images}>
             <p className={styles.category__name}>이미지 추가하기</p>
-
             <div className={styles.preview__images}>
               <label htmlFor="imgs">
                 <div>
@@ -244,16 +223,19 @@ const RegisterReview = () => {
               />
               {
                 previewImg.map((imgSrc, i) =>
-                  <div key={i}>
-                    {/* <button type="button">
-                  <img alt="업로드 이미지 제거" src="src/assets/icon-close-button.svg" />
-                </button> */}
-                    <img alt={imgSrc} src={imgSrc} />
+                  <div key={i} className={styles.img__container}>
+                    <div
+                      type="button"
+                      className={styles.img__del}
+                      onClick={() => handleDeleteImg(i)}
+                    >
+                      <MdOutlineCancel size={20} />
+                    </div>
+                    <img alt={imgSrc} src={imgSrc} className={styles.imgs} />
                   </div>
                 )
               }
             </div>
-
           </div>
           <div className={styles.review__content}>
             <p className={styles.category__name}>리뷰 내용<span> *</span></p>
@@ -269,7 +251,7 @@ const RegisterReview = () => {
           </div>
         </section>
         <div className={styles.tags__container}>
-          {reviewInfo.freeTags.map((tag, index) => (
+          {reviewInfo.tags.map((tag, index) => (
             <div key={index} className={styles.tags}>
               <p># {tag}</p>
               <div className={styles.del__btn} onClick={() => handleRemoveTag(index)}><IoCloseOutline /></div>
@@ -281,12 +263,14 @@ const RegisterReview = () => {
               className={styles.tag__input}
               placeholder='태그 입력'
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === ' ' || e.key === 'Spacebar') {
+                  e.preventDefault();
+                } else if (e.key === 'Enter') {
                   const trimmedValue = e.target.value.trim();
                   if (trimmedValue) {
                     setReviewInfo(prev => ({
                       ...prev,
-                      freeTags: [...prev.freeTags, trimmedValue],
+                      tags: [...prev.tags, trimmedValue],
                     }));
                     e.target.value = '';
                   }

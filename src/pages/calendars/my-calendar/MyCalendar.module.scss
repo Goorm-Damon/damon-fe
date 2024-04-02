@@ -1,10 +1,8 @@
 .calendar {
   max-width: 1200px;
-  padding: 0 40px;
   padding-bottom: 100px;
   margin: 0 auto;
   overflow-x: hidden;
-  margin-top: 30px;
 }
 
 .calendar__card {
@@ -114,7 +112,7 @@
 .selec__input {
   position: absolute;
   margin-left: 20px;
-  margin-top: 30px;
+  margin-top: 20px;
   z-index: 10;
 }
 
@@ -123,4 +121,13 @@
   display: grid;
   grid-template-columns: repeat(5, 220px);
   justify-items: stretch;
+}
+
+.none__calendar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20%;
+  color: lightgray;
+  font-weight: 600;
 }

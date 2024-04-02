@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { userInfostate } from '../../../states/user/userInfoState';
-import axios from 'axios';
+import axios from '../../../apis/utils/apiutils'
 
 const KakaoRed = () => {
 
@@ -42,7 +42,7 @@ const KakaoRed = () => {
       try {
         const res = await axios({
           method: "GET",
-          url: `/api/user/login?code=${KAKAO_CODE}`,
+          url: `/api/user/login/kakao?code=${KAKAO_CODE}`,
         });
         const { data } = res.data; // 응답에서 데이터만 추출
         localStorage.setItem('accessToken', data.accessToken);

@@ -6,16 +6,30 @@ import { headerState } from '../../../states/header/headerState';
 import { calendarInfoState, clickedDateState, placeLatLonState, showCreateState } from '../../../states/calendar/calendarInfoState';
 import EnrollModal from '../../../components/modal/EnrollModal';
 import styles from './RegisterCalendar.module.scss'
+import AddPlace from '../../../components/sidebars/sidebar2/add-place/AddPlace';
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 
 const { kakao } = window;
 
+const region_latlon = {
+  'GAPYEONG': { latitude: '37.8312', longitude: '127.5104' },
+  'GANGWON': { latitude: '37.8787', longitude: '127.7435' },
+  'GEYONGGI': { latitude: '37.2891', longitude: '127.0530' },
+  'INCHEON': { latitude: '37.4571', longitude: '126.7051' },
+  'SEOUL': { latitude: '37.5522', longitude: '126.9913' },
+  'CHUNGCHEONG': { latitude: '36.5408', longitude: '126.9603' },
+  'GYEONGSANG': { latitude: '35.1552', longitude: '129.0551' },
+  'JEOLLLA': { latitude: '35.8196', longitude: '127.1169' },
+  'JEJU': { latitude: '33.4805', longitude: '126.5374' },
+};
 
 const RegisterCalendar = () => {
 
   const [searchPlace, setSearchPlace] = useState("");
   const [places, setPlaces] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [addSidebarOpen, setAddSidebarOpen] = useState(true);
   const [placeInfo, setPlaceInfo] = useState({
     locationName: '',
     latitude: '',
@@ -41,6 +55,11 @@ const RegisterCalendar = () => {
     setModalOpen(true);
   };
 
+  // 장소추가 사이드바
+  const showAddSidebar = () => {
+    setAddSidebarOpen(!addSidebarOpen);
+  };
+
   const switchSidebar = () => {
     setHeaderSettings({ showDefalut: false, showFeatures: true });
   };
@@ -48,22 +67,43 @@ const RegisterCalendar = () => {
   useEffect(() => {
     setPlaces([]); // places 초기화
     setSearchPlace("");
-  }, [clickedDate,placeLatLon]);
-  
+    console.log(places);
+  }, [clickedDate, placeLatLon]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
+    const centerCoord = placeLatLon.length > 0
+    ? new kakao.maps.LatLng(placeLatLon[0].latitude, placeLatLon[0].longitude)
+    : (region_latlon[calendarInfo.area]
+      ? new kakao.maps.LatLng(region_latlon[calendarInfo.area].latitude, region_latlon[calendarInfo.area].longitude)
+      : new kakao.maps.LatLng(37.5665, 126.9780)); // 기본 좌표 (예: 서울 시청)
+
     const mapOptions = {
-    center: placeLatLon.length > 0
-      ? new kakao.maps.LatLng(placeLatLon[0].latitude, placeLatLon[0].longitude) // 첫 번째 좌표로 중심 설정
-      : new kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심 좌표
-    level: 5,
-  };
+      center: centerCoord,
+      level: 5,
+    };
+
     const map = new kakao.maps.Map(mapContainer, mapOptions);
 
     // 장소 검색 객체를 생성
     const ps = new kakao.maps.services.Places();
+
+    const mapLine = () => {
+      if (placeLatLon.length) {
+        let bounds = new kakao.maps.LatLngBounds();
+
+        placeLatLon.forEach(latlon => {
+          displayMarker(latlon, true); // 기본 마커
+          bounds.extend(new kakao.maps.LatLng(latlon.latitude, latlon.longitude));
+        });
+        map.setBounds(bounds);
+      }
+    };
+
 
     const placesSearchCB = (data, status) => {
       if (status === kakao.maps.services.Status.OK) {
@@ -94,7 +134,7 @@ const RegisterCalendar = () => {
           image: markerImage,
         });
         // setMarkers(prev => [...prev, marker]);
-      //검색한 장소에 마커표시
+        //검색한 장소에 마커표시
       } else {
         const marker = new kakao.maps.Marker({
           map: map,
@@ -106,31 +146,66 @@ const RegisterCalendar = () => {
       }
     };
 
+    if (placeLatLon) {
+      mapLine();
+    }
+
     // 이미 등록된 일정에 대한 마커를 표시
-    calendarInfo.travels.forEach(travel => {
+    placeLatLon.forEach(travel => {
       displayMarker(travel, true); // 등록된 일정 마커
     });
+
+    
+    // 선을 구성하는 좌표 배열 생성
+    const linePath = placeLatLon.map(latLon => new kakao.maps.LatLng(latLon.latitude, latLon.longitude));
+
+    // 지도에 표시할 선을 생성합니다
+    const polyline = new kakao.maps.Polyline({
+      path: linePath, // 선을 구성하는 좌표 배열
+      strokeWeight: 5, // 선의 두께
+      strokeColor: '#FFAE00', // 선의 색깔
+      strokeOpacity: 0.7, // 선의 불투명도
+      strokeStyle: 'solid' // 선의 스타일
+    });
+
+    // 지도에 선을 표시합니다
+    polyline.setMap(map);
 
     // 키워드로 장소를 검색
     if (searchPlace) {
       ps.keywordSearch(searchPlace, placesSearchCB);
     }
-  }, [searchPlace, placeLatLon,clickedDate]);
+  }, [searchPlace, calendarInfo, clickedDate, placeLatLon]);
 
 
   return (
     <div className={styles.register__container}>
       {modalOpen && <EnrollModal searchMarkers={searchMarkers} setSearchMarkers={setSearchMarkers} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} setPlaces={setPlaces} />}
-      {!showCreate ?
-        <BeginSidebar onSwitch={switchSidebar} /> :
-        <CreateSidebar setSearchPlace={setSearchPlace} places={places} showModal={showModal} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />}
-
       <div id="map" style={{
         width: '80%',
         height: '100vh',
         float: 'right'
       }}>
       </div>
+      {!showCreate ?
+        <BeginSidebar onSwitch={switchSidebar} /> :
+        <div className={styles.register__sidebars}>
+          <CreateSidebar setSearchPlace={setSearchPlace} places={places} showModal={showModal} setModalOpen={setModalOpen} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} />
+          {addSidebarOpen ?
+            <>
+              <AddPlace setSearchPlace={setSearchPlace} places={places} setPlaceInfo={setPlaceInfo} placeInfo={placeInfo} showModal={showModal} setModalOpen={setModalOpen} />
+              <div onClick={showAddSidebar} className={styles.sidebar__btn}>
+                <IoIosArrowBack />
+              </div>
+            </>
+            :
+            <div onClick={showAddSidebar} className={styles.sidebar__btn}>
+              <IoIosArrowForward />
+            </div>
+          }
+
+        </div>
+      }
     </div>
   )
 }

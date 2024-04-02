@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: row;
   max-width: 1200px;
-  padding: 0 10%;
   width: 100%;
   padding-bottom: 100px;
   margin: 0 auto;
@@ -11,7 +10,6 @@
 
 .review {
   width: 100%;
-  padding: 0 50px;
 
   input {
     height: 50px;
@@ -49,4 +47,18 @@
   gap: 18px;
   display: flex;
   flex-direction: column;
+}
+
+.none__calendar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20%;
+  color: lightgray;
+  font-weight: 600;
+}
+
+.main__title {
+  font-size: 25px;
+  font-weight: 700;
 }

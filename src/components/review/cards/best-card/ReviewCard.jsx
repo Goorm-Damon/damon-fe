@@ -48,7 +48,9 @@ const ReviewCard = ({ bestReview }) => {
 
   return (
     <div className={styles.card} onClick={handleDatails(bestReview.id)}>
-      <img src={contents.imageUrls} className={styles.card__img}/>
+      <div className={styles.img__background}>
+        <img src={contents.imageUrls} className={styles.card__img} />
+      </div>
       <div className={styles.card__title}>
         <div className={styles.title}>
           {contents.title.length > 10 ? contents.title.slice(0, 10) + "..." : contents.title}

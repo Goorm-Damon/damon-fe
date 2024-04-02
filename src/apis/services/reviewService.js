@@ -1,9 +1,9 @@
-import apiutils from "../utils/apiutils"
+import axios from '../utils/apiutils'
 
 //리뷰 등록
 export const createReview = async (reviewData) => {
   try {
-    const response = await apiutils.create('/api/review', reviewData);
+    const response = await axios.post('/api/review', reviewData);
     return response;
   } catch (error) {
     console.log('Error creating review', error);
@@ -13,9 +13,9 @@ export const createReview = async (reviewData) => {
 
 
 //리뷰 수정
-export const editReview = async (id,reviewData) => {
+export const editReview = async (id, reviewData) => {
   try {
-    const response = await apiutils.update(`/api/review/${id}`,reviewData);
+    const response = await axios.put(`/api/review/${id}`,reviewData);
     return response;
   } catch (error) {
     console.log('Error editing review', error);
@@ -26,7 +26,7 @@ export const editReview = async (id,reviewData) => {
 //리뷰 삭제
 export const deleteReview = async (id) => {
   try {
-    const response = await apiutils.del(`/api/review/${id}`);
+    const response = await axios.delete(`/api/review/${id}`);
     return response;
   } catch (error) {
     console.log('Error deleting review', error);
@@ -37,7 +37,7 @@ export const deleteReview = async (id) => {
 //리뷰 좋아요
 export const likeReview = async (id) => {
   try {
-    const response = await apiutils.patch(`/api/review/${id}`);
+    const response = await axios.patch(`/api/review/${id}`);
     return response;
   } catch (error) {
     console.log('Error deleting review', error);
@@ -48,7 +48,7 @@ export const likeReview = async (id) => {
 //리뷰 전체 조회
 export const getReview = async (page,pageSize) => {
   try {
-    const response = await apiutils.read(`/api/review/list?page=${page}&pageSize=${pageSize}`);
+    const response = await axios.get(`/api/review/list?page=${page}&pageSize=${pageSize}`);
     return response;
   } catch (error) {
     console.log('Error getting review', error);
@@ -59,7 +59,7 @@ export const getReview = async (page,pageSize) => {
 //리뷰 전체 조회(지역)
 export const getAreaReview = async (page,pageSize,area) => {
   try {
-    const response = await apiutils.read(`/api/review/list?page=${page}&pageSize=${pageSize}&area=${area}`,{page,pageSize,area});
+    const response = await axios.get(`/api/review/list?page=${page}&pageSize=${pageSize}&area=${area}`,{page,pageSize,area});
     return response;
   } catch (error) {
     console.log('Error getting review', error);
@@ -68,9 +68,9 @@ export const getAreaReview = async (page,pageSize,area) => {
 }
 
 //내 리뷰 전체 조회
-export const getMyReview = async () => {
+export const getMyReview = async (page,pageSize) => {
   try {
-    const response = await apiutils.read(`/api/review/my/list`);
+    const response = await axios.get(`/api/review/my/list?page=${page}&pageSize=${pageSize}`);
     return response;
   } catch (error) {
     console.log('Error getting my review', error);
@@ -81,7 +81,7 @@ export const getMyReview = async () => {
 //리뷰 상세 조회
 export const getDetailReview = async (id) => {
   try {
-    const response = await apiutils.read(`/api/review/${id}`);
+    const response = await axios.get(`/api/review/${id}`);
     return response;
   } catch (error) {
     console.log('Error getting review', error);
@@ -92,7 +92,7 @@ export const getDetailReview = async (id) => {
 //좋아요 한 리뷰 조회
 export const getLikeReview = async (page,pageSize) => {
   try {
-    const response = await apiutils.read(`/api/review/likes?page=${page}&pageSize=${pageSize}`);
+    const response = await axios.get(`/api/review/likes?page=${page}&pageSize=${pageSize}`);
     return response;
   } catch (error) {
     console.log('Error getting likes review', error);
@@ -103,10 +103,68 @@ export const getLikeReview = async (page,pageSize) => {
 //베스트 리뷰 조회
 export const getBestReview = async () => {
   try {
-    const response = await apiutils.read(`/api/review/best`);
+    const response = await axios.get(`/api/review/best`);
     return response;
   } catch (error) {
     console.log('Error getting best review', error);
+    return error;
+  }
+}
+
+//리뷰 검색 조회
+export const searchReviews = async (mode, keyword, page, pageSize) => {
+  // API 엔드포인트와 파라미터를 조정하여 검색 API 호출을 구현합니다.
+  const response = await axios.get(`/api/review/list/search`, {
+    params: {
+      mode,
+      keyword,
+      page,
+      pageSize,
+    },
+  });
+  return response;
+};
+
+//리뷰 댓글 등록
+export const createComment = async (reviewId,commentData) => {
+  try {
+    const response = await axios.post(`/api/review/${reviewId}/comments`, commentData);
+    return response;
+  } catch (error) {
+    console.log('Error creating comment', error);
+    return error;
+  }
+}
+
+//리뷰 댓글 삭제
+export const deleteComment = async (reviewId, commentId) => {
+  try {
+    const response = await axios.delete(`/api/review/${reviewId}/comments/${commentId}`);
+    return response;
+  } catch (error) {
+    console.log('Error deleting comment', error);
+    return error;
+  }
+}
+
+//리뷰 댓글 수정
+export const editComment = async (reviewId, commentId, commentData) => {
+  try {
+    const response = await axios.patch(`/api/review/${reviewId}/comments/${commentId}`, commentData);
+    return response;
+  } catch (error) {
+    console.log('Error editing comment', error);
+    return error;
+  }
+}
+
+//리뷰 상세 조회
+export const getSearchReview = async (mode,keyword,page,pageSize) => {
+  try {
+    const response = await axios.get(`/api/review/list/search?mode=${mode}&keyword=${keyword}&page=${page}&pageSize=${pageSize}`);
+    return response;
+  } catch (error) {
+    console.log('Error search review', error);
     return error;
   }
 }

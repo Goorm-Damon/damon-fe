@@ -1,0 +1,334 @@
+
+.page {
+    max-width: 1200px;
+    padding: 0 10%;
+    padding-bottom: 100px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    margin-top: 30px;
+}
+
+.back__button {
+    position: absolute;
+    left: 19.86%;
+    
+    top: 8.96%;
+    bottom: 89.51%;
+
+    
+
+    p {
+        
+        left: 21.94%;
+        right: 72.85%;
+        top: 8.96%;
+        bottom: 89.51%;
+
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 150%;
+        /* or 30px */
+        display: flex;
+        align-items: center;
+        text-align: center;
+        letter-spacing: -0.02em;
+
+        color: #7298C2;
+
+        cursor: pointer;
+    }
+
+}
+
+.community__header {
+    position: absolute;
+    width: 293px;
+    height: 50px;
+    left: 19.86%;
+    top: 148px;
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 50px;
+    /* identical to box height, or 167% */
+
+    color: #000000;
+
+}
+
+.select__community {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 15px;
+
+    position: absolute;
+    width: 123px;
+    height: 22px;
+    left: 19.86%;
+    top: 254px;
+
+    p {
+        width: 123px;
+        height: 22px;
+
+        font-family: 'Poly';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 21px;
+        /* identical to box height */
+
+        color: #000000;
+
+
+        /* Inside auto layout */
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+
+    }
+}
+
+
+.bungae__container {
+    position: absolute;
+    width: 89px;
+    height: 56.25px;
+    left: 19.86%;
+    top: 319px;
+
+    cursor: pointer;
+
+    box {
+        position: absolute;
+        left: 0%;
+        right: 0%;
+        top: 0%;
+        bottom: 0%;
+
+        background: #7298C2;
+        border-radius: 20px;
+
+        icon {
+            position: absolute;
+            left: 28.09%;
+            right: 4.75%;
+            top: 32%;
+            bottom: 32.29%;
+
+            font-family: 'NanumGothic';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 150%;
+            /* or 30px */
+            display: flex;
+            align-items: center;
+            text-align: center;
+            letter-spacing: -0.02em;
+
+            color: #FFFFFF;
+        }
+    }
+
+
+}
+
+.notice__container {
+    position: absolute;
+    width: 89px;
+    height: 56.25px;
+    left: 24.86%;
+    top: 319px;
+
+    cursor: pointer;
+
+    box {
+        position: absolute;
+        left: 0%;
+        right: 0%;
+        top: 0%;
+        bottom: 0%;
+
+        background: #7298C2;
+        border-radius: 20px;
+
+        icon {
+            position: absolute;
+            left: 28.09%;
+            right: 4.75%;
+            top: 32%;
+            bottom: 32.29%;
+
+            font-family: 'NanumGothic';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 150%;
+            /* or 30px */
+            display: flex;
+            align-items: center;
+            text-align: center;
+            letter-spacing: -0.02em;
+
+            color: #FFFFFF;
+        }
+    }
+
+
+}
+
+.title__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 15px;
+    isolation: isolate;
+
+    position: absolute;
+    width: 867px;
+    height: 86px;
+    left: 19.86%;
+    top: 407px;
+
+    span {
+        width: 72px;
+        height: 22px;
+
+        font-family: 'Poly';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 21px;
+        /* identical to box height */
+
+        color: #000000;
+    }
+
+    .title__box {
+        box-sizing: border-box;
+
+        width: 867px;
+        height: 49px;
+
+        border: 1px solid #7298C2;
+        border-radius: 8px;
+
+        /* Inside auto layout */
+        flex: none;
+        order: 1;
+        flex-grow: 0;
+        z-index: 1;
+
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 18px;
+
+        padding-left: 10px;
+    }
+}
+
+.img__container {
+
+    position: absolute;
+    left: 19.86%;
+    top: 507px;
+
+    span {
+
+
+        font-family: 'Poly';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 21px;
+        /* identical to box height */
+
+        color: #000000;
+    }
+}
+
+.preview__images {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin: 20px 0px;
+    overflow: scroll;
+
+    label {
+        display: flex;
+        width: 140px;
+        height: 140px;
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        padding: 70px;
+      }
+    input {
+        display: none;
+      }
+    img {
+        width: 140px;
+        height: 140px;
+        border-radius: 5px;
+      }
+
+}
+
+.content__container {
+    position: absolute;
+    left: 19.86%;
+    top: 757px;
+
+    span {
+        font-weight: 600;
+    }
+
+    
+}
+
+.ck.ck-editor__editable:not(.ck-editor__nested-editable) {
+    min-height: 400px;
+    margin-bottom: 20px;
+  }
+
+
+
+.apply__container {
+    position: absolute;
+    width: 144px;
+    height: 52px;
+    left: 1082px;
+    top: 1175px;
+    cursor: pointer;
+    div {
+        width: 144px;
+        height: 52px;
+        background: #7298C2;
+        border-radius: 10px;
+
+        span {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 27px;
+            text-align: center;
+            align-items: center;
+            /* identical to box height */
+
+            color: #FFFFFF;
+        }
+    }
+}

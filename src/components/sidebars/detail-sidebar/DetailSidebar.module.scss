@@ -1,5 +1,4 @@
 .container {
-  position: fixed;
   min-width: 300px;
   height: 100vh;
   background-color: white;
@@ -9,7 +8,7 @@
   justify-content: center;
   justify-content: space-between;
   box-shadow: -2px -7px 20px 3px gray;
-
+  // margin-top: 64px;
 
   input {
     padding: 11px 19px;
@@ -17,13 +16,7 @@
     border-radius: 5px;
     background-color: #fbfbfb;
     color: #263747;
-    width: 350px;
-  }
-
-  span {
-    color: rgb(215, 87, 87);
-    font-size: 12px;
-    font-weight: 600;
+    width: 300px;
   }
 }
 
@@ -39,6 +32,7 @@
 .addShow__btn {
   display: flex;
   align-items: center;
+  margin: 10px;
 
   button {
     border: none;
@@ -72,15 +66,37 @@
 .place__container {
   border: 1px solid #d8d8d8;
   border-radius: 8px;
-  width: 350px;
+  width: 300px;
   padding: 10px;
+  margin-bottom: 5px;
+  p {
+    margin: 0;
+  }
+  .place__title {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
 }
 
 .no_calendar {
-  width: 350px;
+  width: 300px;
   white-space: pre-line;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: #909090;
+}
+
+.plusbtn {
+  border: none;
+  background-color: white;
+  color: rgb(83, 118, 198);
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.Calendar__Container {
+  height: 83vh;
+  overflow-y: auto;
 }

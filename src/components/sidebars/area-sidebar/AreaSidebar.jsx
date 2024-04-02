@@ -14,7 +14,20 @@ const areas = [
   { value: 'JEJU', label: "제주" },
 ];
 
-const AreaSidebar = ({setArea,area}) => {
+const img_url = {
+  'ALL': 'regions-img/all.svg',
+  'GAPYEONG': 'regions-img/gapyeong.svg',
+  'GANGWON': 'regions-img/gangwon.svg',
+  'GEYONGGI': 'regions-img/geyonggi.svg',
+  'INCHEON': 'regions-img/incheon.svg',
+  'SEOUL': 'regions-img/seoul.svg',
+  'CHUNGCHEONG': 'regions-img/chungcheon.svg',
+  'GYEONGSANG': 'regions-img/gyeongsang.svg',
+  'JEOLLLA': 'regions-img/jeolla.svg',
+  'JEJU': 'regions-img/jeju.svg',
+};
+
+const AreaSidebar = ({ setArea, area }) => {
 
   const handleClickedArea = (area) => {
     setArea(area);

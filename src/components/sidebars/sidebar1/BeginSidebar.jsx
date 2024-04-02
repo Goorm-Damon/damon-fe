@@ -53,7 +53,8 @@ const BeginSidebar = ({ onSwitch }) => {
             name='title'
             type='text'
             onChange={(e) => setTitle(e.target.value)}
-            placeholder='제목을 입력해주세요'
+            placeholder='15자 이내로 입력해주세요'
+            maxLength={15}
           />
         </div>
         <div className={styles.regions}>
