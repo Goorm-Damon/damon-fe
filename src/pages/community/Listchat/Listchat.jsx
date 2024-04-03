@@ -88,7 +88,7 @@ const Listchat = ({ userName }) => {
           placeholder="메세지 입력 중..."
           className={styles.input}
         ></textarea>
-        <button id="sendBtn" onClick={sendMessage} className={styles.sendButton}>Send</button>
+        <button id="sendBtn" onClick={sendMessage} className={styles.sendButton}>Send </button>
       </div>
     </div>
   );
