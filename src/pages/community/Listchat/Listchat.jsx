@@ -7,7 +7,8 @@ const Listchat = ({ userName }) => {
   const [messages, setMessages] = useState([
     { sender: 'Dummy Member 1', receiver: userName, content: '가나다라', timestamp: '2024-03-28T12:00:00' },
     { sender: 'Dummy Member 2', receiver: userName, content: '가나다라마', timestamp: '2024-03-28T12:05:00' },
-    { sender: userName, receiver: 'Dummy Member 3', content: '가나다라마바사', timestamp: '2024-03-28T12:10:00' }
+    { sender: 'Dummy Member 3', receiver: userName, content: '가나다라마바', timestamp: '2024-03-28T12:07:00' },
+    { sender: userName, receiver: 'Dummy Member 3', content: '가나다라마바사', timestamp: '2024-03-28T12:10:00' },
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [stompClient, setStompClient] = useState(null);
