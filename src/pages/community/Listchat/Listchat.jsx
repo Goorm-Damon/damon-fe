@@ -4,40 +4,33 @@ import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 const Listchat = ({ userName }) => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { sender: 'Dummy Member 1', receiver: userName, content: '가나다라', timestamp: '2024-03-28T12:00:00' },
+    { sender: 'Dummy Member 2', receiver: userName, content: '가나다라마', timestamp: '2024-03-28T12:05:00' },
+    { sender: userName, receiver: 'Dummy Member 3', content: '가나다라마바사', timestamp: '2024-03-28T12:10:00' }
+  ]);
   const [inputMessage, setInputMessage] = useState('');
   const [stompClient, setStompClient] = useState(null);
 
   useEffect(() => {
-    const socket = new SockJS('/stomp/chat'); // WebSocket server URL
+    const socket = new SockJS('http://localhost:8080/stomp/chat'); // 수정: 올바른 서버 경로로 변경
     const stompClient = new Client();
     stompClient.webSocketFactory = () => socket;
     stompClient.onConnect = () => {
       console.log('Connected to WebSocket');
+      setStompClient(stompClient);
       stompClient.subscribe('/sub/queue/test', message => {
         const newMessage = JSON.parse(message.body);
         setMessages(prevMessages => [...prevMessages, newMessage]);
       });
     };
-    setStompClient(stompClient);
-
-    // Dummy data generation (3 dummy users)
-    const dummyMessages = [
-      { sender: 'Dummy Member 1', receiver: userName, content: '가나다라', timestamp: '2024-03-28T12:00:00' },
-      { sender: 'Dummy Member 2', receiver: userName, content: '가나다라마', timestamp: '2024-03-28T12:05:00' },
-      { sender: userName, receiver: 'Dummy Member 3', content: '가나다라마바사', timestamp: '2024-03-28T12:10:00' }
-      // More dummy data can be added
-    ];
-
-    // Setting dummy data
-    setMessages(dummyMessages);
-
+    stompClient.activate();
     return () => {
       if (stompClient) {
         stompClient.deactivate();
       }
     };
-  }, [userName]); // userName added to useEffect dependency array
+  }, [userName]);
 
   const handleInputChange = (e) => {
     setInputMessage(e.target.value);
@@ -45,20 +38,19 @@ const Listchat = ({ userName }) => {
 
   const sendMessage = () => {
     if (inputMessage.trim() === '') return;
-    if (stompClient) {
+    if (stompClient && stompClient.connected) {
       stompClient.publish({
         destination: '/pub/queue/test',
         body: JSON.stringify({
           sender: userName,
-          receiver: 'ReceiverUserName', // Here you need to add the name of the receiver
+          receiver: 'ReceiverUserName', // 실제 수신자 이름으로 변경
           content: inputMessage
         })
       });
 
-      // Adding the message immediately to sender's screen
       const newMessage = {
         sender: userName,
-        receiver: 'ReceiverUserName', // Here you need to add the name of the receiver
+        receiver: 'ReceiverUserName', // 실제 수신자 이름으로 변경
         content: inputMessage,
         timestamp: new Date().toISOString()
       };
@@ -88,7 +80,7 @@ const Listchat = ({ userName }) => {
           placeholder="메세지 입력 중..."
           className={styles.input}
         ></textarea>
-        <button id="sendBtn" onClick={sendMessage} className={styles.sendButton}>Send </button>
+        <button id="sendBtn" onClick={sendMessage}>전송</button>
       </div>
     </div>
   );
