@@ -41,7 +41,7 @@ const MainReviewCard = ({ review, likeReview }) => {
 
 
   const handleDatails = (reviewId) => () => {
-    navigate(`/review/${reviewId}`, { state: { reviewId: reviewId,heart_state:heart } });
+    navigate(`/review/${reviewId}`, { state: { reviewId: reviewId, heart_state: heart } });
   }
 
   const fetchLikeReview = async () => {
@@ -92,7 +92,7 @@ const MainReviewCard = ({ review, likeReview }) => {
         {review.mainImage ?
           <img className={styles.imgs} src={review.mainImage} />
           :
-          <img className={styles.imgs} src={img_url[review.area]}/>
+          <img className={styles.imgs} src={img_url[review.area]} />
         }
         <div className={styles.card__img}>
           <div className={styles.card__heart}>
@@ -113,11 +113,17 @@ const MainReviewCard = ({ review, likeReview }) => {
           {review.createTime && review.createTime.slice(0, 10)}
         </div>
         <div className={styles.card__contents}>
-          <div className={styles.user__profile}>
-            <div className={styles.profile__img}>
-              <img src={review.profileImage} />
+          <div className={styles.user__info}>
+            <div className={styles.user__profile}>
+              <div className={styles.profile__img}>
+                {review.profileImage ? (
+                  <img src={review.profileImage} alt="User Profile" />
+                ) : (
+                  <img src="/path/to/default/image" alt="Default Profile" />
+                )}
+              </div>
+              <p>{review && review.name}</p>
             </div>
-            <p>{review.name}</p>
           </div>
           <div className={styles.title}>
             <p>{review.title.length > 10 ? review.title.slice(0, 13) + "..." : review.title}</p>

@@ -13,17 +13,18 @@ const MyReview = () => {
     navigate(path);
   };
 
-  const fetchCalendars = async () => {
+  const fetchReviews = async () => {
     try {
-      const response = await reviewService.getMyReview();
-      setReviews(response.data.data);
+      const response = await reviewService.getMyReview(0,10);
+      setReviews(response.data.data.content);
+      console.log(reviews);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchCalendars();
+    fetchReviews();
   }, []);
 
   return (
