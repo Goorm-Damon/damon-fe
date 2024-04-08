@@ -3,24 +3,29 @@ import styles from './Listchat.module.scss';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
-const Listchat = ({ userName }) => {
-  const [messages, setMessages] = useState([
-    { sender: 'Dummy Member 1', receiver: userName, content: '가나다라', timestamp: '2024-03-28T12:00:00' },
-    { sender: 'Dummy Member 2', receiver: userName, content: '가나다라마', timestamp: '2024-03-28T12:05:00' },
-    { sender: 'Dummy Member 3', receiver: userName, content: '가나다라마바', timestamp: '2024-03-28T12:07:00' },
-    { sender: userName, receiver: 'Dummy Member 3', content: '가나다라마바사', timestamp: '2024-03-28T12:10:00' },
-  ]);
+const Listchat = ({ userName, roomId }) => {
+  const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [stompClient, setStompClient] = useState(null);
 
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8080/stomp/chat'); // 수정: 올바른 서버 경로로 변경
+    // 더미 데이터
+    const dummyData = [
+      { sender: 'Dummy Member 1', receiver: 'Dummy Member 3', content: '가나다라', timestamp: '2024-03-28T12:00:00' },
+      { sender: 'Dummy Member 2', receiver: 'Dummy Member 3', content: '가나다라마', timestamp: '2024-03-28T12:05:00' },
+      { sender: 'Dummy Member 3', receiver: 'Dummy Member 3', content: '가나다라마바', timestamp: '2024-03-28T12:07:00' },
+      { sender: userName, receiver: 'Dummy Member 3', content: '가나다라마바사', timestamp: '2024-03-28T12:10:00' }
+    ];
+    setMessages(dummyData);
+
+    // WebSocket 연결 설정
+    const socket = new SockJS('http://localhost:8080/stomp/chat');
     const stompClient = new Client();
     stompClient.webSocketFactory = () => socket;
     stompClient.onConnect = () => {
       console.log('Connected to WebSocket');
       setStompClient(stompClient);
-      stompClient.subscribe('/sub/queue/test', message => {
+      stompClient.subscribe(`/sub/queue/${roomId}`, message => {
         const newMessage = JSON.parse(message.body);
         setMessages(prevMessages => [...prevMessages, newMessage]);
       });
@@ -31,7 +36,7 @@ const Listchat = ({ userName }) => {
         stompClient.deactivate();
       }
     };
-  }, [userName]);
+  }, [userName, roomId]);
 
   const handleInputChange = (e) => {
     setInputMessage(e.target.value);
@@ -41,17 +46,17 @@ const Listchat = ({ userName }) => {
     if (inputMessage.trim() === '') return;
     if (stompClient && stompClient.connected) {
       stompClient.publish({
-        destination: '/pub/queue/test',
+        destination: `/pub/queue/${roomId}`,
         body: JSON.stringify({
           sender: userName,
-          receiver: 'ReceiverUserName', // 실제 수신자 이름으로 변경
+          receiver: roomId,
           content: inputMessage
         })
       });
 
       const newMessage = {
         sender: userName,
-        receiver: 'ReceiverUserName', // 실제 수신자 이름으로 변경
+        receiver: roomId,
         content: inputMessage,
         timestamp: new Date().toISOString()
       };
